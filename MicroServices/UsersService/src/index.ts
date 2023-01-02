@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-const Connection = require('tedious').Connection;
-
+const bdd = require('./models/index');
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -17,12 +16,9 @@ app.get('/', (req, res) => {
     res.json({ message: "Hello world" });
 });
 
-const dbConfig = require('./config/db.config');
-const connection = new Connection(dbConfig);
-connection.on('connect', function(err) {
-    console.log("Base de données connecté");
-});
-connection.connect();
+// db connection
+const db = require("./models");
+db.sequelize.sync();
 
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
