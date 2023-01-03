@@ -17,13 +17,21 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 const db = {
-    Sequelize: undefined,
-    sequelize: undefined,
-    user: undefined
+    Sequelize: Sequelize,
+    sequelize: sequelize,
+    user: require("../models/user.model.js")(sequelize, Sequelize),
+    role: require("../models/role.model.js")(sequelize, Sequelize)
 };
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+db.role.belongsToMany(db.user, {
+    through: "user_roles",
+    foreignKey: "roleId",
+    otherKey: "userId"
+});
+db.user.belongsToMany(db.role, {
+    through: "user_roles",
+    foreignKey: "userId",
+    otherKey: "roleId"
+});
 
-db.user = require("../models/user.model.js")(sequelize, Sequelize);
 module.exports = db;

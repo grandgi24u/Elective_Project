@@ -14,12 +14,36 @@ const corsOptions = {
     origin: "http://localhost:" + port
 };
 app.use((0, cors_1.default)(corsOptions));
+app.use(express_1.default.json());
 app.get('/', (req, res) => {
     res.json({ message: "Hello world" });
 });
 // db connection
 const db = require("./models");
+/*const Role = db.role;
+db.sequelize.sync({force: true}).then(() => {
+    initial();
+});
+
+function initial() {
+    Role.create({
+        id: 1,
+        name: "customer"
+    });
+
+    Role.create({
+        id: 2,
+        name: "restaurant"
+    });
+
+    Role.create({
+        id: 3,
+        name: "delivery"
+    });
+}*/
 db.sequelize.sync();
+require('./routes/user.routes')(app);
+require('./routes/auth.routes')(app);
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });
