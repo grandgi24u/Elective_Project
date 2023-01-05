@@ -18,24 +18,11 @@ exports.signup = (req, res) => {
         password: bcrypt.hashSync(req.body.password, 8),
         name: req.body.name,
         email: req.body.email,
-        address: req.body.address
+        address: req.body.address,
+        roleId: req.body.roleId
     }).then(user => {
-        if (req.body.roles) {
-            Role.findAll({
-                where: {
-                    name: {
-                        [Op.or]: req.body.roles
-                    }
-                }
-            }).then(roles => {
-                user.setRoles(roles).then(() => {
-                    res.send({ message: "L'utilisateur à été enregistré" });
-                });
-            });
-        } else {
-            user.setRoles([1]).then(() => {
-                res.send({ message: "L'utilisateur à été enregistré" });
-            });
+        if(user)  {
+            res.send({message: "L'utilisateur à été enregistré"});
         }
     }).catch(err => {
         res.status(500).send({ message: err.message });
@@ -64,16 +51,18 @@ exports.signin = (req, res) => {
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
             expiresIn: 86400
         });
-        const authorities = [];
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                authorities.push("ROLE_" + roles[i].name.toUpperCase());
+        let roleValue;
+        Role.findAll({
+            where: {
+                id: user.roleId
             }
+        }).then(roles => {
+            roleValue = "ROLE_" + roles[0].name.toUpperCase();
             res.status(200).send({
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                roles: authorities,
+                role: roleValue,
                 accessToken: token
             });
         });
