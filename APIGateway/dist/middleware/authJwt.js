@@ -22,8 +22,8 @@ const verifyToken = (req, res, next) => {
     });
 };
 const isCustomer = (req, res, next) => {
-    User.findByPk(req.userId).then(user => {
-        user.getRole().then(role => {
+    User.findByPk(req.userId).then((user) => {
+        user.getRole().then((role) => {
             if (role.name === "customer") {
                 next();
                 return;
@@ -36,8 +36,8 @@ const isCustomer = (req, res, next) => {
     });
 };
 const isRestaurant = (req, res, next) => {
-    User.findByPk(req.userId).then(user => {
-        user.getRole().then(role => {
+    User.findByPk(req.userId).then((user) => {
+        user.getRole().then((role) => {
             if (role.name === "restaurant") {
                 next();
                 return;
@@ -50,7 +50,7 @@ const isRestaurant = (req, res, next) => {
     });
 };
 const isDelivery = (req, res, next) => {
-    User.findByPk(req.userId).then(user => {
+    User.findByPk(req.userId).then((user) => {
         user.getRole().then(role => {
             if (role.name === "delivery") {
                 next();

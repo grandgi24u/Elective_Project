@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken");
 // @ts-ignore
 const bcrypt = require("bcryptjs");
 
-exports.signup = async (req, res) => {
+exports.signup = async (req: { body: any; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: any): any; new(): any; }; }; }) => {
     await fetch("http://localhost:3000/createUser", {
         method: 'POST',
         headers: {
@@ -26,12 +26,12 @@ exports.signup = async (req, res) => {
         .catch(error => res.status(500).send(error));
 };
 
-exports.signin = (req, res) => {
+exports.signin = (req: { body: { email: any; password: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message?: any; accessToken?: any; id?: any; name?: any; email?: any; role?: string; }): void; new(): any; }; }; }) => {
     User.findOne({
         where: {
             email: req.body.email
         }
-    }).then(user => {
+    }).then((user: { password: any; id: any; roleId: any; name: any; email: any; }) => {
         if (!user) {
             return res.status(404).send({ message: "User Not found." });
         }
@@ -49,7 +49,7 @@ exports.signin = (req, res) => {
             expiresIn: 86400
         });
         let roleValue;
-        Role.findByPk(user.roleId).then(role => {
+        Role.findByPk(user.roleId).then((role: { name: string; }) => {
             roleValue = "ROLE_" + role.name.toUpperCase();
             res.status(200).send({
                 id: user.id,
@@ -59,7 +59,7 @@ exports.signin = (req, res) => {
                 accessToken: token
             });
         });
-    }).catch(err => {
+    }).catch((err: { message: any; }) => {
         res.status(500).send({ message: err.message });
     });
 };

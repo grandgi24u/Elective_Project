@@ -1,3 +1,4 @@
+// @ts-ignore
 import {authJwt} from "../middleware";
 
 const ROUTES = [

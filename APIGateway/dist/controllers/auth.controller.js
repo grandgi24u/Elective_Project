@@ -39,7 +39,7 @@ exports.signin = (req, res) => {
         where: {
             email: req.body.email
         }
-    }).then(user => {
+    }).then((user) => {
         if (!user) {
             return res.status(404).send({ message: "User Not found." });
         }
@@ -54,7 +54,7 @@ exports.signin = (req, res) => {
             expiresIn: 86400
         });
         let roleValue;
-        Role.findByPk(user.roleId).then(role => {
+        Role.findByPk(user.roleId).then((role) => {
             roleValue = "ROLE_" + role.name.toUpperCase();
             res.status(200).send({
                 id: user.id,
@@ -64,7 +64,7 @@ exports.signin = (req, res) => {
                 accessToken: token
             });
         });
-    }).catch(err => {
+    }).catch((err) => {
         res.status(500).send({ message: err.message });
     });
 };

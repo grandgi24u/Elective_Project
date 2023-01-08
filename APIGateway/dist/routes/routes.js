@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// @ts-ignore
 const middleware_1 = require("../middleware");
 const ROUTES = [
     {
