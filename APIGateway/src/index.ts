@@ -4,14 +4,11 @@ import dotenv from 'dotenv';
 const app = express();
 dotenv.config();
 const port = process.env.PORT || 4000;
-const corsOptions = {
-    origin: "http://localhost:" + port
-}
-app.use(cors(corsOptions));
 app.use(express.json());
 app.get('/', (req, res) => {
-    res.json({ message: "User microservice" });
+    res.json({ message: "Api gateway" });
 });
+
 // db connection
 const db = require("./models");
 db.sequelize.sync();
@@ -20,11 +17,9 @@ app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });
 
-
-
-
-
-
+const {ROUTES} = require("./routes/routes");
+const {setupProxies} = require("./middleware/proxy");
+setupProxies(app, ROUTES);
 
 
 /*const Role = db.role;

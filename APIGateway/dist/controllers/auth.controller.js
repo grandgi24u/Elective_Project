@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 // @ts-ignore
 const db = require("../models");
 // @ts-ignore
@@ -13,21 +22,18 @@ const Op = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
 // @ts-ignore
 const bcrypt = require("bcryptjs");
-exports.signup = (req, res) => {
-    User.create({
-        password: bcrypt.hashSync(req.body.password, 8),
-        name: req.body.name,
-        email: req.body.email,
-        address: req.body.address,
-        roleId: req.body.roleId
-    }).then(user => {
-        if (user) {
-            res.send({ message: "L'utilisateur à été enregistré" });
-        }
-    }).catch(err => {
-        res.status(500).send({ message: err.message });
-    });
-};
+exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield fetch("http://localhost:3000/createUser", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req.body),
+        redirect: 'follow'
+    }).then((data) => data.json())
+        .then(result => res.status(200).send(result))
+        .catch(error => res.status(500).send(error));
+});
 exports.signin = (req, res) => {
     User.findOne({
         where: {
@@ -48,12 +54,8 @@ exports.signin = (req, res) => {
             expiresIn: 86400
         });
         let roleValue;
-        Role.findAll({
-            where: {
-                id: user.roleId
-            }
-        }).then(roles => {
-            roleValue = "ROLE_" + roles[0].name.toUpperCase();
+        Role.findByPk(user.roleId).then(role => {
+            roleValue = "ROLE_" + role.name.toUpperCase();
             res.status(200).send({
                 id: user.id,
                 name: user.name,

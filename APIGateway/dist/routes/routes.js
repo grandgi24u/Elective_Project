@@ -1,30 +1,20 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const middleware_1 = require("../middleware");
 const ROUTES = [
     {
-        url: '/all',
-        auth: false,
-        creditCheck: false,
-        rateLimit: {
-            windowMs: 15 * 60 * 1000,
-            max: 5
-        },
+        url: '/users',
+        middleware: [middleware_1.authJwt.verifyToken],
         proxy: {
             target: "http://localhost:3000",
             changeOrigin: true,
             pathRewrite: {
-                [`^/all`]: '',
-            },
-        }
-    },
-    {
-        url: '/customer',
-        auth: true,
-        creditCheck: true,
-        proxy: {
-            target: "http://localhost:3000",
-            changeOrigin: true,
-            pathRewrite: {
-                [`^/customer`]: '',
+                [`^/users`]: '',
+                [`^/users/getUsers`]: '/getUsers',
+                [`^/users/createUser`]: '/createUser',
+                [`^/users/getUser/:id`]: '/getUser/:id',
+                [`^/users/deleteUser/:id`]: '/deleteUser/:id',
+                [`^/users/updateUser/:id`]: '/updateUser/:id',
             },
         }
     }

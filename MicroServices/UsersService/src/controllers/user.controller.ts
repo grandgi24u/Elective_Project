@@ -1,5 +1,6 @@
 // @ts-ignore
 const db = require("../models");
+// @ts-ignore
 const User = db.user;
 // @ts-ignore
 const bcrypt = require("bcryptjs");
