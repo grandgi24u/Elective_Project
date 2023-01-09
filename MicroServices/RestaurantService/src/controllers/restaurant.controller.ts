@@ -25,13 +25,23 @@ exports.deleteRestaurant = (req, res) => {
     });
 }
 
-exports.getRestaurant = (req, res) => {
+exports.getRestaurants = (req, res) => {
     Restaurant.find(function(err, users){
         if (err){
             res.send(err);
         }
         res.json(users);
     });
+}
+
+exports.getRestaurant = (req, res) => {
+    Restaurant.find(function(err, users) {
+        Restaurant.findById(req.params.id, function (err, users) {
+            if (err)
+                res.send(err);
+            res.json(users);
+        });
+    })
 }
 
 
