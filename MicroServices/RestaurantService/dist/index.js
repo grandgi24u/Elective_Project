@@ -12,6 +12,8 @@ app.use(express_1.default.json());
 app.get('/', (req, res) => {
     res.json({ message: "Restaurant microservice" });
 });
+// db connection
+const db = require("./models");
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });
