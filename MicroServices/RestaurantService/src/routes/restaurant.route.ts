@@ -3,7 +3,7 @@ const controller = require("../controllers/restaurant.controller");
 // @ts-ignore
 const express = require('express');
 // @ts-ignore
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 // @ts-ignore
 const MenuRoute = require('./menu.route');
 

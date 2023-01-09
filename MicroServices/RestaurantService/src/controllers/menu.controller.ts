@@ -7,7 +7,6 @@ exports.createMenu = (req, res) => {
     menu.menu_description = req.body.description;
     menu.menu_price = req.body.price;
     menu.id_restaurant = req.params.id;
-    console.log(req.params.id)
 
     menu.save(function(err){
         if(err){

@@ -8,10 +8,7 @@ const MenuSchema = new Schema({
     menu_name: String,
     menu_description: String,
     menu_price: Number,
-    idRestaurant: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'restaurant'
-    }
+    id_restaurant: {type: Schema.Types.ObjectId, ref:'Restaurant'}
 });
 
 const Menu = mongoose.model('menu', MenuSchema);
