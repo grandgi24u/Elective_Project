@@ -9,4 +9,4 @@ DB_PASSWORD=Azerty1234
 DB_HOST=172.16.44.14
 SECRET_KEY=aqfhdbf45fezs45f4qsefsqgsf
 
---- Autres env pour les MS
+
