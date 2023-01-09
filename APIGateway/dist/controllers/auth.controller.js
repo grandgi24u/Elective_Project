@@ -22,7 +22,7 @@ const Op = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
 // @ts-ignore
 const bcrypt = require("bcryptjs");
-exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.signup = (req, res, send) => __awaiter(void 0, void 0, void 0, function* () {
     yield fetch("http://localhost:3000/createUser", {
         method: 'POST',
         headers: {
@@ -34,7 +34,7 @@ exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         .then(result => res.status(200).send(result))
         .catch(error => res.status(500).send(error));
 });
-exports.signin = (req, res) => {
+exports.signin = (req, res, send) => {
     User.findOne({
         where: {
             email: req.body.email

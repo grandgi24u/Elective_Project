@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken");
 // @ts-ignore
 const bcrypt = require("bcryptjs");
 
-exports.signup = async (req: { body: any; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: any): any; new(): any; }; }; }) => {
+exports.signup = async (req, res, send) => {
     await fetch("http://localhost:3000/createUser", {
         method: 'POST',
         headers: {
@@ -26,12 +26,12 @@ exports.signup = async (req: { body: any; }, res: { status: (arg0: number) => { 
         .catch(error => res.status(500).send(error));
 };
 
-exports.signin = (req: { body: { email: any; password: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message?: any; accessToken?: any; id?: any; name?: any; email?: any; role?: string; }): void; new(): any; }; }; }) => {
+exports.signin = (req, res, send) => {
     User.findOne({
         where: {
             email: req.body.email
         }
-    }).then((user: { password: any; id: any; roleId: any; name: any; email: any; }) => {
+    }).then((user) => {
         if (!user) {
             return res.status(404).send({ message: "User Not found." });
         }
@@ -49,7 +49,7 @@ exports.signin = (req: { body: { email: any; password: any; }; }, res: { status:
             expiresIn: 86400
         });
         let roleValue;
-        Role.findByPk(user.roleId).then((role: { name: string; }) => {
+        Role.findByPk(user.roleId).then((role) => {
             roleValue = "ROLE_" + role.name.toUpperCase();
             res.status(200).send({
                 id: user.id,
@@ -59,7 +59,7 @@ exports.signin = (req: { body: { email: any; password: any; }; }, res: { status:
                 accessToken: token
             });
         });
-    }).catch((err: { message: any; }) => {
+    }).catch((err) => {
         res.status(500).send({ message: err.message });
     });
 };

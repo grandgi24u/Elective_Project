@@ -4,14 +4,14 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const verifyToken = (req: { headers: { [x: string]: any; }; userId: any; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message: string; }): any; new(): any; }; }; }, next: () => void) => {
+const verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
     if (!token) {
         return res.status(403).send({
             message: "Aucun token fourni !"
         });
     }
-    jwt.verify(token, process.env.SECRET_KEY, (err: any, decoded: { id: any; }) => {
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
         if (err) {
             return res.status(401).send({
                 message: "Accès refusé : token invalide !"
@@ -22,9 +22,9 @@ const verifyToken = (req: { headers: { [x: string]: any; }; userId: any; }, res:
     });
 };
 
-const isCustomer = (req: { userId: any; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message: string; }): void; new(): any; }; }; }, next: () => void) => {
-    User.findByPk(req.userId).then((user: { getRole: () => Promise<{ name: string; }>; }) => {
-        user.getRole().then((role: { name: string; }) => {
+const isCustomer =  (req, res, next) => {
+    User.findByPk(req.userId).then((user) => {
+        user.getRole().then((role) => {
             if (role.name === "customer") {
                 next();
                 return;
@@ -37,9 +37,9 @@ const isCustomer = (req: { userId: any; }, res: { status: (arg0: number) => { ()
     });
 }
 
-const isRestaurant = (req: { userId: any; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message: string; }): void; new(): any; }; }; }, next: () => void) => {
-    User.findByPk(req.userId).then((user: { getRole: () => Promise<{ name: string; }>; }) => {
-        user.getRole().then((role: { name: string; }) => {
+const isRestaurant =  (req, res, next) => {
+    User.findByPk(req.userId).then((user) => {
+        user.getRole().then((role) => {
             if (role.name === "restaurant") {
                 next();
                 return;
@@ -52,8 +52,8 @@ const isRestaurant = (req: { userId: any; }, res: { status: (arg0: number) => { 
     });
 }
 
-const isDelivery = (req: { userId: any; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { message: string; }): void; new(): any; }; }; }, next: () => void) => {
-    User.findByPk(req.userId).then((user: { getRole: () => Promise<any>; }) => {
+const isDelivery =  (req, res, next) => {
+    User.findByPk(req.userId).then((user) => {
         user.getRole().then(role => {
             if (role.name === "delivery") {
                 next();
