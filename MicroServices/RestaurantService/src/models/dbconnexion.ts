@@ -1,11 +1,12 @@
 //Variable mongoose pour utuliser le module mongoose
+// @ts-ignore
 const mongoose = require('mongoose');
 
 //URL de la bdd
-const urlmongo = process.env.DB_Host;
+const url_mongo = process.env.DB_Host;
 
 //Connexion à la bdd
-mongoose.connect(urlmongo);
+mongoose.connect(url_mongo);
 const db = mongoose.connection;
 
 //Message de connexion

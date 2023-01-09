@@ -13,7 +13,9 @@ app.get('/', (req, res) => {
 });
 
 // db connection
-const db = require("./models");
+const db = require("./models/dbconnexion");
+const RestaurantRoute = require('./routes/restaurant.route');
+app.use("/restaurant", RestaurantRoute);
 
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
