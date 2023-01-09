@@ -1,10 +1,13 @@
 import express from 'express';
+import dotenv from 'dotenv';
+
+// db connection
+const db = require("./connexion");
+
 const app = express();
-const port = 5000;
-
-
+dotenv.config();
+const port = process.env.PORT || 4000;
 app.use(express.json());
-
 app.get('/', (req, res) => {
     res.json({ message: "Order microservice" });
 });
