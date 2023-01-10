@@ -41,6 +41,8 @@ exports.getMenus = (req, res) => {
 
 //Get a specific menu
 exports.getMenu = (req, res) => {
+    const restaurantID = req.params.id;
+
     Menu.find(function(err, users) {
         Menu.findById(req.params.idMenu, function (err, users) {
             if (err)

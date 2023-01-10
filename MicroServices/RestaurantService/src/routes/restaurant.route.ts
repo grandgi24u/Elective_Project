@@ -6,11 +6,13 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 // @ts-ignore
 const MenuRoute = require('./menu.route');
+// @ts-ignore
+const checkData = require('../middleware/checkData');
 
 router.get('/', controller.getRestaurants);
-router.get('/:id',  controller.getRestaurant)
+router.get('/:id', checkData.checkIfRestaurantExist, controller.getRestaurant)
 router.post('/', controller.createRestaurant);
-router.delete('/:id',  controller.deleteRestaurant);
+router.delete('/:id', checkData.checkIfRestaurantExist, controller.deleteRestaurant);
 
 router.use('/:id/menu', MenuRoute);
 
