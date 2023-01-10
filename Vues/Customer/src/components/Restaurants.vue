@@ -31,13 +31,11 @@
           </v-sheet>
         </v-col>
       </v-row>
-
       <v-item-group
         class="pa-restaurant" 
         multiple
       >
       <v-divider class="divider-menu"></v-divider>
-
         <v-row>
           <v-col
             v-for="item in items"
@@ -156,7 +154,7 @@
     margin-left: 8%;
   } 
   .pa-restaurant {
-    margin-left: 12%;
+    margin-left: 17%;
   }
   .title-name {
     width: 100%;
