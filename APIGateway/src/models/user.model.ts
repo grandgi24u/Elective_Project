@@ -6,15 +6,25 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
         },
         password: {
-          type: Sequelize.STRING
+            type: Sequelize.STRING
         },
         name: {
+            type: Sequelize.STRING
+        },
+        surname: {
             type: Sequelize.STRING
         },
         email: {
             type: Sequelize.STRING
         },
         address: {
+            type: Sequelize.STRING
+        },
+        status: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+        },
+        codePar: {
             type: Sequelize.STRING
         }
     });

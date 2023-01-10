@@ -11,10 +11,20 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
+        surname: {
+            type: Sequelize.STRING
+        },
         email: {
             type: Sequelize.STRING
         },
         address: {
+            type: Sequelize.STRING
+        },
+        status: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0
+        },
+        codePar: {
             type: Sequelize.STRING
         }
     });

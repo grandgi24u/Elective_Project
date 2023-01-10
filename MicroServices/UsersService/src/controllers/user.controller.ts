@@ -11,7 +11,9 @@ exports.createUser = (req, res) => {
         name: req.body.name,
         email: req.body.email,
         address: req.body.address,
-        roleId: req.body.roleId
+        roleId: req.body.roleId,
+        codePar: req.body.codePar,
+        surname: req.body.surname
     }).then(user => {
         res.status(200).send({message: "Utilisateur créé", utilisateur: user});
     }).catch(err => {

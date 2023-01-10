@@ -59,8 +59,10 @@ exports.signin = (req, res, send) => {
             res.status(200).send({
                 id: user.id,
                 name: user.name,
+                surname: user.surname,
                 email: user.email,
                 role: roleValue,
+                codePar: user.codePar,
                 accessToken: token
             });
         });
