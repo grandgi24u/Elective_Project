@@ -1,30 +1,43 @@
 <template>
-  <v-app>
-    <v-main class="div-main">
-      <login-form/>
-    </v-main>
-  </v-app>
+  <div id="app">
+    <v-app-bar
+        color="deep-purple accent-4"
+        dense
+        dark
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-spacer></v-spacer>
+
+      <v-btn v-if="currentUser" to="/profile" class="nav-link">
+        {{ currentUser.name }}
+      </v-btn>
+
+      <v-btn @click.prevent="logOut">
+        Déconnexion
+      </v-btn>
+
+
+
+    </v-app-bar>
+    <v-app>
+      <router-view />
+    </v-app>
+  </div>
 </template>
 
 <script>
-import LoginForm from "@/components/LoginForm.vue";
-
 export default {
-  name: 'App',
-  components: {
-    LoginForm,
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
-  data: () => ({
-    //
-  }),
   methods: {
-    //
-  },
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
-
-<style>
-  .div-main {
-    background-color: lightcoral ;
-  }
-</style>
