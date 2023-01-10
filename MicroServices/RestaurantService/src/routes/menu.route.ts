@@ -13,5 +13,6 @@ router.get('/', checkData.checkIfRestaurantExist, controller.getMenus);
 router.get('/:idMenu',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, controller.getMenu)
 router.post('/', controller.createMenu);
 router.delete('/:idMenu', checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, controller.deleteMenu);
+router.patch('/:idMenu', checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, controller.updateAnMenu);
 
 module.exports = router;

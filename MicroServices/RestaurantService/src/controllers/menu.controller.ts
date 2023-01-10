@@ -1,5 +1,7 @@
 // @ts-ignore
 import Menu from '../models/menu.model';
+// @ts-ignore
+import Restaurant from "../models/restaurant.model";
 
 //Create a menu
 exports.createMenu = (req, res) => {
@@ -9,21 +11,22 @@ exports.createMenu = (req, res) => {
     menu.menu_price = req.body.price;
     menu.id_restaurant = req.params.id;
 
-    menu.save(function(err){
+    menu.save((err) => {
         if(err){
             res.send(err);
         }
-        res.json({message : 'Menu created successfully'});
+
+        res.status(200).send({message: "Menu created successfully"});
     });
 }
 
 //Delete a menu
 exports.deleteMenu = (req, res) => {
-    Menu.remove({_id: req.params.idMenu}, function(err, menu){
+    Menu.remove({_id: req.params.idMenu}, (err, menu) => {
         if (err){
             res.send(err);
         }
-        res.json({message:"Menu deleted"});
+        res.status(200).send({message: "Menu deleted"});
     });
 }
 
@@ -31,7 +34,7 @@ exports.deleteMenu = (req, res) => {
 exports.getMenus = (req, res) => {
     const restaurantID = req.params.id;
 
-    Menu.find({id_restaurant:restaurantID}, function(err, menus){
+    Menu.find({id_restaurant:restaurantID}, (err, menus) => {
         if (err){
             res.send(err);
         }
@@ -43,13 +46,27 @@ exports.getMenus = (req, res) => {
 exports.getMenu = (req, res) => {
     const restaurantID = req.params.id;
 
-    Menu.find(function(err, users) {
-        Menu.findById(req.params.idMenu, function (err, users) {
+    Menu.find((err, users) => {
+        Menu.findById(req.params.idMenu, (err, users) => {
             if (err)
                 res.send(err);
             res.json(users);
         });
     })
+}
+
+exports.updateAnMenu = (req, res) => {
+    const MenuId = req.params.idMenu;
+    const updates = req.body;
+
+    Menu.findByIdAndUpdate(MenuId, updates,
+        (err) => {
+            if (err) {
+                res.status(404).send({message: err});
+            } else {
+                res.status(200).send({message: "Menu updated"});
+            }
+        })
 }
 
 

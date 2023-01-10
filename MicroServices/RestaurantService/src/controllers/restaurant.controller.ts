@@ -9,29 +9,29 @@ exports.createRestaurant = (req, res) => {
     restaurant.restaurant_address = req.body.address;
     restaurant.food_type = req.body.type;
 
-    restaurant.save(function(err){
+    restaurant.save((err) => {
         if(err){
-            res.send(err);
+            res.status(404).send({message: err});
         }
-        res.json({message : 'Restaurant created successfully'});
+        res.status(200).send({message: "Restaurant created successfully"});
     });
 }
 
 //Delete a restaurant
 exports.deleteRestaurant = (req, res) => {
-    Restaurant.remove({_id: req.params.id}, function(err, restaurant){
+    Restaurant.remove({_id: req.params.id}, (err, restaurant) =>{
         if (err){
-            res.send(err);
+            res.status(404).send({message: err});
         }
-        res.json({message:"Restaurant deleted"});
+        res.status(200).send({message: "Restaurant deleted"});
     });
 }
 
 //Get all the restaurants
 exports.getRestaurants = (req, res) => {
-    Restaurant.find(function(err, users){
+    Restaurant.find((err, users) => {
         if (err){
-            res.send(err);
+            res.status(404).send({message: err});
         }
         res.json(users);
     });
@@ -39,14 +39,29 @@ exports.getRestaurants = (req, res) => {
 
 //Get one specific restaurant
 exports.getRestaurant = (req, res) => {
-    Restaurant.find(function(err, users) {
-        Restaurant.findById(req.params.id, function (err, users) {
+    Restaurant.find((err, users) => {
+        Restaurant.findById(req.params.id, (err, users) => {
             if (err)
-                res.send(err);
+                res.status(404).send({message: err});
             res.json(users);
         });
     })
 }
+
+exports.updateAnRestaurant = (req, res) => {
+        const RestaurantId = req.params.id;
+        const updates = req.body;
+
+        Restaurant.findByIdAndUpdate(RestaurantId, updates,
+            (err, restaurant) => {
+                if (err) {
+                    res.status(404).send({message: err});
+                } else {
+                    res.status(200).send({message: "Restaurant updated"});
+                }
+            })
+}
+
 
 
 

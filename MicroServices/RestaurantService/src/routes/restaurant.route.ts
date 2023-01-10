@@ -13,6 +13,7 @@ router.get('/', controller.getRestaurants);
 router.get('/:id', checkData.checkIfRestaurantExist, controller.getRestaurant)
 router.post('/', controller.createRestaurant);
 router.delete('/:id', checkData.checkIfRestaurantExist, controller.deleteRestaurant);
+router.patch('/:id', checkData.checkIfRestaurantExist, controller.updateAnRestaurant);
 
 router.use('/:id/menu', MenuRoute);
 
