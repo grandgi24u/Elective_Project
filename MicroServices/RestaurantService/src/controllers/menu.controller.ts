@@ -47,10 +47,10 @@ exports.getMenu = (req, res) => {
     const restaurantID = req.params.id;
 
     Menu.find((err, users) => {
-        Menu.findById(req.params.idMenu, (err, users) => {
+        Menu.findById(req.params.idMenu, (err, menu) => {
             if (err)
                 res.send(err);
-            res.json(users);
+            res.json(menu);
         });
     })
 }

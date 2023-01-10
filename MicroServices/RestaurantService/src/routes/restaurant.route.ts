@@ -7,6 +7,8 @@ const router = express.Router({ mergeParams: true });
 // @ts-ignore
 const MenuRoute = require('./menu.route');
 // @ts-ignore
+const ItemRoute = require('./item.route');
+// @ts-ignore
 const checkData = require('../middleware/checkData');
 
 router.get('/', controller.getRestaurants);
@@ -16,5 +18,6 @@ router.delete('/:id', checkData.checkIfRestaurantExist, controller.deleteRestaur
 router.patch('/:id', checkData.checkIfRestaurantExist, controller.updateAnRestaurant);
 
 router.use('/:id/menu', MenuRoute);
+router.use('/:id/item', ItemRoute);
 
 module.exports = router;
