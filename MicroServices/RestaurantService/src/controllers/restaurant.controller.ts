@@ -1,6 +1,7 @@
 // @ts-ignore
 import Restaurant from '../models/restaurant.model';
 
+//Create a restaurant
 exports.createRestaurant = (req, res) => {
     const restaurant = new Restaurant();
     restaurant.restaurant_name = req.body.name;
@@ -16,6 +17,7 @@ exports.createRestaurant = (req, res) => {
     });
 }
 
+//Delete a restaurant
 exports.deleteRestaurant = (req, res) => {
     Restaurant.remove({_id: req.params.id}, function(err, restaurant){
         if (err){
@@ -25,6 +27,7 @@ exports.deleteRestaurant = (req, res) => {
     });
 }
 
+//Get all the restaurants
 exports.getRestaurants = (req, res) => {
     Restaurant.find(function(err, users){
         if (err){
@@ -34,6 +37,7 @@ exports.getRestaurants = (req, res) => {
     });
 }
 
+//Get one specific restaurant
 exports.getRestaurant = (req, res) => {
     Restaurant.find(function(err, users) {
         Restaurant.findById(req.params.id, function (err, users) {
