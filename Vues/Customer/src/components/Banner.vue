@@ -5,17 +5,16 @@
       permanent
       left
     >
-      <template v-slot:prepend>
-        <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/women/81.jpg">
-          </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title>Osman Cekic</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+      <v-list-item two-line @click="$emit('ProfileVue')">
+        <v-list-item-avatar>
+          <img src="https://randomuser.me/api/portraits/women/81.jpg">
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>Osman Cekic</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
 
       <v-divider></v-divider>
 
@@ -54,30 +53,7 @@
         ],
     }),
     methods: {
-      // CoupCoeurView() {
-      //   console.log("ok")
-        // this.showRestaurant = false;
-        // this.showCoupCoeur = false;
-        // this.$emit('showCoupCoeur')
-      // }
-      // showComponent() {
-      //   console.log('ok');
-      //   this.$emit('showCoeur');
-      // },
-      // hideComponent() {
-      //   console.log('ok');
-      //   this.$emit('hide');
-      //   // this.showRestaurant = !this.showRestaurant;
-      // }
-      // showComponentOk() {
-      //   console.log("okok");
-      //   this.showCoup = true;
-      // }
-      // RestaurantsView() {
-      //   console.log("okok");
-      //   this.showCoupCoeur = true;
-      //   this.showRestaurants = false;
-      // },
+
     }
   }
 </script>

@@ -2,10 +2,10 @@
     <v-card
       class="mx-auto" 
     >
-    <v-container>
-      Mes favoris
-    </v-container>
-  </v-card>
+      <v-container>
+        Mes favoris
+      </v-container>
+    </v-card>
 </template>
 
 <script>
