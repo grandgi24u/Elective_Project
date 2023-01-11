@@ -12,6 +12,8 @@ const Op = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
 // @ts-ignore
 const bcrypt = require("bcryptjs");
+// @ts-ignore
+const fetch = require("node-fetch");
 
 exports.signup = async (req, res, send) => {
     await fetch("http://localhost:3000/createUser", {

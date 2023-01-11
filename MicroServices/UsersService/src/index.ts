@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 // db connection
 const db = require("./models");
 
-const Role = db.role;
+/*const Role = db.role;
 db.sequelize.sync({force: true}).then(() => {
     initial();
 });
@@ -35,8 +35,8 @@ function initial() {
         id: 3,
         name: "delivery"
     });
-}
-//db.sequelize.sync();
+}*/
+db.sequelize.sync();
 require('./routes/user.routes')(app);
 
 app.listen(port, () => {
