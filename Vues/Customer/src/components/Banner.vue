@@ -11,7 +11,7 @@
         </v-list-item-avatar> -->
 
         <v-list-item-content>
-          <v-list-item-title>Osman Cekic</v-list-item-title>
+          <v-list-item-title><strong>Osman Cekic</strong></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -30,7 +30,7 @@
             </v-list-item-icon>
 
             <v-list-item-content @click="$emit(`${item.fct}`)">
-              <v-list-item-title>{{item.title}}</v-list-item-title>
+              <v-list-item-title class="item-title"><strong>{{item.title}}</strong></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -46,7 +46,7 @@
       drawer: false,
       menuArray: [
           { title: 'Restaurants', icon: 'mdi-food-fork-drink', fct: 'MenuRestaurants' },
-          { title: 'Mes commandes', icon: 'mdi-baguette', fct: 'MenuCommandes' },
+          { title: 'Mes commandes', icon: 'mdi-baguette', fct: 'OrdersVue' },
           { title: 'Mes coups de coeur', icon: 'mdi-heart', fct: 'MenuFavorite'  },
           { title: 'Réglages', icon: 'mdi-cog', fct: 'MenuRéglages'  },
         ],
@@ -60,5 +60,8 @@
 <style>
   .v-navigation-drawer {
     width: 15%;
+  }
+  .item-title {
+    margin-left: 2%;
   }
 </style>

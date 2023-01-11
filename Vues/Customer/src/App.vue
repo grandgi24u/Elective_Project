@@ -3,10 +3,12 @@
     <Banner 
       @MenuRestaurants="RestaurantsView"
       @MenuFavorite="FavoriteView"
-      @ProfileVue="ProfileView">
+      @ProfileVue="ProfileView"
+      @OrdersVue="OrdersView">
     </Banner>
     <NavBar
       @ShowChange="ShowHamper"
+      @ResearchRestaurant="DisplayResearchRestaurant"
       v-bind:showResearchRestaurant="showResearchRestaurant">
     </NavBar>
     <Hamper 
@@ -34,6 +36,9 @@
     <Profile
       v-if="showProfile">
     </Profile>
+    <Orders
+        v-if="showOrders">
+    </Orders>
   </div>
 </template>
 
@@ -46,6 +51,7 @@ import DetailsRestaurants from './components/Details-restaurants';
 import DetailsItems from './components/Details-items';
 import Hamper from './components/Hamper';
 import Profile from './components/Profile';
+import Orders from './components/Orders';
 
 export default {
   name: 'App',
@@ -58,6 +64,7 @@ export default {
     Hamper,
     Profile,
     DetailsItems,
+    Orders,
   },
   data: () => ({
     showRestaurants: true,
@@ -67,6 +74,7 @@ export default {
     showHamper: false,
     showProfile: false,
     showResearchRestaurant: true,
+    showOrders: false,
   }),
   methods: {
       RestaurantsView() {
@@ -76,6 +84,7 @@ export default {
         this.showDetailsItems = false;
         this.showProfile = false;
         this.showResearchRestaurant = true;
+        this.showOrders = false;
       },
       FavoriteView() {
         this.showFavorite = true;
@@ -83,6 +92,7 @@ export default {
         this.showDetailsRestaurants = false;
         this.showDetailsItems = false;
         this.showProfile = false;
+        this.showOrders = false;
       },
       DetailsRestaurantView(name) {
         this.showDetailsRestaurants = true;
@@ -90,6 +100,7 @@ export default {
         this.showRestaurants = false;
         this.showDetailsItems = false;
         this.showProfile = false;
+        this.showOrders = false;
         this.restaurantName = name;
       },
       ProfileView() {
@@ -98,7 +109,17 @@ export default {
         this.showDetailsRestaurants = false;
         this.showDetailsItems = false;
         this.showProfile = true;
+        this.showOrders = false;
         this.showResearchRestaurant = false;
+      },
+      OrdersView() {
+        this.showFavorite = false;
+        this.showRestaurants = false;
+        this.showDetailsRestaurants = false;
+        this.showDetailsItems = false;
+        this.showProfile = false;
+        this.showOrders = true;
+        this.showResearchRestaurant = true;
       },
       ShowHamper()
       {
@@ -116,6 +137,10 @@ export default {
         this.showDetailsRestaurants = true;
         this.showDetailsItems = false;
         this.restaurantName = restaurant;
+      },
+      DisplayResearchRestaurant()
+      {
+
       }
     }
 };

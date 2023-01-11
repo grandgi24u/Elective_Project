@@ -16,7 +16,7 @@
             <v-list-item-title>Ce repas est très bon</v-list-item-title>
           </v-list-item-content>
           <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-            <v-btn @click="validateHamper">Ajouter à mon panier</v-btn>
+            <v-btn @click="$emit('AddToHamper')">Ajouter à mon panier</v-btn>
           </v-col>
         </div>
       </div>
