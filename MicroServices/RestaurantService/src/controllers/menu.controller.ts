@@ -2,7 +2,8 @@
 import Menu from '../models/menu.model';
 // @ts-ignore
 import Restaurant from "../models/restaurant.model";
-
+// @ts-ignore
+import Item from "../models/item.model";
 //Create a menu
 exports.createMenu = (req, res) => {
     const menu = new Menu();
@@ -34,25 +35,21 @@ exports.deleteMenu = (req, res) => {
 exports.getMenus = (req, res) => {
     const restaurantID = req.params.id;
 
-    Menu.find({id_restaurant:restaurantID}, (err, menus) => {
+    Menu.find({id_restaurant:restaurantID}).populate('id_required_items').populate('id_optional_items').then ((err, menus) => {
         if (err){
-            res.send(err);
+            res.status(404).send({message: err});
         }
             res.json(menus);
     });
 }
 
-//Get a specific menu
+//Get a specific menu with all the items
 exports.getMenu = (req, res) => {
-    const restaurantID = req.params.id;
-
-    Menu.find((err, users) => {
-        Menu.findById(req.params.idMenu, (err, menu) => {
-            if (err)
-                res.send(err);
-            res.json(menu);
-        });
-    })
+    Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').populate('id_restaurant').then((err, menu) => {
+        if (err)
+            res.status(404).send({message: err});
+        res.json(menu);
+    });
 }
 
 exports.updateAnMenu = (req, res) => {
@@ -68,6 +65,27 @@ exports.updateAnMenu = (req, res) => {
             }
         })
 }
+
+exports.bindRequiredItem = (req, res) => {
+    Menu.findByIdAndUpdate(req.params.idMenu, {$push : {id_required_items:req.params.idItem}},(err, menu) => {
+        if (err) {
+            res.status(404).send({message: err});
+        } else {
+            res.status(200).send({message: "Item add to Menu"});
+        }
+    });
+}
+
+exports.bindOptionalItem = (req, res) => {
+    Menu.findByIdAndUpdate(req.params.idMenu, {$push : {id_optional_items:req.params.idItem}},(err, menu) => {
+        if (err) {
+            res.status(404).send({message: err});
+        } else {
+            res.status(200).send({message: "Item add to Menu"});
+        }
+    });
+}
+
 
 
 

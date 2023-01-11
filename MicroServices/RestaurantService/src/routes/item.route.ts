@@ -11,6 +11,6 @@ router.get('/', checkData.checkIfRestaurantExist, controller.getItems);
 router.get('/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, checkData.checkIfItemExist, controller.getItem)
 router.post('/', controller.createItem);
 router.delete('/:idItem', checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.deleteItem);
-router.patch('/:idItem', checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, checkData.checkIfMenuExist, controller.updateAnItem);
+router.patch('/:idItem', checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.updateAnItem);
 
 module.exports = router;

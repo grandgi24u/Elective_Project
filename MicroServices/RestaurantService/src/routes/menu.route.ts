@@ -1,4 +1,6 @@
 // @ts-ignore
+import ItemRoute from "./item.route";
+
 const controller = require('../controllers/menu.controller');
 // @ts-ignore
 const express = require('express');
@@ -12,5 +14,8 @@ router.get('/:idMenu',checkData.checkIfRestaurantExist, checkData.checkIfMenuExi
 router.post('/', controller.createMenu);
 router.delete('/:idMenu', checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, controller.deleteMenu);
 router.patch('/:idMenu', checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, controller.updateAnMenu);
+
+router.post('/:idMenu/required_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, controller.bindRequiredItem);
+router.post('/:idMenu/optional_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, controller.bindOptionalItem);
 
 module.exports = router;

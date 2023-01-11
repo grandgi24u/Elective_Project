@@ -1,5 +1,10 @@
 // @ts-ignore
 import Restaurant from '../models/restaurant.model';
+// @ts-ignore
+import Menu from "../models/menu.model";
+
+// @ts-ignore
+import menu from "./menu.controller";
 
 //Create a restaurant
 exports.createRestaurant = (req, res) => {
@@ -29,23 +34,32 @@ exports.deleteRestaurant = (req, res) => {
 
 //Get all the restaurants
 exports.getRestaurants = (req, res) => {
-    Restaurant.find((err, users) => {
+    Restaurant.find((err, restaurants) => {
         if (err){
             res.status(404).send({message: err});
         }
-        res.json(users);
+        res.json(restaurants);
     });
 }
 
 //Get one specific restaurant
 exports.getRestaurant = (req, res) => {
     Restaurant.find((err, users) => {
-        Restaurant.findById(req.params.id, (err, users) => {
-            if (err)
+        Restaurant.findById(req.params.id, (err, restaurant) => {
+            if (err) {
                 res.status(404).send({message: err});
-            res.json(users);
+            }
+            res.json(restaurant);
         });
     })
+
+    // Menu.find({id_restaurant:req.params.id}, (err, menus) => {
+    //     console.log(menus);
+    //     if (menus==''){
+    //         res.send("No menu yet");
+    //     }
+    //     res.json(menus);
+    // });
 }
 
 exports.updateAnRestaurant = (req, res) => {
