@@ -8,7 +8,7 @@ const router = express.Router({ mergeParams: true });
 const checkData = require('../middleware/checkData');
 
 router.get('/', checkData.checkIfRestaurantExist, controller.getItems);
-router.get('/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, checkData.checkIfItemExist, controller.getItem)
+router.get('/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.getItem)
 router.post('/', controller.createItem);
 router.delete('/:idItem', checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.deleteItem);
 router.patch('/:idItem', checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.updateAnItem);

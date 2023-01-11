@@ -45,21 +45,13 @@ exports.getRestaurants = (req, res) => {
 //Get one specific restaurant
 exports.getRestaurant = (req, res) => {
     Restaurant.find((err, users) => {
-        Restaurant.findById(req.params.id, (err, restaurant) => {
+        Restaurant.findById(req.params.id).populate('id_menus').then ((err, restaurant) => {
             if (err) {
                 res.status(404).send({message: err});
             }
-            res.json(restaurant);
+            res.json(restaurant)
         });
     })
-
-    // Menu.find({id_restaurant:req.params.id}, (err, menus) => {
-    //     console.log(menus);
-    //     if (menus==''){
-    //         res.send("No menu yet");
-    //     }
-    //     res.json(menus);
-    // });
 }
 
 exports.updateAnRestaurant = (req, res) => {

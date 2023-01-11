@@ -9,7 +9,6 @@ const checkIfRestaurantExist = (req, res, next) => {
     const RestaurantId = req.params.id;
 
     Restaurant.find({_id:RestaurantId}, (err, restaurant) => {
-        console.log(restaurant);
         if (!restaurant || restaurant == ''){
             res.status(400).send({message: "Restaurant not found"});
             return
@@ -31,7 +30,6 @@ const checkIfMenuExist = (req, res, next) => {
 
 const checkIfItemExist = (req, res, next) => {
     const ItemId = req.params.idItem;
-    console.log(ItemId);
     Item.find({_id:ItemId},  (err, item) => {
         if (!item || item == ''){
             res.status(400).send({message: "Item not found"});
@@ -41,11 +39,30 @@ const checkIfItemExist = (req, res, next) => {
     });
 }
 
+const checkIfItemBind = (req, res, next) => {
+    const ItemId = req.params.idItem;
+    const MenuId = req.params.idMenu;
+    console.log(MenuId);
+
+    Menu.find({$or:[{ id_required_items: ItemId},{id_optional_items:ItemId}],$and:[{ _id:MenuId}]}, function(err, bind_item)
+    {
+        console.log("bind_item:" + bind_item);
+        if (!(bind_item === undefined || bind_item.length == 0))
+        {
+            res.status(400).send({message: "Item already bind to the restaurant"});
+            return
+        }
+        next();
+
+    });
+}
+
 // @ts-ignore
 const checkData = {
     checkIfRestaurantExist : checkIfRestaurantExist,
     checkIfMenuExist : checkIfMenuExist,
     checkIfItemExist : checkIfItemExist,
+    checkIfItemBind : checkIfItemBind,
 };
 
 module.exports = checkData;

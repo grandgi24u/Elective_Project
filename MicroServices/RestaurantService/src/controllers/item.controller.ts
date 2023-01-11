@@ -2,6 +2,11 @@
 import Item from '../models/item.model';
 // @ts-ignore
 import Restaurant from "../models/restaurant.model";
+// @ts-ignore
+import Menu from '../models/menu.model';
+
+// @ts-ignore
+import menu from '../controllers/menu.controller';
 
 //Create an item
 exports.createItem = (req, res) => {
@@ -9,7 +14,6 @@ exports.createItem = (req, res) => {
     item.item_name = req.body.name;
     item.item_description = req.body.description;
     item.item_price = req.body.price;
-    item.id_restaurant = req.params.id;
 
     item.save((err) => {
         if(err){
@@ -18,6 +22,20 @@ exports.createItem = (req, res) => {
 
         res.status(200).send({message: "Item created successfully"});
     });
+    bindItem(req.params.id, item._id)
+
+    //If there is an id menu
+    if(req.params.idMenu){
+        //If there is required item
+        if (req.path.includes('/item_required/')) {
+            bind_Required_Item_To_Menu(item._id,req.params.idMenu);
+        }
+        //If there is optional item
+        if (req.path.includes('/item_optional/')) {
+            bind_Optional_Item_To_Menu(item._id,req.params.idMenu);
+        }
+
+    }
 }
 
 //Delete an item
@@ -67,6 +85,24 @@ exports.updateAnItem = (req, res) => {
                 res.status(200).send({message: "Item updated"});
             }
         })
+}
+
+const bindItem = (idRestaurant, idItem) => {
+    Item.findByIdAndUpdate(idItem, {$push : { id_restaurant:idRestaurant}},(err) => {
+        return !err;
+    });
+}
+
+const bind_Required_Item_To_Menu = (idItem, idMenu) => {
+    Menu.findByIdAndUpdate(idMenu, {$push : {id_required_items:idItem}},(err) => {
+        return !err;
+    });
+}
+
+const bind_Optional_Item_To_Menu = (idItem, idMenu) => {
+    Menu.findByIdAndUpdate(idMenu, {$push : {id_optional_items:idItem}},(err) => {
+        return !err;
+    });
 }
 
 

@@ -1,16 +1,16 @@
 // @ts-ignore
 import Menu from '../models/menu.model';
 // @ts-ignore
-import Restaurant from "../models/restaurant.model";
-// @ts-ignore
 import Item from "../models/item.model";
+// @ts-ignore
+import Restaurant from "../models/restaurant.model";
+
 //Create a menu
 exports.createMenu = (req, res) => {
     const menu = new Menu();
     menu.menu_name = req.body.name;
     menu.menu_description = req.body.description;
     menu.menu_price = req.body.price;
-    menu.id_restaurant = req.params.id;
 
     menu.save((err) => {
         if(err){
@@ -19,6 +19,9 @@ exports.createMenu = (req, res) => {
 
         res.status(200).send({message: "Menu created successfully"});
     });
+    bindMenu(req.params.id, menu._id)
+
+
 }
 
 //Delete a menu
@@ -45,7 +48,7 @@ exports.getMenus = (req, res) => {
 
 //Get a specific menu with all the items
 exports.getMenu = (req, res) => {
-    Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').populate('id_restaurant').then((err, menu) => {
+    Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').then((err, menu) => {
         if (err)
             res.status(404).send({message: err});
         res.json(menu);
@@ -83,6 +86,12 @@ exports.bindOptionalItem = (req, res) => {
         } else {
             res.status(200).send({message: "Item add to Menu"});
         }
+    });
+}
+
+const bindMenu = (idRestaurant, idMenu) => {
+    Restaurant.findByIdAndUpdate(idRestaurant, {$push : {id_menus:idMenu}},(err) => {
+        return !err;
     });
 }
 
