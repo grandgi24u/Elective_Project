@@ -5,6 +5,7 @@ using System.Text;
 using ServiceAdministratif.Models;
 using Newtonsoft.Json;
 using System.Net;
+using System.IO;
 
 namespace ServiceAdministratif.Models
 {
@@ -33,7 +34,7 @@ namespace ServiceAdministratif.Models
             {
                 string response = wc.UploadString(endpoint, method, json);
                 User user = JsonConvert.DeserializeObject<User>(response);
-                if(user.Role == "ROLE_ADMIN")
+                if (user.Role == "ROLE_ADMIN")
                     return user;
                 return null;
             }
@@ -81,6 +82,38 @@ namespace ServiceAdministratif.Models
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public List<User> SearchForUser(string name, string surname)
+        {
+            string endpoint = baseUrl + "/admin/search?name=" + name + "&surname=" + surname + "&email=";
+            string access_token = Globals.LoggedInUser.AccessToken;
+
+            WebClient wc = new WebClient();
+            wc.Headers["Content-Type"] = "application/json";
+            wc.Headers["x-access-token"] = access_token;
+            try
+            {
+                string response = wc.DownloadString(endpoint);
+                List<User> res = JsonConvert.DeserializeObject<List<User>>(response);
+                return res;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public void UpdateStatus(int i, User user)
+        {
+            string endpoint = baseUrl + "/updateStatus/" + user.Id;
+            string access_token = Globals.LoggedInUser.AccessToken;
+            using (var client = new WebClient())
+            {
+                client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                client.Headers.Add("x-access-token", access_token);
+                client.UploadString(endpoint, "POST", @"{" + "\n" + @"    ""status"" : " + i + "\n" + @"}");
             }
         }
     }

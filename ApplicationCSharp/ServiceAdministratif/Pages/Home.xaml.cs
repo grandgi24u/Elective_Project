@@ -20,6 +20,7 @@ namespace ServiceAdministratif.Pages
     public partial class Home : UserControl
     {
         private static Home instance;
+        private ApiOperations api = new ApiOperations();
         public Home()
         {
             InitializeComponent();
@@ -28,13 +29,46 @@ namespace ServiceAdministratif.Pages
 
         public void InitGrid()
         {
-            ApiOperations api = new ApiOperations();
             dgUsers.ItemsSource = api.GetAllUsers();
         }
 
         public static void InitGridStatic()
         {
             instance.InitGrid();
+        }
+
+        private void UpdateData()
+        {
+            dgUsers.ItemsSource = api.SearchForUser(txtForName.Text, txtForSurName.Text);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateData();
+        }
+
+        private void Suspendre(object sender, RoutedEventArgs e)
+        {
+            User obj = ((FrameworkElement)sender).DataContext as User;
+            MessageBox.Show(obj.Id.ToString());
+            api.UpdateStatus(1, obj);
+            UpdateData();
+        }
+
+        private void Bloque(object sender, RoutedEventArgs e)
+        {
+            User obj = ((FrameworkElement)sender).DataContext as User;
+            MessageBox.Show(obj.Id.ToString());
+            api.UpdateStatus(2, obj);
+            UpdateData();
+        }
+
+        private void Normal(object sender, RoutedEventArgs e)
+        {
+            User obj = ((FrameworkElement)sender).DataContext as User;
+            MessageBox.Show(obj.Id.ToString());
+            api.UpdateStatus(0, obj);
+            UpdateData();
         }
     }
 }

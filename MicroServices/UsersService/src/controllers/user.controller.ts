@@ -59,6 +59,7 @@ exports.getUsers = (req, res) => {
 }
 
 exports.updateStatus = (req, res) => {
+    console.log(req.body);
     const userId = req.params.id;
     User.findByPk(userId).then(user => {
         if (user) {
@@ -74,6 +75,33 @@ exports.updateStatus = (req, res) => {
     });
 }
 
+// @ts-ignore
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
+exports.searchForUsers = (req, res) => {
+    const name = req.query.name.toLowerCase();
+    const surname = req.query.surname.toLowerCase();
+    const email = req.query.email.toLowerCase();
+    User.findAll({
+        where: {
+            name: {
+                [Op.like]: '%' + name + '%'
+            },
+            surname: {
+                [Op.like]: '%' + surname + '%'
+            },
+            email: {
+                [Op.like]: '%' + email + '%'
+            }
+        }
+    }).then(users => {
+       if(users) {
+           res.status(200).send(users);
+       } else {
+           res.status(404).send("Aucun utilisateur trouvé");
+       }
+    });
+}
 
 

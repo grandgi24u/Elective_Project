@@ -12,4 +12,5 @@ module.exports = function(app) {
     app.get("/getUser/:id", cors(origin), checkData.checkIfUserExist, controller.getUser);
     app.get("/getUsers", cors(origin), controller.getUsers);
     app.post("/updateStatus/:id", cors(origin), controller.updateStatus);
+    app.get("/search", cors(origin), controller.searchForUsers);
 };

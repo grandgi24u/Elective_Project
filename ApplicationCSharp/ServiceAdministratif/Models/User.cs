@@ -13,9 +13,30 @@ namespace ServiceAdministratif.Models
         public string Address { get; set; }
 
         public int Status { get; set; }
+        public string StatusMes
+        {
+            get
+            {
+                string res = "";
+                switch (Status)
+                {
+                    case (0):
+                        res = "Normal";
+                        break;
+                    case (1):
+                        res = "Suspendu";
+                        break;
+                    case (2):
+                        res = "Bloqué";
+                        break;
+                }
+                return res;
+            }
+        }
         public string CodePar { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
         public string AccessToken { get; set; }
+
     }
 }

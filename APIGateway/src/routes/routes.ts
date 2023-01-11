@@ -31,6 +31,18 @@ const ROUTES = [
                 [`^/updateStatus/:id`]: '/updateStatus/:id',
             },
         }
+    },
+    {
+        url: '/admin',
+        middleware: [authJwt.verifyToken, authJwt.isAdmin],
+        proxy: {
+            target: "http://localhost:3000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/admin/search`]: '/search',
+            },
+        }
     }
 ]
 
