@@ -42,16 +42,21 @@ const checkIfItemExist = (req, res, next) => {
 const checkIfItemBind = (req, res, next) => {
     const ItemId = req.params.idItem;
     const MenuId = req.params.idMenu;
-    console.log(MenuId);
 
     Menu.find({$or:[{ id_required_items: ItemId},{id_optional_items:ItemId}],$and:[{ _id:MenuId}]}, function(err, bind_item)
     {
-        console.log("bind_item:" + bind_item);
-        if (!(bind_item === undefined || bind_item.length == 0))
+        if (!(bind_item === undefined || bind_item.length == 0) && !(req.path.includes('unbind')))
         {
             res.status(400).send({message: "Item already bind to the restaurant"});
             return
         }
+
+        if ((bind_item === undefined || bind_item.length == 0) && (req.path.includes('unbind')))
+        {
+            res.status(400).send({message: "Item already unbind from the restaurant"});
+            return
+        }
+
         next();
 
     });

@@ -89,6 +89,26 @@ exports.bindOptionalItem = (req, res) => {
     });
 }
 
+exports.unbindRequiredItem = (req, res) => {
+    Menu.findByIdAndUpdate(req.params.idMenu, {$pull : {id_required_items:req.params.idItem}},(err, menu) => {
+        if (err) {
+            res.status(404).send({message: err});
+        } else {
+            res.status(200).send({message: "Item remove from the Menu"});
+        }
+    });
+}
+
+exports.unbindOptionalItem = (req, res) => {
+    Menu.findByIdAndUpdate(req.params.idMenu, {$pul : {id_optional_items:req.params.idItem}},(err, menu) => {
+        if (err) {
+            res.status(404).send({message: err});
+        } else {
+            res.status(200).send({message: "Item remove from the Menu"});
+        }
+    });
+}
+
 const bindMenu = (idRestaurant, idMenu) => {
     Restaurant.findByIdAndUpdate(idRestaurant, {$push : {id_menus:idMenu}},(err) => {
         return !err;

@@ -20,7 +20,10 @@ router.patch('/:idMenu', checkData.checkIfRestaurantExist, checkData.checkIfMenu
 router.post('/:idMenu/item_optional/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
 router.post('/:idMenu/item_required/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
 
-router.post('/:idMenu/required_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindRequiredItem);
-router.post('/:idMenu/optional_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindOptionalItem);
+router.post('/:idMenu/bind_required_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindRequiredItem);
+router.post('/:idMenu/bind_optional_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindOptionalItem);
+
+router.post('/:idMenu/unbind_required_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.unbindRequiredItem);
+router.post('/:idMenu/unbind_optional_item/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.unbindOptionalItem);
 
 module.exports = router;
