@@ -21,7 +21,7 @@
             </v-list-item-group>
           </v-list>
       </div>
-      <div class="div-menu">
+      <div class="div-menu-restaurant">
         <v-row>
           <v-col
             v-for="item in restaurants[restaurant][choice]"
@@ -29,11 +29,14 @@
             cols="12"
             md="4"  
           >
+
             <v-img
               :src="require(`../assets/repas/${item.img}`)"
               height="150px"
               class="pa-2"
+              @click="$emit('DetailsItems', item.id, restaurant)"
             />
+
             <div class="title-name">
               {{item.nom}}
             </div>
@@ -65,22 +68,29 @@
           },
           Entrée : [
               {
+                id : 1,
                 nom : "Entrée 1", 
-                img : "entree1_Mauricette.jpg", 
+                img : "entree1_Mauricette.jpg",
+                description : "Description de l'entrée 1",
+                price : 15,
               },
               {
+                id : 2,
                 nom : "Entrée 2", 
                 img : "entree2_Mauricette.jpg", 
               },
               {
+                id : 3,
                 nom : "Entrée 3",
                 img : "entree3_Mauricette.jpg", 
               },
               {
+                id : 4,
                 nom : "Entrée 4", 
                 img : "entree4_Mauricette.jpg", 
               },
               {
+                id : 5,
                 nom : "Entrée 5", 
                 img : "entree5_Mauricette.jpg", 
               },
@@ -140,7 +150,7 @@
           },
           Entrée : [
               {
-                nom : "Entrée 1", 
+                nom : "Entrée 1",
                 img : "entree1_Regalo.jpg", 
               },
               {
@@ -241,7 +251,7 @@
   .div-container {
     display : flex; 
   }
-  .div-menu {
-    margin-left: 4%;
+  .div-menu-restaurant {
+    margin-left: 2%;
   }
 </style>

@@ -22,8 +22,15 @@
     </Favorite>
     <DetailsRestaurants 
       v-if="showDetailsRestaurants"
-      v-bind:restaurant="restaurantName">
+      v-bind:restaurant="restaurantName"
+      @DetailsItems="DetailsItemsView">
     </DetailsRestaurants>
+    <DetailsItems
+        v-if="showDetailsItems"
+        v-bind:itemId="item"
+        v-bind:restaurant="restaurantName"
+        @RetourDetailsRestaurants="DisplayDetailsRestaurants">
+    </DetailsItems>
     <Profile
       v-if="showProfile">
     </Profile>
@@ -36,6 +43,7 @@ import NavBar from './components/Nav-bar';
 import Restaurants from './components/Restaurants';
 import Favorite from './components/Favorite';
 import DetailsRestaurants from './components/Details-restaurants';
+import DetailsItems from './components/Details-items';
 import Hamper from './components/Hamper';
 import Profile from './components/Profile';
 
@@ -49,11 +57,13 @@ export default {
     DetailsRestaurants,
     Hamper,
     Profile,
+    DetailsItems,
   },
   data: () => ({
     showRestaurants: true,
     showFavorite: false,
     showDetailsRestaurants: false,
+    showDetailsItems: false,
     showHamper: false,
     showProfile: false,
     showResearchRestaurant: true,
@@ -63,6 +73,7 @@ export default {
         this.showFavorite = false;
         this.showRestaurants = true;
         this.showDetailsRestaurants = false;
+        this.showDetailsItems = false;
         this.showProfile = false;
         this.showResearchRestaurant = true;
       },
@@ -70,12 +81,14 @@ export default {
         this.showFavorite = true;
         this.showRestaurants = false;
         this.showDetailsRestaurants = false;
+        this.showDetailsItems = false;
         this.showProfile = false;
       },
       DetailsRestaurantView(name) {
         this.showDetailsRestaurants = true;
         this.showFavorite = false;
         this.showRestaurants = false;
+        this.showDetailsItems = false;
         this.showProfile = false;
         this.restaurantName = name;
       },
@@ -83,12 +96,26 @@ export default {
         this.showFavorite = false;
         this.showRestaurants = false;
         this.showDetailsRestaurants = false;
+        this.showDetailsItems = false;
         this.showProfile = true;
         this.showResearchRestaurant = false;
       },
       ShowHamper()
       {
         this.showHamper = !this.showHamper;
+      },
+      DetailsItemsView(id, restaurant)
+      {
+        this.showDetailsRestaurants = false;
+        this.showDetailsItems = true;
+        this.item = id ;
+        this.restaurantName = restaurant;
+      },
+      DisplayDetailsRestaurants(restaurant)
+      {
+        this.showDetailsRestaurants = true;
+        this.showDetailsItems = false;
+        this.restaurantName = restaurant;
       }
     }
 };

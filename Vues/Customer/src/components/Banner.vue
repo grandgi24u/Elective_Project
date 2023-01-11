@@ -5,11 +5,10 @@
       permanent
       left
     >
-
       <v-list-item two-line @click="$emit('ProfileVue')">
-        <v-list-item-avatar>
+       <!-- <v-list-item-avatar>
           <img src="https://randomuser.me/api/portraits/women/81.jpg">
-        </v-list-item-avatar>
+        </v-list-item-avatar> -->
 
         <v-list-item-content>
           <v-list-item-title>Osman Cekic</v-list-item-title>
