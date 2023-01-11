@@ -14,7 +14,19 @@
       placeholder="Rechercher"
       single-line
       hide-details
+      @click="$emit('ResearchRestaurant')"
       v-if="showResearchRestaurant"/>
+    <!-- <v-autocomplete
+         v-model="newTag"
+         :items="tagsFound"
+         :loading="loading"
+         :search-input.sync="searchInput"
+         color="white"
+         hide-no-data
+         hide-selected
+     ></v-autocomplete>
+
+     <input type="text" v-model="searchValue" placeholder="Search Recipe" id="search-input">-->
 
     <v-toolbar-title v-if="!showResearchRestaurant" class="title"><strong>Mon profil</strong></v-toolbar-title>
 

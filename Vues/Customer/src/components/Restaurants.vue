@@ -174,7 +174,7 @@
   }
   .list-meals {
     margin-left: 15%;
-    height: 230px;
+    height: 180px;
   }
   /* .chip-group-class {
     height : 30%;

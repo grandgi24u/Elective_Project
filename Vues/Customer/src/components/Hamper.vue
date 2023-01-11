@@ -8,7 +8,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-content>
-            <v-list-item-title>Mon panier
+            <v-list-item-title><strong>Mon panier</strong>
               <v-btn class="icon-basket" @click="$emit('ShowChange')" icon>
                 <v-icon>mdi-basket</v-icon>
               </v-btn>
@@ -19,33 +19,65 @@
 
       <v-divider></v-divider>
 
-      <v-list nav dense>
+      <v-list dense>
         <v-list-item-group
           color="primary"
         >
           <v-list-item
-            v-for="(item, i) in menuArray"
+            v-for="(item, i) in items"
             :key="i"
+            class="list-item"
           >
-            <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-icon>
+            <v-btn icon>
+              <v-icon>mdi-minus</v-icon>
+            </v-btn>
 
-            <v-list-item-content @click="$emit(`${item.fct}`)">
-              <v-list-item-title>{{item.title}}</v-list-item-title>
+            <v-img
+                :src="require(`../assets/repas/${item.src}`)"
+                height="15px"
+                width="10%"
+                class="pa-2"
+            />
+
+            <v-list-item-content class="list-elements">
+              <v-list-item-title><strong>{{item.name}}</strong></v-list-item-title>
+              <v-list-item-title>Prix : {{item.price}}</v-list-item-title>
+              <v-list-item-title>Quantité : {{item.qte}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-divider class="divider-total"></v-divider>
+          <v-list-item-content>
+            <v-list-item-title class="label-total">Total : {{total}}</v-list-item-title>
+          </v-list-item-content>
+          <v-col class="ml-auto" cols="12" sm="3" xsm="12">
+            <v-btn @click="$emit('AddToHamper')">Valider mon panier</v-btn>
+          </v-col>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 </template>
-
 <script>
   export default {
     name: 'Hamper-vue',
-    search: "",
     data: () => ({
       hamperIsEnable : false,
+      total : 17,
+      items: [
+        {
+          id : 1,
+          name : "Menu 1",
+          price : "12e",
+          qte : "1",
+          src : "menu1_Mauricette.jpg",
+        },
+        {
+          id : 2,
+          name : "Entrée 1",
+          price : "5e",
+          qte : "2",
+          src : "entree1_Mauricette.jpg",
+        },
+      ]
     }),
     methods: {
       // ShowHamper() {
@@ -56,10 +88,19 @@
 </script>
 
 <style>
-  .v-navigation-drawer {
-    width: 15%;
+  .list-elements {
+    margin-left: 3%;
+    margin-bottom: 50px;
   }
-  .icon-basket {
-    float: right;
+  .label-total {
+    font-size: 20px;
+    text-align: center;
+  }
+  .divider-total {
+    width: 70%;
+    margin-left: 15%;
+  }
+  .list-item {
+    padding-left: 5px;
   }
 </style>
