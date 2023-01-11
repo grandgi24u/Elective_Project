@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 // @ts-ignore
 const dotenv = require("dotenv");
 dotenv.config();
+// @ts-ignore
+const db = require("../models");
+// @ts-ignore
+const User = db.user;
 
 const verifyToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
@@ -25,14 +29,13 @@ const verifyToken = (req, res, next) => {
 const isCustomer =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         user.getRole().then((role) => {
-            if (role.name === "customer") {
-                next();
+            if (role.name !== "customer") {
+                res.status(403).send({
+                    message: "Accès refusé : vous n'êtes pas customer !"
+                });
                 return;
             }
-            res.status(403).send({
-                message: "Accès refusé : vous n'êtes pas customer !"
-            });
-            return;
+            next();
         });
     });
 }
@@ -40,14 +43,13 @@ const isCustomer =  (req, res, next) => {
 const isRestaurant =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         user.getRole().then((role) => {
-            if (role.name === "restaurant") {
-                next();
+            if (role.name !== "restaurant") {
+                res.status(403).send({
+                    message: "Accès refusé : vous n'êtes pas un restaurateur !"
+                });
                 return;
             }
-            res.status(403).send({
-                message: "Accès refusé : vous n'êtes pas un restaurateur !"
-            });
-            return;
+            next();
         });
     });
 }
@@ -55,14 +57,27 @@ const isRestaurant =  (req, res, next) => {
 const isDelivery =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         user.getRole().then(role => {
-            if (role.name === "delivery") {
-                next();
+            if (role.name !== "delivery") {
+                res.status(403).send({
+                    message: "Accès refusé : vous n'êtes pas un livreur !"
+                });
                 return;
             }
-            res.status(403).send({
-                message: "Accès refusé : vous n'êtes pas un livreur !"
-            });
-            return;
+            next();
+        });
+    });
+}
+
+const isAdmin =  (req, res, next) => {
+    User.findByPk(req.userId).then((user) => {
+        user.getRole().then(role => {
+            if (role.name !== "admin") {
+                res.status(403).send({
+                    message: "Accès refusé : vous n'êtes pas admin !"
+                });
+                return;
+            }
+            next();
         });
     });
 }
@@ -72,7 +87,8 @@ const authJwt = {
     verifyToken: verifyToken,
     isCustomer: isCustomer,
     isRestaurant: isRestaurant,
-    isDelivery: isDelivery
+    isDelivery: isDelivery,
+    isAdmin: isAdmin
 };
 
 module.exports = authJwt;

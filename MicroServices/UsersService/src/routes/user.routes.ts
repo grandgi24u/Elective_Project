@@ -11,4 +11,5 @@ module.exports = function(app) {
     app.patch("/updateUser/:id", cors(origin), checkData.checkIfUserExist, controller.updateUser);
     app.get("/getUser/:id", cors(origin), checkData.checkIfUserExist, controller.getUser);
     app.get("/getUsers", cors(origin), controller.getUsers);
+    app.post("/updateStatus/:id", cors(origin), controller.updateStatus);
 };

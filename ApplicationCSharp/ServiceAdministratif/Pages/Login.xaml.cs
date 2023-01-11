@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace ServiceAdministratif.Pages
 {
     /// <summary>
-    /// Logique d'interaction pour LoginPage.xaml
+    /// Logique d'interaction pour Login.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class Login : UserControl
     {
-        public LoginPage()
+        public Login()
         {
             InitializeComponent();
         }
@@ -33,10 +33,15 @@ namespace ServiceAdministratif.Pages
             User user = ops.AuthenticateUser(email, password);
             if (user == null)
             {
-                MessageBox.Show("Invalid username or password");
+                MessageBox.Show("Mot de passe ou identifiant invalide");
                 return;
             }
-            MessageBox.Show("Login successful");
+            tbxUsername.Text = "";
+            pbxPassword.Password = "";
+            Globals.LoggedInUser = user;
+            MessageBox.Show("Vous êtes connecté");
+            MainWindow.ChangeMenu();
+            Home.InitGridStatic();
         }
     }
 }

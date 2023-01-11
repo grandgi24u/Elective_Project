@@ -58,6 +58,21 @@ exports.getUsers = (req, res) => {
     });
 }
 
+exports.updateStatus = (req, res) => {
+    const userId = req.params.id;
+    User.findByPk(userId).then(user => {
+        if (user) {
+            user.status = req.body.status;
+            user.save().then(() => {
+                res.status(200).send("Statut mis à jour");
+            }).catch(err => {
+                res.status(500).send({erreur: err.message});
+            });
+        } else {
+            res.status(404).send({message : "Utilisateur non trouvé"});
+        }
+    });
+}
 
 
 
