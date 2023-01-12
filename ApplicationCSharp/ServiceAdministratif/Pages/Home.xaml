@@ -69,6 +69,18 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key = "myButtonStyle" TargetType = "Button">
+            <Setter Property="Width" Value="92"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property = "Background" Value = "White" />
+            <Setter Property = "Foreground" Value = "Black" />
+        </Style>
+        <Style x:Key = "myButtonStyle2" TargetType = "Button">
+            <Setter Property="Width" Value="92"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property = "Background" Value = "DarkRed" />
+            <Setter Property = "Foreground" Value = "White" />
+        </Style>
     </UserControl.Resources>
     <Grid>
         <DataGrid Name="dgUsers" AutoGenerateColumns="False" Style = "{StaticResource DataGridRowStyle1}" Margin="0,35,0,0" CanUserAddRows="false">
@@ -80,21 +92,21 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="Suspendre" Width="75">Suspendre</Button>
+                            <Button Style = "{StaticResource myButtonStyle}" Click="Suspendre" Width="75">Suspendre</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="Bloque" Width="75">Bloque</Button>
+                            <Button Style = "{StaticResource myButtonStyle}" Click="Normal" Width="75">Normal</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="Normal" Width="75">Normal</Button>
+                            <Button Style = "{StaticResource myButtonStyle2}" Click="Supprimer" Width="75">Supprimer</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

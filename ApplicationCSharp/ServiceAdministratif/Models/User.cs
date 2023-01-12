@@ -26,9 +26,6 @@ namespace ServiceAdministratif.Models
                     case (1):
                         res = "Suspendu";
                         break;
-                    case (2):
-                        res = "Bloqué";
-                        break;
                 }
                 return res;
             }

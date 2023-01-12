@@ -50,25 +50,25 @@ namespace ServiceAdministratif.Pages
         private void Suspendre(object sender, RoutedEventArgs e)
         {
             User obj = ((FrameworkElement)sender).DataContext as User;
-            MessageBox.Show(obj.Id.ToString());
             api.UpdateStatus(1, obj);
-            UpdateData();
-        }
-
-        private void Bloque(object sender, RoutedEventArgs e)
-        {
-            User obj = ((FrameworkElement)sender).DataContext as User;
-            MessageBox.Show(obj.Id.ToString());
-            api.UpdateStatus(2, obj);
             UpdateData();
         }
 
         private void Normal(object sender, RoutedEventArgs e)
         {
             User obj = ((FrameworkElement)sender).DataContext as User;
-            MessageBox.Show(obj.Id.ToString());
             api.UpdateStatus(0, obj);
             UpdateData();
+        }
+
+        private void Supprimer(object sender, RoutedEventArgs e)
+        {
+            User obj = ((FrameworkElement)sender).DataContext as User;
+            if (MessageBox.Show("Etes vous sur de supprimer " + obj.Name  + "?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                api.DeleteUser(obj);
+                UpdateData();
+            }
         }
     }
 }

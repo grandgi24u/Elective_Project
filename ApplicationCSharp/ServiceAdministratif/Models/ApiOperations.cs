@@ -27,7 +27,6 @@ namespace ServiceAdministratif.Models
                 email = email,
                 password = password
             });
-
             WebClient wc = new WebClient();
             wc.Headers["Content-Type"] = "application/json";
             try
@@ -116,5 +115,20 @@ namespace ServiceAdministratif.Models
                 client.UploadString(endpoint, "POST", @"{" + "\n" + @"    ""status"" : " + i + "\n" + @"}");
             }
         }
+
+        public void DeleteUser(User user)
+        {
+            string endpoint = baseUrl + "/users/deleteUser/" + user.Id;
+            string access_token = Globals.LoggedInUser.AccessToken;
+
+            using (var client = new WebClient())
+            {
+                client.Headers["Content-Type"] = "application/json";
+                client.Headers["x-access-token"] = access_token;
+                client.UploadString(endpoint, "DELETE", "");
+            }
+        }
+
+       
     }
 }

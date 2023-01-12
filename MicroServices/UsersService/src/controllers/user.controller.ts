@@ -59,7 +59,6 @@ exports.getUsers = (req, res) => {
 }
 
 exports.updateStatus = (req, res) => {
-    console.log(req.body);
     const userId = req.params.id;
     User.findByPk(userId).then(user => {
         if (user) {
