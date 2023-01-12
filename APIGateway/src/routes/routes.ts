@@ -1,12 +1,12 @@
 // @ts-ignore
-import {authJwt} from "../middleware";
+import {authJwt, logger} from "../middleware";
 const { fixRequestBody } = require('http-proxy-middleware');
 const querystring = require('querystring');
 
 const ROUTES = [
     {
         url: '/users',
-        middleware: [authJwt.verifyToken],
+        middleware: [authJwt.verifyToken, logger.routeAccess],
         proxy: {
             target: "http://localhost:3000",
             onProxyReq: fixRequestBody,

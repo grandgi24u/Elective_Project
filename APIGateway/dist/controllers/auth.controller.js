@@ -24,6 +24,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 // @ts-ignore
 const fetch = require("node-fetch");
+// @ts-ignore
+const logController = require("../controllers/log.controller");
 exports.signup = (req, res, send) => __awaiter(void 0, void 0, void 0, function* () {
     yield fetch("http://localhost:3000/createUser", {
         method: 'POST',
@@ -33,7 +35,9 @@ exports.signup = (req, res, send) => __awaiter(void 0, void 0, void 0, function*
         body: JSON.stringify(req.body),
         redirect: 'follow'
     }).then((data) => data.json())
-        .then(result => res.status(200).send(result))
+        .then(result => {
+        res.status(200).send(result);
+    })
         .catch(error => res.status(500).send(error));
 });
 exports.signin = (req, res, send) => {
@@ -58,6 +62,7 @@ exports.signin = (req, res, send) => {
         let roleValue;
         Role.findByPk(user.roleId).then((role) => {
             roleValue = "ROLE_" + role.name.toUpperCase();
+            logController.createLog("login", user.id);
             res.status(200).send({
                 id: user.id,
                 name: user.name,

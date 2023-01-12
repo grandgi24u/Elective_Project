@@ -7,7 +7,7 @@ const querystring = require('querystring');
 const ROUTES = [
     {
         url: '/users',
-        middleware: [middleware_1.authJwt.verifyToken],
+        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess],
         proxy: {
             target: "http://localhost:3000",
             onProxyReq: fixRequestBody,

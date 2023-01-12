@@ -14,6 +14,7 @@ app.get('/', (req, res) => {
 const db = require("./models");
 db.sequelize.sync();
 require('./routes/auth.routes')(app);
+require('./routes/log.routes')(app);
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });
