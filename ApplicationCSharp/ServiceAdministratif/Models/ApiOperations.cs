@@ -86,7 +86,7 @@ namespace ServiceAdministratif.Models
 
         public List<User> SearchForUser(string name, string surname)
         {
-            string endpoint = baseUrl + "/admin/search?name=" + name + "&surname=" + surname + "&email=";
+            string endpoint = baseUrl + "/admin/users/search?name=" + name + "&surname=" + surname + "&email=";
             string access_token = Globals.LoggedInUser.AccessToken;
 
             WebClient wc = new WebClient();
@@ -106,7 +106,7 @@ namespace ServiceAdministratif.Models
 
         public void UpdateStatus(int i, User user)
         {
-            string endpoint = baseUrl + "/updateStatus/" + user.Id;
+            string endpoint = baseUrl + "/admin/users/updateStatus/" + user.Id;
             string access_token = Globals.LoggedInUser.AccessToken;
             using (var client = new WebClient())
             {

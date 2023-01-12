@@ -11,37 +11,22 @@ const ROUTES = [
             target: "http://localhost:3000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
-            pathRewrite: {
-                [`^/users`]: '',
-                [`^/users/getUsers`]: '/getUsers',
-                [`^/users/createUser`]: '/createUser',
-                [`^/users/getUser/:id`]: '/getUser/:id',
-                [`^/users/deleteUser/:id`]: '/deleteUser/:id',
-                [`^/users/updateUser/:id`]: '/updateUser/:id',
-            },
+            pathRewrite: (path, req) => {
+                let newPath = path.replace(/^\/users/, '/');
+                newPath = `${newPath.split('?')[0]}?userId=${req.userId}`;
+                return newPath;
+            }
         }
     },
     {
-        url: '/updateStatus',
+        url: '/admin/users',
         middleware: [middleware_1.authJwt.verifyToken, middleware_1.authJwt.isAdmin],
         proxy: {
             target: "http://localhost:3000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: {
-                [`^/updateStatus/:id`]: '/updateStatus/:id',
-            },
-        }
-    },
-    {
-        url: '/admin',
-        middleware: [middleware_1.authJwt.verifyToken, middleware_1.authJwt.isAdmin],
-        proxy: {
-            target: "http://localhost:3000",
-            onProxyReq: fixRequestBody,
-            changeOrigin: true,
-            pathRewrite: {
-                [`^/admin/search`]: '/search',
+                [`^/admin/users`]: '',
             },
         }
     },
