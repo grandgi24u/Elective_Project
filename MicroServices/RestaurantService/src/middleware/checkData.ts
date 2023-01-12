@@ -62,9 +62,10 @@ const checkIfItemBind = (req, res, next) => {
     });
 }
 
-const chekcUserPermission = (req, res, next) => {
+const checkOwner = (req, res, next) => {
    const userId = req.params.userId;
    const restaurantId = req.params.id;
+
    Restaurant.findOne({_id:restaurantId}, (err, restaurant) => {
         if (restaurant.userid != userId || userId == undefined || userId == ''){
             res.status(403).send({message: "The user is not the restaurant's owner"});
@@ -74,6 +75,19 @@ const chekcUserPermission = (req, res, next) => {
     });
 }
 
+const checkRole = (req, res, next) => {
+    const roleId = req.params.roleId;
+    const restaurantId = req.params.id;
+    console.log(req.query.userId);
+    if (roleId!=2){
+            res.status(403).send({message: "Permission denied"});
+            return
+        }
+        next();
+}
+
+
+
 
 // @ts-ignore
 const checkData = {
@@ -81,7 +95,8 @@ const checkData = {
     checkIfMenuExist : checkIfMenuExist,
     checkIfItemExist : checkIfItemExist,
     checkIfItemBind : checkIfItemBind,
-    chekcUserPermission:chekcUserPermission
+    checkOwner:checkOwner,
+    checkRole : checkRole
 };
 
 module.exports = checkData;

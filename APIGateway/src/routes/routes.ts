@@ -52,8 +52,15 @@ const ROUTES = [
             target: "http://localhost:6000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
-            pathRewrite: {
-                [`^/getrestaurant`]: '/restaurant',
+            pathRewrite: (path, req)=> {
+                let newPath = path.replace(/^\/getrestaurant/, '/restaurant');
+                console.log(req.userId)
+                console.log("----------------------------------------")
+                console.log(req.userId)
+
+                const newQuery = { ...req.userId };
+                newPath = `${newPath.split('?')[0]}?${JSON.stringify(newQuery)}`;
+                return newPath;
             },
         }
     },
@@ -65,9 +72,13 @@ const ROUTES = [
             target: "http://localhost:6000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
-            pathRewrite: {
-                [`^/restaurant`]: '/restaurant',
-            },
+            pathRewrite: (path, req)=> {
+                let newPath = path.replace(/^\/restaurant/, '/restaurant');
+                newPath = `${newPath.split('?')[0]}?userId=${req.userId}`;
+                console.log(newPath);
+                console.log("------------------------");
+                return newPath;
+            }
         }
     }
 ]
