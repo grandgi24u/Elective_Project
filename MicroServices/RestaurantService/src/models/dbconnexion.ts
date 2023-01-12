@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 //URL de la bdd
 const url_mongo = process.env.DB_Host;
+mongoose.set('strictQuery', true);
 
 //Connexion à la bdd
 mongoose.connect(url_mongo);

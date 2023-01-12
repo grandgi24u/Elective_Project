@@ -47,13 +47,13 @@ const checkIfItemBind = (req, res, next) => {
     {
         if (!(bind_item === undefined || bind_item.length == 0) && !(req.path.includes('unbind')))
         {
-            res.status(400).send({message: "Item already bind to the restaurant"});
+            res.status(403).send({message: "Item already bind to the restaurant"});
             return
         }
 
         if ((bind_item === undefined || bind_item.length == 0) && (req.path.includes('unbind')))
         {
-            res.status(400).send({message: "Item already unbind from the restaurant"});
+            res.status(404).send({message: "Item already unbind from the restaurant"});
             return
         }
 
@@ -62,12 +62,26 @@ const checkIfItemBind = (req, res, next) => {
     });
 }
 
+const chekcUserPermission = (req, res, next) => {
+   const userId = req.params.userId;
+   const restaurantId = req.params.id;
+   Restaurant.findOne({_id:restaurantId}, (err, restaurant) => {
+        if (restaurant.userid != userId || userId == undefined || userId == ''){
+            res.status(403).send({message: "The user is not the restaurant's owner"});
+            return
+        }
+        next();
+    });
+}
+
+
 // @ts-ignore
 const checkData = {
     checkIfRestaurantExist : checkIfRestaurantExist,
     checkIfMenuExist : checkIfMenuExist,
     checkIfItemExist : checkIfItemExist,
     checkIfItemBind : checkIfItemBind,
+    chekcUserPermission:chekcUserPermission
 };
 
 module.exports = checkData;

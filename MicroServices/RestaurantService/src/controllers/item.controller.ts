@@ -22,6 +22,7 @@ exports.createItem = (req, res) => {
 
         res.status(200).send({message: "Item created successfully"});
     });
+
     bindItem(req.params.id, item._id)
 
     //If there is an id menu

@@ -77,12 +77,28 @@ const isAdmin = (req, res, next) => {
         });
     });
 };
+const isCustomerOrRestaurant = (req, res, next) => {
+    User.findByPk(req.userId).then((user) => {
+        user.getRole().then(role => {
+            if (role.name === "restaurant" || role.name === "customer") {
+                next();
+            }
+            else {
+                res.status(403).send({
+                    message: "Accès refusé : vous n'êtes pas customer ou restaurant !"
+                });
+                return;
+            }
+        });
+    });
+};
 // @ts-ignore
 const authJwt = {
     verifyToken: verifyToken,
     isCustomer: isCustomer,
     isRestaurant: isRestaurant,
     isDelivery: isDelivery,
-    isAdmin: isAdmin
+    isAdmin: isAdmin,
+    isCustomerOrRestaurant: isCustomerOrRestaurant
 };
 module.exports = authJwt;

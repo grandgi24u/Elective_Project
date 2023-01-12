@@ -9,7 +9,8 @@ const RestaurantSchema = new Schema({
     restaurant_description: String,
     restaurant_address: String,
     food_type: String,
-    id_menus: [{ type: Schema.Types.ObjectId, ref: 'menu' }]
+    id_menus: [{ type: Schema.Types.ObjectId, ref: 'menu' }],
+    userid: Number
 });
 
 const Restaurant = mongoose.model('restaurant', RestaurantSchema);
