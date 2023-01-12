@@ -19,6 +19,7 @@ exports.createMenu = (req, res) => {
 
         res.status(200).send({message: "Menu created successfully"});
     });
+
     bindMenu(req.params.id, menu._id)
 
 

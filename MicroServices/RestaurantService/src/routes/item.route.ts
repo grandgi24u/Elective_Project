@@ -9,8 +9,8 @@ const checkData = require('../middleware/checkData');
 
 router.get('/', checkData.checkIfRestaurantExist, controller.getItems);
 router.get('/:idItem',checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.getItem)
-router.post('/', checkData.chekcUserPermission, controller.createItem);
-router.delete('/:idItem', checkData.chekcUserPermission, checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.deleteItem);
-router.patch('/:idItem', checkData.chekcUserPermission, checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.updateAnItem);
+router.post('/',checkData.checkRole, checkData.checkOwner, controller.createItem);
+router.delete('/:idItem',checkData.checkRole, checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.deleteItem);
+router.patch('/:idItem',checkData.checkRole, checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfItemExist, controller.updateAnItem);
 
 module.exports = router;
