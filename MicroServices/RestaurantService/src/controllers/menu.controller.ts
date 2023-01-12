@@ -38,11 +38,12 @@ exports.deleteMenu = (req, res) => {
 //Get all the menu of a restaurant
 exports.getMenus = (req, res) => {
     const restaurantID = req.params.id;
-    Restaurant.findById(restaurantID).then(restaurant => Menu.find({'_id': {$in: restaurant.id_menus}}), (err, menus) => {
-        if (err){
-            res.status(404).send({message: err});
-        }
-            res.json(menus);
+    Restaurant.findById(restaurantID, (err, restaurant) => {
+        Menu.find({_id: {$in: restaurant.id_menus}}, (err, menus) => {
+            if (err)
+                res.status(404).send({message: err});
+            res.status(200).json(menus);
+        });
     });
 }
 
