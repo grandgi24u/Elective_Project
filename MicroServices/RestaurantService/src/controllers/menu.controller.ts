@@ -38,7 +38,7 @@ exports.deleteMenu = (req, res) => {
 //Get all the menu of a restaurant
 exports.getMenus = (req, res) => {
     const restaurantID = req.params.id;
-    Menu.find({id_restaurant:restaurantID}).populate('id_required_items').populate('id_optional_items').then ((err, menus) => {
+    Restaurant.findById(restaurantID).then(restaurant => Menu.find({'_id': {$in: restaurant.id_menus}}), (err, menus) => {
         if (err){
             res.status(404).send({message: err});
         }

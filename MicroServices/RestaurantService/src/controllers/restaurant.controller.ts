@@ -13,6 +13,7 @@ exports.createRestaurant = (req, res) => {
     restaurant.restaurant_description = req.body.description;
     restaurant.restaurant_address = req.body.address;
     restaurant.food_type = req.body.type;
+    restaurant.userid = req.query.userId;
 
     restaurant.save((err) => {
         if(err){

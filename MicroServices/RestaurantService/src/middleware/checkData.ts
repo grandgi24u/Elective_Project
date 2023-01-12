@@ -63,7 +63,7 @@ const checkIfItemBind = (req, res, next) => {
 }
 
 const checkOwner = (req, res, next) => {
-   const userId = req.params.userId;
+   const userId = req.query.userId;
    const restaurantId = req.params.id;
 
    Restaurant.findOne({_id:restaurantId}, (err, restaurant) => {
@@ -76,9 +76,9 @@ const checkOwner = (req, res, next) => {
 }
 
 const checkRole = (req, res, next) => {
-    const roleId = req.params.roleId;
+    const roleId = req.query.roleId;
     const restaurantId = req.params.id;
-    console.log(req.query.userId);
+    console.log("MEH1 " + roleId);
     if (roleId!=2){
             res.status(403).send({message: "Permission denied"});
             return

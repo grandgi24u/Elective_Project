@@ -48,6 +48,7 @@ const isRestaurant = (req, res, next) => {
                 });
                 return;
             }
+            req.roleId = user.roleId;
             next();
         });
     });

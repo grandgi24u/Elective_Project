@@ -23,6 +23,7 @@ const verifyToken = (req, res, next) => {
         }
         req.userId = decoded.id;
         req.params.userId = decoded.id;
+
         next();
     });
 };
@@ -50,6 +51,7 @@ const isRestaurant =  (req, res, next) => {
                 });
                 return;
             }
+            req.roleId = user.roleId;
             next();
         });
     });

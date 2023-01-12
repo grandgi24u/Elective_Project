@@ -1,6 +1,7 @@
 // @ts-ignore
 import {authJwt} from "../middleware";
 const { fixRequestBody } = require('http-proxy-middleware');
+const querystring = require('querystring');
 
 const ROUTES = [
     {
@@ -38,12 +39,8 @@ const ROUTES = [
             changeOrigin: true,
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/getrestaurant/, '/restaurant');
-                console.log(req.userId)
-                console.log("----------------------------------------")
-                console.log(req.userId)
-
-                const newQuery = { ...req.userId };
-                newPath = `${newPath.split('?')[0]}?${JSON.stringify(newQuery)}`;
+                const newQuery = req.userId ;
+                newPath = `${newPath.split('?')[0]}?${req.userId}`;
                 return newPath;
             },
         }
@@ -58,9 +55,8 @@ const ROUTES = [
             changeOrigin: true,
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/restaurant/, '/restaurant');
-                newPath = `${newPath.split('?')[0]}?userId=${req.userId}`;
+                newPath = `${newPath.split('?')[0]}?${"roleId="+ req.roleId + "&userId=" + req.userId}`;
                 console.log(newPath);
-                console.log("------------------------");
                 return newPath;
             }
         }
