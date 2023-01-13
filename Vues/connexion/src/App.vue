@@ -17,8 +17,6 @@
         Déconnexion
       </v-btn>
 
-
-
     </v-app-bar>
     <v-app>
       <router-view />

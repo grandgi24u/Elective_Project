@@ -35,7 +35,7 @@
         ></v-text-field>
       </div>
       <div class="button-enregistrer">
-       <v-btn type="submit" @click="submit">Enregistrer</v-btn>
+       <v-btn type="submit">Enregistrer</v-btn>
       </div>
     </v-form>
   </div>
@@ -71,7 +71,12 @@
       ],
     }),
     methods: {
-    }
+    },
+    computed: {
+      currentUser() {
+        return this.$store.state.auth.user;
+      }
+    },
   }
 </script>
 

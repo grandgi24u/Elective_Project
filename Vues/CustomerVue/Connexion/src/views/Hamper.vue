@@ -23,6 +23,9 @@
         <v-list-item-group
           color="primary"
         >
+          <div class="restaurant-name-hamper">
+            <strong>Commande chez {{restaurant}}</strong>
+          </div>
           <v-list-item
             v-for="(item, i) in items"
             :key="i"
@@ -50,7 +53,7 @@
             <v-list-item-title class="label-total">Total : {{total}}</v-list-item-title>
           </v-list-item-content>
           <v-col class="ml-auto" cols="12" sm="3" xsm="12">
-            <v-btn @click="$emit('AddToHamper')">Valider mon panier</v-btn>
+            <v-btn @click="$emit('ValidHamper')">Valider mon panier</v-btn>
           </v-col>
         </v-list-item-group>
       </v-list>
@@ -62,6 +65,7 @@
     data: () => ({
       hamperIsEnable : false,
       total : 17,
+      restaurant : "Mauricette",
       items: [
         {
           id : 1,
@@ -102,5 +106,12 @@
   }
   .list-item {
     padding-left: 5px;
+    margin-top: 4%;
+  }
+  .restaurant-name-hamper {
+    text-align: center;
+  }
+  .icon-basket {
+    margin-left: 45%;
   }
 </style>

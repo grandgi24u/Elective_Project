@@ -14,21 +14,12 @@
       placeholder="Rechercher"
       single-line
       hide-details
-      @click="$emit('ResearchRestaurant')"
+      v-model="searchValueRestaurants"
+      @input="emitSearchValue"
       v-if="showResearchRestaurant"/>
-    <!-- <v-autocomplete
-         v-model="newTag"
-         :items="tagsFound"
-         :loading="loading"
-         :search-input.sync="searchInput"
-         color="white"
-         hide-no-data
-         hide-selected
-     ></v-autocomplete>
 
-     <input type="text" v-model="searchValue" placeholder="Search Recipe" id="search-input">-->
-
-    <v-toolbar-title v-if="!showResearchRestaurant" class="title"><strong>Mon profil</strong></v-toolbar-title>
+    <v-toolbar-title v-if="showLabelProfile" class="title"><strong>Mon profil</strong></v-toolbar-title>
+    <v-toolbar-title v-if="showLabelHamper" class="title"><strong>Récapitulatif de ma commande</strong></v-toolbar-title>
 
     <v-spacer></v-spacer>
 
@@ -42,10 +33,15 @@
 <script>
   export default {
     name: 'Nav-bar',
-    props: ['showResearchRestaurant'],
+    props: ['showResearchRestaurant', 'showLabelProfile', 'showLabelHamper'],
     data: () => ({
-
+      searchValueRestaurants: '',
     }),
+    methods: {
+      emitSearchValue() {
+        this.$emit('search-value-changed', this.searchValueRestaurants);
+      },
+    }
   }
 </script>
 
@@ -54,7 +50,7 @@
   text-align: center;
 }
 .toolbar {
-  margin-left: 16%;
+  margin-left: 15%;
 }
 .logo {
   margin-left: 2%;

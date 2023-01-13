@@ -1,7 +1,4 @@
 <template>
-    <v-card
-      class="mx-auto" 
-    >
     <v-container>
       <v-row justify="space-around" class="list-meals pa-1">
         <v-col
@@ -16,7 +13,7 @@
             <v-chip-group
               mandatory
               active-class="primary--text"
-              class="chip-group-class" 
+              class="chip-group-class"
               left
             >
               <v-chip
@@ -25,7 +22,9 @@
                 class="chip-class-1"
               >
                 <v-img :src="require(`../assets/repas/${meal.src}`)" contain/>
+                <div class="meal-name">
                   {{ meal.name }}
+                </div>
               </v-chip>
             </v-chip-group>
           </v-sheet>
@@ -38,7 +37,7 @@
       <v-divider class="divider-menu"></v-divider>
         <v-row>
           <v-col
-            v-for="item in items"
+            v-for="item in filteredItems"
             :key="item.id"
             cols="12"
             md="4"  
@@ -69,12 +68,12 @@
         </v-row>
       </v-item-group>
     </v-container>
-  </v-card>
 </template>
 
 <script>
  export default {
     name: "Restaurants-vue",
+    props: ['searchValueRestaurants'],
     data: () => ({
       items: [
         {
@@ -141,9 +140,11 @@
         },
       ],
     }),
-    methods: {
-      ShowRestaurant(restaurant) {
-        console.log(restaurant);
+   computed: {
+      filteredItems() {
+        return this.items.filter(item =>
+            item.name.toLowerCase().includes(this.searchValueRestaurants.toLowerCase())
+        );
       },
     }
   }
