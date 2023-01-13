@@ -41,6 +41,11 @@ exports.signin = (req, res, send) => {
         if (!user) {
             return res.status(404).send({ message: "User Not found." });
         }
+        if(user.status === 1){
+            return res.status(401).send({
+                message: "Accès refusé : compte désactivé !"
+            });
+        }
         const passwordResult = bcrypt.compareSync(
             req.body.password,
             user.password
