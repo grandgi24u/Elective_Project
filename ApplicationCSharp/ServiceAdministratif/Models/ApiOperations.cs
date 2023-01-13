@@ -128,6 +128,16 @@ namespace ServiceAdministratif.Models
             }
         }
 
-       
+        public string GetLogOfAnUser(User user)
+        {
+            string endpoint = baseUrl + "/getLogsByUser/" + user.Id;
+            string access_token = Globals.LoggedInUser.AccessToken;
+            using (var client = new WebClient())
+            {
+                client.Headers["Content-Type"] = "application/json";
+                client.Headers["x-access-token"] = access_token;
+                return client.DownloadString(endpoint);
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServiceAdministratif" xmlns:local1="clr-namespace:ServiceAdministratif.Pages"
         mc:Ignorable="d"
-        Title="Service administratif" Height="550" Width="900">
+        Title="Service administratif" Height="550" Width="1000">
     <Window.Resources>
         <Style x:Key = "myButtonStyle" TargetType = "Button">
             <Setter Property="Width" Value="92"/>
@@ -30,7 +30,8 @@
                 <RowDefinition Height="135*"/>
             </Grid.RowDefinitions>
             <local1:Home x:Name="HomePage" Visibility="Collapsed" Grid.RowSpan="2"></local1:Home>
-            <local1:Login x:Name="LoginPage" Grid.RowSpan="2"></local1:Login>
+            <local1:Login x:Name="LoginPage" Grid.RowSpan="2"/>
+            <local1:Logs x:Name="LogsPage" Visibility="Collapsed" Grid.RowSpan="2"></local1:Logs>
         </Grid>
         <Label Content="surname" x:Name="SurnameLabel" HorizontalAlignment="Left" Margin="24,365,0,0" VerticalAlignment="Top" Width="92" FontSize="12" Foreground="White"/>
         <Label Content="name" x:Name="NameLabel" HorizontalAlignment="Left" Margin="24,391,0,0" VerticalAlignment="Top" Width="92" FontSize="14" Foreground="White"/>

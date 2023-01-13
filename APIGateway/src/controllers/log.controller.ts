@@ -30,21 +30,14 @@ exports.getLogs = (req, res) => {
 }
 
 exports.getLogsByUser = (req, res) => {
-    User.findByPk(req.params.id,{
-        attributes: ['surname', 'name', 'email']
-    }).then((user) => {
-        Log.findAll({
-            where: {
-                userId: req.params.id
-            },
-            attributes: ['action', 'createdAt']
-        }).then((logs) => {
-            res.status(200).send({
-                user: user,
-                logs: logs
-            });
-        }).catch((err) => {
-            res.status(500).send({message: err.message});
-        })
+    Log.findAll({
+        where: {
+            userId: req.params.id
+        },
+        attributes: ['action', 'createdAt']
+    }).then((logs) => {
+        res.status(200).send(logs);
+    }).catch((err) => {
+        res.status(500).send({message: err.message});
     });
 }

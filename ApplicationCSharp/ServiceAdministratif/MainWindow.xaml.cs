@@ -43,6 +43,7 @@ namespace ServiceAdministratif
                 
             } else
             {
+                LogsPage.Visibility = Visibility.Collapsed;
                 btnHome.Visibility = Visibility.Collapsed;
                 btnLogout.Visibility = Visibility.Collapsed;
                 btnLogin.Visibility = Visibility.Visible;
@@ -94,6 +95,7 @@ namespace ServiceAdministratif
         {
             LoginPage.Visibility = Visibility.Collapsed;
             HomePage.Visibility = Visibility.Visible;
+            LogsPage.Visibility = Visibility.Collapsed;
             Home.InitGridStatic();
         }
 
@@ -103,10 +105,31 @@ namespace ServiceAdministratif
             LoginPage.Visibility = Visibility.Visible;
         }
 
+        private void ShowLogPage()
+        {
+            HomePage.Visibility = Visibility.Collapsed;
+            LogsPage.Visibility = Visibility.Visible;
+        }
+
+        private void HideLogPage()
+        {
+            HomePage.Visibility = Visibility.Visible;
+            LogsPage.Visibility = Visibility.Collapsed;
+        }
 
         public static void ChangeMenu()
         {
             MainWindow.instance.loadMenu();
+        }
+
+        public static void ShowLog()
+        {
+            MainWindow.instance.ShowLogPage();
+        }
+
+        public static void HideLog()
+        {
+            MainWindow.instance.HideLogPage();
         }
     }
 }

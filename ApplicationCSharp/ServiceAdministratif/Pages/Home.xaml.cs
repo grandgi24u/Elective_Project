@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using ServiceAdministratif.Models;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,12 @@ namespace ServiceAdministratif.Pages
                 api.DeleteUser(obj);
                 UpdateData();
             }
+        }
+
+        private void AskLog(object sender, RoutedEventArgs e)
+        {
+            User obj = ((FrameworkElement)sender).DataContext as User;
+            Logs.InitialTab(api.GetLogOfAnUser(obj));
         }
     }
 }
