@@ -26,7 +26,8 @@ exports.createMenu = (req, res) => {
 }
 
 //Delete a menu
-exports.deleteMenu = (req, res) => {
+exports.deleteMenu = async (req, res) => {
+    await Restaurant.findByIdAndUpdate(req.params.id, {$pull : {id_menus:req.params.idMenu}});
     Menu.remove({_id: req.params.idMenu}, (err, menu) => {
         if (err){
             res.send(err);
@@ -101,7 +102,7 @@ exports.unbindRequiredItem = (req, res) => {
 }
 
 exports.unbindOptionalItem = (req, res) => {
-    Menu.findByIdAndUpdate(req.params.idMenu, {$pul : {id_optional_items:req.params.idItem}},(err, menu) => {
+    Menu.findByIdAndUpdate(req.params.idMenu, {$pull : {id_optional_items:req.params.idItem}},(err, menu) => {
         if (err) {
             res.status(404).send({message: err});
         } else {

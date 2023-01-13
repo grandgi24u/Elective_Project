@@ -18,8 +18,8 @@ router.delete('/:idMenu',checkData.checkRole, checkData.checkOwner, checkData.ch
 router.patch('/:idMenu',checkData.checkRole, checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist, controller.updateAnMenu);
 
 
-router.post('/:idMenu/item_optional/:idItem',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
-router.post('/:idMenu/item_required/:idItem',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
+router.post('/:idMenu/item_optional/',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
+router.post('/:idMenu/item_required/',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
 
 router.post('/:idMenu/bind_required_item/:idItem',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindRequiredItem);
 router.post('/:idMenu/bind_optional_item/:idItem',checkData.checkRole,checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindOptionalItem);

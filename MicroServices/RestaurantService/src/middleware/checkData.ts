@@ -67,10 +67,16 @@ const checkOwner = (req, res, next) => {
    const restaurantId = req.params.id;
 
    Restaurant.findOne({_id:restaurantId}, (err, restaurant) => {
-        if (restaurant.userid != userId || userId == undefined || userId == ''){
-            res.status(403).send({message: "The user is not the restaurant's owner"});
-            return
-        }
+       if(restaurant){
+           if (restaurant.userid != userId || userId == undefined || userId == ''){
+               res.status(403).send({message: "The user is not the restaurant's owner"});
+               return
+           }
+       } else {
+           res.status(404).send({
+               message: "Restaurant not found"
+           });
+       }
         next();
     });
 }
@@ -78,7 +84,6 @@ const checkOwner = (req, res, next) => {
 const checkRole = (req, res, next) => {
     const roleId = req.query.roleId;
     const restaurantId = req.params.id;
-    console.log("MEH1 " + roleId);
     if (roleId!=2){
             res.status(403).send({message: "Permission denied"});
             return

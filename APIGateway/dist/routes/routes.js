@@ -33,7 +33,7 @@ const ROUTES = [
     },
     {
         url: '/getrestaurant',
-        middleware: [middleware_1.authJwt.verifyToken, middleware_1.authJwt.isCustomerOrRestaurant],
+        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess, middleware_1.authJwt.isCustomerOrRestaurant],
         proxy: {
             target: "http://localhost:6000",
             onProxyReq: fixRequestBody,
@@ -41,14 +41,14 @@ const ROUTES = [
             pathRewrite: (path, req) => {
                 let newPath = path.replace(/^\/getrestaurant/, '/restaurant');
                 const newQuery = req.userId;
-                newPath = `${newPath.split('?')[0]}?${req.userId}`;
+                console.log(newPath);
                 return newPath;
             },
         }
     },
     {
         url: '/restaurant',
-        middleware: [middleware_1.authJwt.verifyToken, middleware_1.authJwt.isRestaurant],
+        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess, middleware_1.authJwt.isRestaurant],
         proxy: {
             target: "http://localhost:6000",
             onProxyReq: fixRequestBody,
@@ -56,7 +56,6 @@ const ROUTES = [
             pathRewrite: (path, req) => {
                 let newPath = path.replace(/^\/restaurant/, '/restaurant');
                 newPath = `${newPath.split('?')[0]}?${"roleId=" + req.roleId + "&userId=" + req.userId}`;
-                console.log(newPath);
                 return newPath;
             }
         }

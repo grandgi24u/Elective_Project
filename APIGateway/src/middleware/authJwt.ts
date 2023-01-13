@@ -22,81 +22,111 @@ const verifyToken = (req, res, next) => {
             });
         }
         req.userId = decoded.id;
-        req.params.userId = decoded.id;
-
         next();
     });
 };
 
 const isCustomer =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
-        user.getRole().then((role) => {
-            if (role.name !== "customer") {
-                res.status(403).send({
-                    message: "Accès refusé : vous n'êtes pas customer !"
-                });
-                return;
-            }
-            next();
-        });
+        if(user){
+            user.getRole().then((role) => {
+                if (role.name !== "customer") {
+                    res.status(403).send({
+                        message: "Accès refusé : vous n'êtes pas customer !"
+                    });
+                    return;
+                }
+                next();
+            });
+        } else {
+            res.status(404).send({
+                message: "User not found"
+            });
+        }
     });
 }
 
 const isRestaurant =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
-        user.getRole().then((role) => {
-            if (role.name !== "restaurant") {
-                res.status(403).send({
-                    message: "Accès refusé : vous n'êtes pas un restaurateur !"
-                });
-                return;
-            }
-            req.roleId = user.roleId;
-            next();
-        });
+        if(user){
+            user.getRole().then((role) => {
+                if (role.name !== "restaurant") {
+                    res.status(403).send({
+                        message: "Accès refusé : vous n'êtes pas un restaurateur !"
+                    });
+                    return;
+                }
+                req.roleId = user.roleId;
+                next();
+            });
+        } else {
+            res.status(404).send({
+                message: "User not found"
+            });
+        }
     });
 }
 
 const isDelivery =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
-        user.getRole().then(role => {
-            if (role.name !== "delivery") {
-                res.status(403).send({
-                    message: "Accès refusé : vous n'êtes pas un livreur !"
-                });
-                return;
-            }
-            next();
-        });
+        if(user){
+            user.getRole().then(role => {
+                if (role.name !== "delivery") {
+                    res.status(403).send({
+                        message: "Accès refusé : vous n'êtes pas un livreur !"
+                    });
+                    return;
+                }
+                next();
+            });
+        } else {
+            res.status(404).send({
+                message: "User not found"
+            });
+        }
+
     });
 }
 
 const isAdmin =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
-        user.getRole().then(role => {
-            if (role.name !== "admin") {
-                res.status(403).send({
-                    message: "Accès refusé : vous n'êtes pas admin !"
-                });
-                return;
-            }
-            next();
-        });
+        if(user){
+            user.getRole().then(role => {
+                if (role.name !== "admin") {
+                    res.status(403).send({
+                        message: "Accès refusé : vous n'êtes pas admin !"
+                    });
+                    return;
+                }
+                next();
+            });
+        } else {
+            res.status(404).send({
+                message: "User not found"
+            });
+        }
     });
 }
 
 const isCustomerOrRestaurant =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
-        user.getRole().then(role => {
-            if (role.name === "restaurant" || role.name === "customer") {
-                next();
-            } else {
-                res.status(403).send({
-                    message: "Accès refusé : vous n'êtes pas customer ou restaurant !"
-                });
-                return;
-            }
-        });
+        if(user){
+            user.getRole().then(role => {
+                if (role.name === "restaurant" || role.name === "customer") {
+                    next();
+                } else {
+                    res.status(403).send({
+                        message: "Accès refusé : vous n'êtes pas customer ou restaurant !"
+                    });
+                    return;
+                }
+            });
+        } else {
+            res.status(404).send({
+                message: "User not found"
+            });
+            return;
+        }
     });
 }
 

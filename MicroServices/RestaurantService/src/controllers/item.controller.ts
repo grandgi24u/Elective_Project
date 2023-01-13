@@ -15,15 +15,14 @@ exports.createItem = (req, res) => {
     item.item_description = req.body.description;
     item.item_price = req.body.price;
 
+    bindItem(req.params.id, item._id)
+
     item.save((err) => {
         if(err){
             res.send(err);
         }
-
         res.status(200).send({message: "Item created successfully"});
     });
-
-    bindItem(req.params.id, item._id)
 
     //If there is an id menu
     if(req.params.idMenu){
@@ -35,12 +34,22 @@ exports.createItem = (req, res) => {
         if (req.path.includes('/item_optional/')) {
             bind_Optional_Item_To_Menu(item._id,req.params.idMenu);
         }
-
     }
 }
 
 //Delete an item
 exports.deleteItem = (req, res) => {
+    const restaurant = Restaurant.findById(req.params.id)
+    for (let menu_id in restaurant.id_menus)
+    {
+        const menu = Menu.findById(restaurant.id_menus[menu_id]);
+        if(menu.id_required_items.includes(req.params.idItem)){
+            Menu.findByIdAndUpdate(menu._id, {$pull : {id_required_items:req.params.idItem}});
+        }
+        if(menu.id_optional_items.includes(req.params.idItem)){
+            Menu.findByIdAndUpdate(menu._id, {$pull : {id_optional_items:req.params.idItem}});
+        }
+    }
     Item.remove({_id: req.params.idItem}, (err) => {
         if (err){
             res.send(err);
@@ -89,21 +98,17 @@ exports.updateAnItem = (req, res) => {
 }
 
 const bindItem = (idRestaurant, idItem) => {
-    Item.findByIdAndUpdate(idItem, {$push : { id_restaurant:idRestaurant}},(err) => {
-        return !err;
-    });
+    console.log(idRestaurant);
+    console.log(idItem);
+    Item.findByIdAndUpdate(idItem,{id_restaurant:idRestaurant}).exec();
 }
 
 const bind_Required_Item_To_Menu = (idItem, idMenu) => {
-    Menu.findByIdAndUpdate(idMenu, {$push : {id_required_items:idItem}},(err) => {
-        return !err;
-    });
+    Menu.findByIdAndUpdate(idMenu, {$push : {id_required_items:idItem}}).exec();
 }
 
 const bind_Optional_Item_To_Menu = (idItem, idMenu) => {
-    Menu.findByIdAndUpdate(idMenu, {$push : {id_optional_items:idItem}},(err) => {
-        return !err;
-    });
+    Menu.findByIdAndUpdate(idMenu, {$push : {id_optional_items:idItem}}).exec();
 }
 
 
