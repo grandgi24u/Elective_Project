@@ -120,7 +120,6 @@ namespace ServiceAdministratif.Models
         {
             string endpoint = baseUrl + "/users/deleteUser/" + user.Id;
             string access_token = Globals.LoggedInUser.AccessToken;
-
             using (var client = new WebClient())
             {
                 client.Headers["Content-Type"] = "application/json";
