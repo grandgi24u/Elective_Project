@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
                 message: "Accès refusé : token invalide !"
             });
         }
-        const user = User.find({where: {id: decoded.id}});
+        const user = User.findByPk(decoded.id);
         if(user.status === 1){
             return res.status(401).send({
                 message: "Accès refusé : compte désactivé !"
