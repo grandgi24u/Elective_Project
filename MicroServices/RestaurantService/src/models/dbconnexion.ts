@@ -7,7 +7,11 @@ const url_mongo = process.env.DB_Host;
 mongoose.set('strictQuery', true);
 
 //Connexion à la bdd
-mongoose.connect(url_mongo);
+mongoose.connect(url_mongo, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
 const db = mongoose.connection;
 
 //Message de connexion

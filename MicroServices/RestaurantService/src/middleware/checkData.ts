@@ -76,6 +76,7 @@ const checkOwner = (req, res, next) => {
            res.status(404).send({
                message: "Restaurant not found"
            });
+           return
        }
         next();
     });
