@@ -56,6 +56,7 @@ const ROUTES = [
             pathRewrite: (path, req) => {
                 let newPath = path.replace(/^\/restaurant/, '/restaurant');
                 newPath = `${newPath.split('?')[0]}?${"roleId=" + req.roleId + "&userId=" + req.userId}`;
+                console.log(newPath);
                 return newPath;
             }
         }

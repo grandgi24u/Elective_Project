@@ -14,7 +14,7 @@ exports.createRestaurant = async (req, res) => {
         restaurant_description: req.body.description,
         restaurant_address: req.body.address,
         food_type: req.body.food_type,
-        userid: req.query.user_id,
+        userid: req.query.userId,
     });
     await restaurant.save((err) => {
         if(err){
@@ -27,10 +27,12 @@ exports.createRestaurant = async (req, res) => {
 //Delete a restaurant
 exports.deleteRestaurant = async (req, res) => {
     const restaurant = await Restaurant.findById(req.params.id);
+    const items = await Item.find({id_restaurant : req.params.id});
+
     for (let menu in restaurant.id_menus){
         await Menu.remove({_id: restaurant.id_menus[menu]});
     }
-    const items = await Item.find({id_restaurant : req.paramsid});
+
     for (let item in items)
     {
         await Item.remove({_id:items[item]._id});
