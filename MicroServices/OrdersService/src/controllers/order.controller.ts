@@ -1,5 +1,9 @@
 // @ts-ignore
 import Order from '../models/order.model';
+// @ts-ignore
+import Menu from "../models/menu.model";
+// @ts-ignore
+import menu from "./menu.controller";
 
 exports.createOrder = (req, res) => {
     const order = new Order();
@@ -25,21 +29,52 @@ exports.deleteOrder = (req, res) => {
 }
 
 exports.getOrder = (req, res) => {
-    Order.find(function(err, users) {
-        Order.findById(req.params.id, function (err, users) {
-            if (err)
-                res.send(err);
-            res.json(users);
+    Order.find((err, users) => {
+        Order.findById(req.params.id).populate('id_menus').populate('id_items').then ((err, order) => {
+            if (err) {
+                res.status(404).send({message: err});
+            }
+            res.json(order)
         });
     })
 }
 
 exports.getOrders = (req, res) => {
-    Order.find(function(err, users){
+    Order.find(function(err, order){
         if (err){
             res.send(err);
         }
-        res.json(users);
+        res.json(order);
     });
 }
+
+exports.updateOrderStatus = (req, res) => {
+    const orderId = req.params.id;
+    const updates = req.body;
+
+    Order.findByIdAndUpdate(orderId, updates,
+        (err, order) => {
+            if (err) {
+                res.status(404).send({message: err});
+            } else {
+                res.status(200).send({message: "Order updated"});
+            }
+        })
+}
+
+exports.updateOrderPrice = (req, res) => {
+    const orderId = req.params.id;
+    const updates = req.body;
+
+    Order.findByIdAndUpdate(orderId, updates,
+        (err, order) => {
+            if (err) {
+                res.status(404).send({message: err});
+            } else {
+                res.status(200).send({message: "Order updated"});
+            }
+        })
+}
+
+
 

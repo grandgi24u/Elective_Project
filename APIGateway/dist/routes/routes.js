@@ -60,6 +60,18 @@ const ROUTES = [
                 return newPath;
             }
         }
-    }
+    },
+    {
+        url: '/getorder',
+        middleware: [middleware_1.authJwt.verifyToken, middleware_1.authJwt.isCustomer],
+        proxy: {
+            target: "http://localhost:5000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/getorder`]: '/order',
+            },
+        }
+    },
 ];
 exports.ROUTES = ROUTES;

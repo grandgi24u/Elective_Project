@@ -3,7 +3,7 @@
 const mongoose = require("mongoose");
 
 // Set up default mongoose connection
-const mongoDB = "mongodb://172.16.44.14:27017/";
+const mongoDB = "mongodb://172.16.44.14:27017/Orders";
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Get the default connection

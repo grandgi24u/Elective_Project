@@ -4,12 +4,13 @@ const controller = require("../controllers/item.controller");
 const express = require('express');
 // @ts-ignore
 const router = express.Router({ mergeParams: true });
-
+// @ts-ignore
+const checkAllData = require("../middleware/checkAllData")
 
 router.get('/', controller.getItems);
-router.get('/:id',  controller.getItem)
-router.post('/', controller.createItem);
-router.delete('/:id',  controller.deleteItem);
-
+router.get('/:idItem',  controller.getItem)
+router.post('/', checkAllData.checkIfOrderExist, controller.createItem);
+router.delete('/:idItem',  controller.deleteItem);
+router.patch('/:idItem', checkAllData.checkIfOrderExist, controller.updateAnItem);
 
 module.exports = router;
