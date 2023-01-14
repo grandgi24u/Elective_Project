@@ -121,7 +121,7 @@ export default {
       if(this.$refs.loginForm.validate()) {
         this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword}).then(
             () => {
-              this.$router.push('/restaurants');
+              this.$router.push('/getrestaurant');
             },
             error => {
               this.message =

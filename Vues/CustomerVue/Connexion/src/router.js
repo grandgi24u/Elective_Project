@@ -22,20 +22,20 @@ export const router = new Router({
             component: Login,
         },
         {
-            path: '/restaurants',
+            path: '/getrestaurant',
             name: 'restaurants',
             component: () => import('./App.vue'),
             props: () => ({
                 showLogin: 'false',
                 showNavBar : 'true',
                 showBanner : 'true',
-                showRestaurants : 'true'
+                showRestaurants : 'true',
+                showResearchRestaurant: 'true',
             })
         },
         {
-            path: '/orders',
-            name: 'orders',
-            // lazy-loaded
+            path: '/order',
+            name: 'order',
             component: () => import('./App.vue'),
             props: () => ({
                 showOrders: 'true',

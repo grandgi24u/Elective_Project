@@ -1,6 +1,6 @@
 <template>
   <div class="form-profile">
-    <v-form ref="form">
+    <v-form ref="profilForm">
       <div class="form-details">
         <v-text-field
             v-model="firstName"
@@ -35,7 +35,7 @@
         ></v-text-field>
       </div>
       <div class="button-enregistrer">
-       <v-btn type="submit">Enregistrer</v-btn>
+       <v-btn type="submit" @click="validateInfoProfil">Enregistrer</v-btn>
       </div>
     </v-form>
   </div>
@@ -45,38 +45,96 @@
   export default {
     name: 'Profile-vue',
     data: () => ({
-      firstName: '',
       firstNameRules: [
         v => !!v || 'Le prénom est obligatoire',
         v => /^[a-zA-Z]+$/.test(v) || 'Le prénom doit contenir uniquement des lettres'
       ],
-      lastName: '',
       lastNameRules: [
         v => !!v || 'Le nom est obligatoire',
         v => /^[a-zA-Z]+$/.test(v) || 'Le nom doit contenir uniquement des lettres'
       ],
-      email: '',
       emailRules: [
         v => !!v || "L'e-mail est obligatoire",
         v => /.+@.+/.test(v) ||  "L'e-mail doit être valide"
       ],
-      address: '',
       addressRules: [
         v => !!v || "L'adresse est obligatoire"
       ],
-      password: '',
       passwordRules: [
         v => !!v || 'Le mot de passe est obligatoire',
         v => (v && v.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères.'
       ],
     }),
     methods: {
+      validateInfoProfil () {
+        if(this.$refs.profilForm.validate()) {
+          this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword}).then(
+              () => {
+                this.$router.patch('/updateUser/11', {
+                  name: this.lastName,
+                  email: this.email,
+                });
+              },
+              error => {
+                this.message =
+                    (error.response && error.response.data) ||
+                    error.message ||
+                    error.toString();
+              }
+          );
+        }
+      }
     },
     computed: {
       currentUser() {
         return this.$store.state.auth.user;
+      },
+      firstName: {
+        get() {
+          return this.currentUser.name;
+        },
+        set(value) {
+          this.currentUser.name = value;
+        }
+      },
+      lastName: {
+        get() {
+          return this.currentUser.lastName;
+        },
+        set(value) {
+          this.currentUser.lastName = value;
+        }
+      },
+      email: {
+        get() {
+          return this.currentUser.email;
+        },
+        set(value) {
+          this.currentUser.email = value;
+        }
+      },
+      address: {
+        get() {
+          return this.currentUser.address;
+        },
+        set(value) {
+          this.currentUser.address = value;
+        }
+      },
+      password: {
+        get() {
+          return this.currentUser.password;
+        },
+        set(value) {
+          this.currentUser.password = value;
+        }
       }
     },
+    mounted() {
+      if (!this.currentUser) {
+        this.$router.push('/login');
+      }
+    }
   }
 </script>
 
