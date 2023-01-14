@@ -1,60 +1,41 @@
 <template>
-  <v-app>
+  <div id="app">
     <v-app-bar
-      app
-      color="primary"
-      dark
+        color="deep-purple accent-4"
+        dense
+        dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn v-if="currentUser" to="/profile" class="nav-link">
+        {{ currentUser.name }}
       </v-btn>
-    </v-app-bar>
 
-    <v-main>
-      <HelloWorld/>
-    </v-main>
-  </v-app>
+      <v-btn @click.prevent="logOut">
+        Déconnexion
+      </v-btn>
+
+    </v-app-bar>
+    <v-app>
+      <router-view />
+    </v-app>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
-
-  data: () => ({
-    //
-  }),
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
