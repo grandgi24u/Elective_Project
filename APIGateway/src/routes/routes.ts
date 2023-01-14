@@ -75,7 +75,37 @@ const ROUTES = [
         }
     },
 
+    {
+        url: '/delivery',
+        middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isDelivery],
+        proxy: {
+            target: "http://localhost:7000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: (path, req)=> {
+                let newPath = path.replace(/^\/delivery/, '/delivery');
+                newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
+                console.log(newPath);
+                return newPath;
+            }
+        }
+    },
 
+    {
+        url: '/getDelivery',
+        middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isCustomerOrDelivery],
+        proxy: {
+            target: "http://localhost:7000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: (path, req)=> {
+                let newPath = path.replace(/^\/getDelivery/, '/delivery');
+                newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
+                console.log(newPath);
+                return newPath;
+            }
+        }
+    },
 ]
 
 exports.ROUTES = ROUTES;

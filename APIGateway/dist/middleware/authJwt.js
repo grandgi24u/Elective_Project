@@ -135,6 +135,29 @@ const isCustomerOrRestaurant = (req, res, next) => {
         }
     });
 };
+const isCustomerOrDelivery = (req, res, next) => {
+    User.findByPk(req.userId).then((user) => {
+        if (user) {
+            user.getRole().then(role => {
+                if (role.name === "delivery" || role.name === "customer") {
+                    next();
+                }
+                else {
+                    res.status(403).send({
+                        message: "Accès refusé : vous n'êtes pas customer ou delivery !"
+                    });
+                    return;
+                }
+            });
+        }
+        else {
+            res.status(404).send({
+                message: "User not found"
+            });
+            return;
+        }
+    });
+};
 // @ts-ignore
 const authJwt = {
     verifyToken: verifyToken,
@@ -142,6 +165,7 @@ const authJwt = {
     isRestaurant: isRestaurant,
     isDelivery: isDelivery,
     isAdmin: isAdmin,
-    isCustomerOrRestaurant: isCustomerOrRestaurant
+    isCustomerOrRestaurant: isCustomerOrRestaurant,
+    isCustomerOrDelivery: isCustomerOrDelivery
 };
 module.exports = authJwt;
