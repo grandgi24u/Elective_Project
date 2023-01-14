@@ -2,14 +2,15 @@
 import express from 'express';
 // @ts-ignore
 import dotenv from 'dotenv';
-
-// db connection
-const db = require("./connexion");
+dotenv.config();
 
 const app = express();
-dotenv.config();
-const port = process.env.PORT || 5000;
 app.use(express.json());
+const port = process.env.PORT || 7000;
+
+// db connection
+const db = require("./models/dbconnexion");
+
 app.get('/', (req, res) => {
     res.json({ message: "Delivery microservice" });
 });

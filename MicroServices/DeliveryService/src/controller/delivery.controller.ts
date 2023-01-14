@@ -1,45 +1,83 @@
 // @ts-ignore
 import Delivery from '../models/delivery.model';
 
-exports.createDelivery = (req, res) => {
-    const delivery = new Delivery();
-    delivery.delivery_id = req.body.id;
-    delivery.transport_type = req.body.transport_type;
-    delivery.id_order = req.params.id_order;
-
-    delivery.save(function(err){
+exports.createDelivery = async (req, res) => {
+    const delivery = new Delivery({
+        transport_type: req.body.transport_type,
+        userId: req.query.userId
+    });
+    await delivery.save((err, delivery) => {
         if(err){
-            res.send(err);
+            res.status(500).send(err);
         }
-        res.json({message : 'Delivery created successfully'});
+        res.status(200).json(delivery);
     });
 }
 
-exports.deleteDelivery = (req, res) => {
-    Delivery.remove({_id: req.params.id}, function(err, delivery){
+exports.deleteDelivery = async (req, res) => {
+    await Delivery.remove({_id: req.params.id}, (err, delivery) => {
         if (err){
-            res.send(err);
+            res.status(500).send(err);
         }
-        res.json({message:"Delivery deleted"});
+        res.status(200).json({message:"Delivery deleted"});
     });
 }
 
-exports.getDelivery = (req, res) => {
-    Delivery.find(function(err, delivery) {
-        Delivery.findById(req.params.id, function (err, delivery) {
-            if (err)
-                res.send(err);
-            res.json(delivery);
-        });
-    })
+exports.getDelivery = async (req, res) => {
+    await Delivery.findById(req.params.id, (err, delivery) => {
+        if (err)
+            res.status(404).send(err);
+        res.status(200).json(delivery);
+    });
 }
 
-exports.getDeliverys = (req, res) => {
-    Delivery.find(function(err, delivery){
-        if (err){
-            res.send(err);
-        }
-        res.json(delivery);
+exports.getDeliveries = async (req, res) => {
+    await Delivery.find((err, delivery) =>{
+        if (err)
+            res.status(404).send(err);
+        res.status(200).json(delivery);
+    });
+}
+
+exports.updateDelivery = async (req, res) => {
+    await Delivery.findOneAndUpdate({_id: req.params.id}, {
+        transport_type: req.body.transport_type
+    }, (err, delivery) => {
+        if(err)
+            res.status(500).send(err);
+        res.status(200).json(delivery);
+    });
+}
+
+exports.addOrder = (req, res) => {
+    Delivery.findByIdAndUpdate(req.params.id, {$push: {id_order: req.body.orderId}}, (err, delivery) => {
+       if(err)
+              res.status(500).send(err);
+       res.status(200).json({message: "Order added"});
+    });
+}
+
+exports.deleteOrder = (req, res) => {
+    Delivery.findByIdAndUpdate(req.params.id, {$pull: {id_order: req.body.orderId}}, (err, delivery) => {
+        if(err)
+            res.status(500).send(err);
+        res.status(200).json({message: "Order deleted"});
+    });
+}
+
+exports.addOrderFinished = (req, res) => {
+    Delivery.findByIdAndUpdate(req.params.id, {$push: {id_order_finished: req.body.orderId}}, (err, delivery) => {
+        if(err)
+            res.status(500).send(err);
+        res.status(200).json({message: "Order added"});
+    });
+}
+
+exports.deleteOrderFinished = (req, res) => {
+    Delivery.findByIdAndUpdate(req.params.id, {$pull: {id_order_finished: req.body.orderId}}, (err, delivery) => {
+        if(err)
+            res.status(500).send(err);
+        res.status(200).json({message: "Order deleted"});
     });
 }
 
