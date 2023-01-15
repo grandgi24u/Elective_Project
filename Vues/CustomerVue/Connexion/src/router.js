@@ -22,7 +22,7 @@ export const router = new Router({
             component: Login,
         },
         {
-            path: '/getrestaurant',
+            path: '/restaurants',
             name: 'restaurants',
             component: () => import('./App.vue'),
             props: () => ({

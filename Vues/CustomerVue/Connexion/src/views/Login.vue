@@ -115,13 +115,24 @@ export default {
         console.log("Mail :", this.email);
         console.log("Adresse :", this.address);
         console.log("Mot de passe :", this.password);
+        this.$store.dispatch('auth/register', {name: this.firstName, surname: this.lastName, email: this.email, address: this.address, password: this.password}).then(
+            () => {
+              this.$router.push('/restaurants');
+            },
+            error => {
+              this.message =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
+            }
+        );
       }
     },
     validateLogin () {
       if(this.$refs.loginForm.validate()) {
         this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword}).then(
             () => {
-              this.$router.push('/getrestaurant');
+              this.$router.push('/restaurants');
             },
             error => {
               this.message =

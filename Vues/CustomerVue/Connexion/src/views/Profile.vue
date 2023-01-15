@@ -68,20 +68,10 @@
     methods: {
       validateInfoProfil () {
         if(this.$refs.profilForm.validate()) {
-          this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword}).then(
-              () => {
-                this.$router.patch('/updateUser/11', {
-                  name: this.lastName,
-                  email: this.email,
-                });
-              },
-              error => {
-                this.message =
-                    (error.response && error.response.data) ||
-                    error.message ||
-                    error.toString();
-              }
-          );
+            this.$router.push('/updateUser/11', {
+              name: this.lastName,
+              email: this.email,
+            });
         }
       }
     },
