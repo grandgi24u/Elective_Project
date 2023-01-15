@@ -1,60 +1,65 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <HelloWorld/>
-    </v-main>
+    <div class="app">
+        <Sidebar />
+        <router-view />
+    </div>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
+import Sidebar from "./components/Sidebar.vue";
 export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
+  components: {Sidebar},
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
-
-  data: () => ({
-    //
-  }),
+  methods: {
+    logOut() {
+      this.$store.dispatch('auth/logout');
+      this.$router.push('/login');
+    }
+  }
 };
 </script>
+
+<style lang="scss">
+:root {
+  --primary: #73A8E7;
+  --primary-alt: #22c55e;
+  --grey: #64748b;
+  --dark: #1e293b;
+  --dark-alt: #334155;
+  --light: #f1f5f9;
+  --sidebar-width: 300px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Fira sans', sans-serif;
+}
+body {
+  background: var(--light);
+}
+button {
+  cursor: pointer;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: none;
+}
+.app {
+  display: flex;
+  main {
+    flex: 1 1 0;
+    padding: 1rem;
+    @media (max-width: 1024px) {
+      padding-left: 5rem;
+      width: 100%;
+    }
+  }
+}
+</style>
