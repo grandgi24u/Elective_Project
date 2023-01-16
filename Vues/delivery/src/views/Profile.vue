@@ -12,16 +12,19 @@
       <v-form ref="registerForm" v-model="valid" class="mt-4" lazy-validation>
         <v-row>
           <v-col cols="12" sm="6" md="6">
-            <v-text-field v-model="firstName" label="Prénom" maxlength="20" required></v-text-field>
+            <v-text-field v-model="surname" label="Prénom" maxlength="20" @update="updateUser" required></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" md="6">
-            <v-text-field v-model="lastName" label="Nom" maxlength="20" required></v-text-field>
+            <v-text-field v-model="name" label="Nom" maxlength="20" required></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-text-field v-model="email" label="E-mail" required></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-text-field v-model="address" label="Adresse" required></v-text-field>
+          </v-col>
+          <v-col cols="12" hidden="hidden">
+            <v-text-field v-model="id" label="Adresse" required></v-text-field>
           </v-col>
           <v-col class="d-flex">
             <v-btn x-large block :disabled="!valid" color="#73A8E7" @click="updateUser">Modifier</v-btn>
@@ -40,10 +43,11 @@ export default {
   data: () => ({
     avatar,
     valid: true,
-    firstName: "",
-    lastName: "",
+    name: "",
+    surname: "",
     email: "",
     address: "",
+    id: "",
   }),
   computed: {
     currentUser() {
@@ -54,14 +58,21 @@ export default {
     if (!this.currentUser) {
       this.$router.push('/login');
     }
-    this.firstName = this.$store.state.auth.user.surname;
-    this.lastName = this.$store.state.auth.user.name;
-    this.email = this.$store.state.auth.user.email;
-    this.address = this.$store.state.auth.user.address;
+    this.name = this.currentUser.name;
+    this.surname = this.currentUser.surname;
+    this.email = this.currentUser.email;
+    this.address = this.currentUser.address;
   },
   methods: {
     updateUser() {
-
+      //this.$store.state.auth.user.surname = this.surname;
+      this.$store.dispatch('auth/updateUser', {
+        id: this.currentUser.id,
+        surname: this.surname,
+        name: this.name,
+        email: this.email,
+        address: this.address
+      });
     }
   }
 };

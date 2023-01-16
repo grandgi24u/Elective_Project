@@ -1,4 +1,5 @@
 import AuthService from '../services/auth.service';
+import UserService from '../services/user.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
 const initialState = user
@@ -36,6 +37,14 @@ export const auth = {
                     return Promise.reject(error);
                 }
             );
+        },
+        updateUser({ commit }, user) {
+            UserService.updateUser(user).then(
+                user => {
+                    commit('updateUserSuccess', user);
+                    return Promise.resolve(user);
+                }
+            );
         }
     },
     mutations: {
@@ -56,6 +65,12 @@ export const auth = {
         },
         registerFailure(state) {
             state.status.loggedIn = false;
+        },
+        updateUserSuccess(state, user) {
+            state.user.surname = user.surname;
+            state.user.name = user.name;
+            state.user.email = user.email;
+            state.user.address = user.address;
         }
     }
 };

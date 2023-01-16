@@ -30,6 +30,22 @@
         </v-icon>
         <span class="text">Profile</span>
       </router-link>
+      <router-link to="/profile" class="button">
+        <v-icon
+            large
+            class="material-icons">
+          mdi-truck-delivery
+        </v-icon>
+        <span class="text">En cours</span>
+      </router-link>
+      <router-link to="/profile" class="button">
+        <v-icon
+            large
+            class="material-icons">
+          mdi-history
+        </v-icon>
+        <span class="text">Historique</span>
+      </router-link>
     </div>
 
     <div class="flex"></div>

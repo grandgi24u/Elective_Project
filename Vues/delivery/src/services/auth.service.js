@@ -5,7 +5,8 @@ class AuthService {
         return axios
             .post(API_URL + 'signin', {
                 email: user.email,
-                password: user.password
+                password: user.password,
+                roleId: 3
             })
             .then(response => {
                 if (response.data.accessToken) {
