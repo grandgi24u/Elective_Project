@@ -23,12 +23,18 @@ const db = {
     Sequelize: Sequelize,
     sequelize: sequelize,
     user: require("../models/user.model.js")(sequelize, Sequelize),
-    role: require("../models/role.model.js")(sequelize, Sequelize)
+    role: require("../models/role.model.js")(sequelize, Sequelize),
+    log: require("../models/log.model.js")(sequelize, Sequelize)
 };
 
 db.user.belongsTo(db.role, {
     foreignKey: 'roleId',
     targetKey: 'id'
 })
+
+db.log.belongsTo(db.user, {
+    foreignKey: 'userId',
+    targetKey: 'id'
+});
 
 module.exports = db;

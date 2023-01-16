@@ -3,6 +3,8 @@ const db = require("../models");
 // @ts-ignore
 const User = db.user;
 // @ts-ignore
+const Log = db.log;
+// @ts-ignore
 const bcrypt = require("bcryptjs");
 
 exports.createUser = (req, res) => {
@@ -21,9 +23,18 @@ exports.createUser = (req, res) => {
     });
 }
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = async (req, res) => {
     const userId = req.params.id;
-    User.destroy({
+    await Log.findAll({
+        where: {
+            userId: userId
+        }
+    }).then(logs => {
+        logs.forEach(log => {
+            log.destroy();
+        });
+    });
+    await User.destroy({
        where: { id: userId }
     }).then(() => {
         res.status(200).send("Utilisateur supprimé");
