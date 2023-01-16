@@ -9,18 +9,19 @@ import ItemController from "./item.controller";
 
 //Create a restaurant
 exports.createRestaurant = async (req, res) => {
+    console.log(req.body);
     const restaurant = new Restaurant({
         restaurant_name: req.body.name,
         restaurant_description: req.body.description,
         restaurant_address: req.body.address,
         food_type: req.body.food_type,
-        userid: req.query.userId,
+        userid: req.body.userid,
     });
     await restaurant.save((err) => {
         if(err){
             res.status(404).send({message: err});
         }
-        res.status(200).send({message: "Restaurant created successfully"});
+        res.status(200).send(restaurant);
     });
 }
 
@@ -52,6 +53,13 @@ exports.getRestaurants = async (req, res) => {
             res.status(404).send({message: err});
         }
         res.status(200).json(restaurants);
+    });
+}
+
+//Get one specific restaurant by user id
+exports.getRestaurantById = async (req, res) => {
+    await Restaurant.find({userid:req.params.idUser}).populate('id_menus').then ((restaurant) => {
+        res.status(200).json(restaurant);
     });
 }
 

@@ -13,7 +13,8 @@ const checkData = require('../middleware/checkData');
 
 router.get('/', controller.getRestaurants);
 router.get('/:id', checkData.checkIfRestaurantExist, controller.getRestaurant)
-router.post('/',checkData.checkRole, controller.createRestaurant);
+router.get('/getById/:idUser', controller.getRestaurantById)
+router.post('/createRestaurant', controller.createRestaurant);
 router.delete('/:id', checkData.checkRole, checkData.checkIfRestaurantExist, controller.deleteRestaurant);
 router.patch('/:id',checkData.checkRole, checkData.checkOwner, checkData.checkIfRestaurantExist, controller.updateAnRestaurant);
 

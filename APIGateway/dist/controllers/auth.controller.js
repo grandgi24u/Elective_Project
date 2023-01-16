@@ -121,6 +121,7 @@ exports.signinForRestaurant = (req, res, send) => {
                 name: user.name,
                 surname: user.surname,
                 email: user.email,
+                address: user.address,
                 role: roleValue,
                 codePar: user.codePar,
                 accessToken: token

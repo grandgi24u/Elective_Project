@@ -35,10 +35,10 @@
               <v-form ref="registerForm" v-model="valid" lazy-validation>
                 <v-row>
                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="firstName" :rules="[rules.required]" label="Prénom" maxlength="20" required></v-text-field>
+                    <v-text-field v-model="surname" :rules="[rules.required]" label="Prénom" maxlength="20" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="lastName" :rules="[rules.required]" label="Nom" maxlength="20" required></v-text-field>
+                    <v-text-field v-model="name" :rules="[rules.required]" label="Nom" maxlength="20" required></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
@@ -49,6 +49,17 @@
                   <v-col cols="12">
                     <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Mot de passe" hint="Il doit contenir au moins 8 caractères" counter @click:append="show1 = !show1"></v-text-field>
                   </v-col>
+
+                  <v-col cols="12">
+                    <v-text-field v-model="restaurant_name" :rules="[rules.required]" label="Nom du restaurant" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="restaurant_description" label="Description du restaurant" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="restaurant_food_type" :rules="[rules.required]" label="Type de nourriture du restaurant" required></v-text-field>
+                  </v-col>
+
                   <v-spacer></v-spacer>
                   <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
                     <v-btn x-large block :disabled="!valid" color="success" @click="validateRegister">Créer mon compte</v-btn>
@@ -79,8 +90,8 @@ export default {
       {name:"Enregistrement", icon:"mdi-account-outline"}
     ],
     valid: true,
-    firstName: "",
-    lastName: "",
+    name: "",
+    surname: "",
     email: "",
     password: "",
     verify: "",
@@ -104,17 +115,19 @@ export default {
       min: v => (v && v.length >= 5) || "5 caractères minimum"
     },
     user: new User('', '', '', ''),
-    message: ''
+    message: '',
+
+    restaurant_name: "",
+    restaurant_description: "",
+    restaurant_food_type:""
+
   }),
   name: 'LoginPage',
   methods: {
     validateRegister() {
       if (this.$refs.registerForm.validate()) {
-        console.log("Nom :", this.firstName);
-        console.log("Prénom :", this.lastName);
-        console.log("Mail :", this.email);
-        console.log("Adresse :", this.address);
-        console.log("Mot de passe :", this.password);
+
+        this.$store.dispatch('auth/register', {name:this.name, surname:this.surname, address:this.address,email: this.email, password: this.password, restaurant_name:this.restaurant_name, restaurant_description:this.restaurant_description, restaurant_food_type:this.restaurant_food_type})
       }
     },
     validateLogin () {

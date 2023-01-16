@@ -47,6 +47,18 @@ const ROUTES = [
         }
     },
     {
+        url: '/createRestaurant',
+        middleware: [],
+        proxy: {
+            target: "http://localhost:6000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: (path, req) => {
+                return path.replace(/^\/createRestaurant/, '/restaurant/createRestaurant');
+            },
+        }
+    },
+    {
         url: '/restaurant',
         middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess, middleware_1.authJwt.isRestaurant],
         proxy: {
