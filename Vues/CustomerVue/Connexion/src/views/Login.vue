@@ -115,9 +115,15 @@ export default {
         console.log("Mail :", this.email);
         console.log("Adresse :", this.address);
         console.log("Mot de passe :", this.password);
-        this.$store.dispatch('auth/register', {name: this.firstName, surname: this.lastName, email: this.email, address: this.address, password: this.password}).then(
+        this.$store.dispatch('auth/register', {
+          surname: this.firstName,
+          name: this.lastName,
+          email: this.email,
+          password: this.password,
+          address: this.address
+        }).then(
             () => {
-              this.$router.push('/restaurants');
+              this.$router.push('/home');
             },
             error => {
               this.message =

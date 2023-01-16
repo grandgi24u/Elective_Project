@@ -29,10 +29,67 @@ const checkIfMenuExist = (req, res, next) => {
     });
 }
 
+const checkIfItemExist = (req, res, next) => {
+    const ItemId = req.params.idItem;
+    Item.find({_id:ItemId},  (err, item) => {
+        if (!item || item == ''){
+            res.status(400).send({message: "Item not found"});
+            return
+        }
+        next();
+    });
+}
+
+const checkIfItemBind = (req, res, next) => {
+    const ItemId = req.params.idItem;
+    const MenuId = req.params.idMenu;
+
+    Menu.find({$or:[{ id_required_items: ItemId},{id_optional_items:ItemId}],$and:[{ _id:MenuId}]}, function(err, bind_item)
+    {
+        if (!(bind_item === undefined || bind_item.length == 0) && !(req.path.includes('unbind')))
+        {
+            res.status(403).send({message: "Item already bind to the restaurant"});
+            return
+        }
+
+        if ((bind_item === undefined || bind_item.length == 0) && (req.path.includes('unbind')))
+        {
+            res.status(404).send({message: "Item already unbind from the restaurant"});
+            return
+        }
+
+        next();
+
+    });
+}
+
+const checkOwner = (req, res, next) => {
+    const userId = req.query.userId;
+    const orderId = req.params.id;
+
+    Order.findOne({_id:orderId}, (err, order) => {
+        if(order){
+            if (order.userid != userId || userId == undefined || userId == ''){
+                res.status(403).send({message: "The user is not the order's owner"});
+                return
+            }
+        } else {
+            res.status(404).send({
+                message: "Order not found"
+            });
+            return
+        }
+        next();
+    });
+}
+
 // @ts-ignore
 const checkAllData = {
     checkIfOrderExist:checkIfOrderExist,
     checkIfMenuExist:checkIfMenuExist,
+    checkIfItemExist:checkIfItemExist,
+    checkIfItemBind:checkIfItemBind,
+    checkOwner:checkOwner,
 };
 
 module.exports = checkAllData;

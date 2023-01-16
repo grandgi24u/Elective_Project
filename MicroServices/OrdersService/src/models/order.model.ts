@@ -12,7 +12,8 @@ const OrderSchema = new Schema({
     order_price: String,
     order_status: String,
     id_menus: [{ type: Schema.Types.ObjectId, ref: 'menu' }],
-    id_items: [{ type: Schema.Types.ObjectId, ref: 'item' }]
+    id_items: [{ type: Schema.Types.ObjectId, ref: 'item' }],
+    userid: Number
 })
 
 OrderSchema.path('order_date').validate(function (value) {

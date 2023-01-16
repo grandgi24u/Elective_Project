@@ -3,6 +3,8 @@ const db = require("../models");
 // @ts-ignore
 const User = db.user;
 // @ts-ignore
+const Log = db.log;
+// @ts-ignore
 const bcrypt = require("bcryptjs");
 
 exports.createUser = (req, res) => {
@@ -21,9 +23,18 @@ exports.createUser = (req, res) => {
     });
 }
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = async (req, res) => {
     const userId = req.params.id;
-    User.destroy({
+    await Log.findAll({
+        where: {
+            userId: userId
+        }
+    }).then(logs => {
+        logs.forEach(log => {
+            log.destroy();
+        });
+    });
+    await User.destroy({
        where: { id: userId }
     }).then(() => {
         res.status(200).send("Utilisateur supprimé");
@@ -32,9 +43,23 @@ exports.deleteUser = (req, res) => {
     });
 }
 
-//TODO
 exports.updateUser = (req, res) => {
-    res.status(200).send("User updated");
+    const userId = req.params.id;
+    User.findByPk(userId).then(user => {
+        if (user) {
+            user.name = req.body.name;
+            user.surname = req.body.surname;
+            user.email = req.body.email;
+            user.address = req.body.address;
+            user.save().then(() => {
+                res.status(200).send("Utilisateur mis à jour");
+            }).catch(err => {
+                res.status(500).send({erreur: err.message});
+            });
+        } else {
+            res.status(404).send({message : "Utilisateur non trouvé"});
+        }
+    });
 }
 
 exports.getUser = (req, res) => {

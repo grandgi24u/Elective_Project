@@ -10,6 +10,7 @@ exports.createOrder = (req, res) => {
     order.order_date = req.body.date;
     order.order_price = req.body.price;
     order.order_status = req.body.status;
+    order.userid = req.query.userId;
 
     order.save(function(err){
         if(err){
