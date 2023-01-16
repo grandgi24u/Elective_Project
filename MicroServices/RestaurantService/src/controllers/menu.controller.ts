@@ -11,6 +11,7 @@ exports.createMenu = async (req, res) => {
         menu_name: req.body.name,
         menu_description: req.body.description,
         menu_price: req.body.price,
+        menu_type: req.body.type,
 
     });
     await menu.save((err) => {
