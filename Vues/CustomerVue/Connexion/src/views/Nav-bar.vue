@@ -50,7 +50,7 @@
   text-align: center;
 }
 .toolbar {
-  margin-left: 15%;
+
 }
 .logo {
   margin-left: 2%;

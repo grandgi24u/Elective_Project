@@ -1,20 +1,65 @@
 <template>
   <v-container class="div-container">
       <div class="div-menu-item">
-        <v-btn icon @click="$emit('RetourDetailsRestaurants', restaurant)">
+        <v-btn icon  @click="RetourRestaurant(id)">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <img class="logo-item" src="../assets/repas/entree1_Mauricette.jpg">
         <div class="description-item">
          <v-list-item-content>
-            <v-list-item-title>{{restaurant}}</v-list-item-title>
+            <v-list-item-title><strong>{{menuName}}</strong></v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title>Prix : 15e</v-list-item-title>
+            <v-list-item-title>{{menuPrice}} €</v-list-item-title>
           </v-list-item-content>
           <v-list-item-content>
-            <v-list-item-title>Ce repas est très bon</v-list-item-title>
+            <v-list-item-title>{{menuDescription}}</v-list-item-title>
           </v-list-item-content>
+
+          <v-divider></v-divider>
+
+          <div v-if="DisplayItemsRequired">
+            Items obligatoires:
+            <v-list-item
+                v-for="item in detailsMenu.id_required_items"
+                :key="item.id"
+            >
+              <v-list-item-content>
+                <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title>{{item.item_description}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+
+          <div v-if="DisplayItemsOptional">
+            Items optionels:
+            <v-list-item
+                v-for="item in detailsMenu.id_optional_items"
+                :key="item.id"
+            >
+              <v-list-item-content>
+                <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title>{{item.item_description}}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+          <!-- <v-row>
+             <v-col
+                 v-for="item in detailsMenu"
+                 :key="item.id"
+                 cols="12"
+                 md="4"
+             >
+               <div class="title-name">
+                 {{item.menu_name}}
+               </div>
+             </v-col>
+           </v-row>-->
+
           <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
             <v-btn @click="$emit('AddToHamper')">Ajouter à mon panier</v-btn>
           </v-col>
@@ -24,126 +69,77 @@
 </template>
 
 <script>
+ import RestaurantService from "../services/restaurant.service";
+
  export default {
     name : "Details-Items-vue",
-    props: {
-      itemId: {
-        type: Number,
-        required: true,
-      },
-      restaurant: {
-        type: String,
-        required: true,
-      },
-    },
+    props: ['restaurantId',
+     'menuId'],
     data: () => ({
-      restaurants: {
-        Mauricette :
-            {
-              favori : "oui",
-              adresse : {
-                rue : "4 avenue du général",
-                ville : "Nancy",
-                code_postal : "54000"
-              },
-              Entrée : [
-                {
-                  id : 1,
-                  nom : "Entrée 1",
-                  img : "entree1_Mauricette.jpg",
-                  description : "Description de l'entrée 1",
-                  price : 15,
-                },
-                {
-                  id : 2,
-                  nom : "Entrée 2",
-                  img : "entree2_Mauricette.jpg",
-                },
-                {
-                  id : 3,
-                  nom : "Entrée 3",
-                  img : "entree3_Mauricette.jpg",
-                },
-                {
-                  id : 4,
-                  nom : "Entrée 4",
-                  img : "entree4_Mauricette.jpg",
-                },
-                {
-                  id : 5,
-                  nom : "Entrée 5",
-                  img : "entree5_Mauricette.jpg",
-                },
-              ],
-              Menu : [
-                {
-                  nom : "Menu 1",
-                  img : "menu1_Mauricette.jpg",
-                },
-                {
-                  nom : "Menu 2",
-                  img : "menu2_Mauricette.jpg",
-                },
-                {
-                  nom : "Menu 3",
-                  img : "menu3_Mauricette.jpg",
-                },
-                {
-                  nom : "Menu 4",
-                  img : "menu4_Mauricette.jpg",
-                },
-                {
-                  nom : "Menu 5",
-                  img : "menu5_Mauricette.jpg",
-                },
-              ],
-              Dessert : [
-                {
-                  nom : "Dessert 1",
-                  img : "dessert1_Mauricette.jpg",
-                },
-                {
-                  nom : "Dessert 2",
-                  img : "dessert2_Mauricette.jpg",
-                },
-                {
-                  nom : "Dessert 3",
-                  img : "dessert3_Mauricette.jpg",
-                },
-                {
-                  nom : "Dessert 4",
-                  img : "dessert4_Mauricette.jpg",
-                },
-                {
-                  nom : "Dessert 5",
-                  img : "dessert5_Mauricette.jpg",
-                },
-              ],
-            },
-      },
+      detailsMenu: [],
+      DisplayItemsRequired: false,
+      DisplayItemsOptional: false,
+      menuName: '',
+      menuDescription: '',
+      menuPrice: '',
+      id: '',
+      restaurantName: '',
     }),
-    methods: {
+     methods: {
+       RetourRestaurant(id)
+       {
+         this.$router.push({ name: 'menu', params: { restaurantId: id }});
+       },
+     },
+     mounted() {
+       console.log(this.$route.params.restaurantId),
+       console.log(this.$route.params.menuId);
+       this.id = this.$route.params.restaurantId;
 
-    }
+           RestaurantService.getDetailsMenu(this.$route.params.menuId, this.$route.params.restaurantId).then(
+           response => {
+             this.detailsMenu = response.data;
+             console.log(this.detailsMenu.id_required_items)
+             if ((this.detailsMenu.id_required_items) != "")
+             {
+               this.DisplayItemsRequired = true;
+             } else {
+               this.DisplayItemsRequired = false;
+             }
+             if ((this.detailsMenu.id_optional_items) != "")
+             {
+               this.DisplayItemsOptional = true;
+             } else {
+               this.DisplayItemsOptional = false;
+             }
+             this.menuName = this.detailsMenu.menu_name;
+             this.menuDescription = this.detailsMenu.menu_description;
+             this.menuPrice= this.detailsMenu.menu_price;
+           },
+           error => {
+             this.content =
+                 (error.response && error.response.data) ||
+                 error.message ||
+                 error.toString();
+           }
+       )
+     },
   }
 </script>
 
 <style>
-  .list-choice {
-    margin-left: 16%;
-    width: 20%;
-    border-right : 1px dashed black;
-  }
   .div-container {
     display : flex; 
   }
   .div-menu-item {
     margin-left: 18%;
     display: flex;
+    width: 100%;
   }
   .description-item {
     margin-left: 5%;
     margin-top: 3%;
+    width: 50%;
   }
   .v-image__image {
     border-radius: 18px;

@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+  <v-container>
       <v-row justify="space-around" class="list-meals pa-1">
         <v-col
           cols="12"
@@ -7,7 +7,6 @@
           md="12"
         >
           <v-sheet
-            elevation="10"
             class="py-4 px-1"
           >
             <v-chip-group
@@ -48,7 +47,7 @@
                   :src="require(`../assets/restaurant/restaurant-1.jpg`)"
                   height="150px"
                   class="pa-2"
-                  @click="DetailsRestaurant(item._id)"
+                  @click="DetailsRestaurant(item._id, item.restaurant_name)"
                 >
                   <v-btn
                     icon
@@ -135,10 +134,9 @@ import RestaurantService from '../services/restaurant.service';
       },
     },
    methods: {
-     DetailsRestaurant(id)
+     DetailsRestaurant(id, name)
      {
-       this.$router.push({ name: 'menu', params: { restaurantId: id }});
-      // console.log(this.$route.params.restaurantId)
+       this.$router.push({ name: 'menu', params: { restaurantId: id, restaurantName: name }});
      }
    },
   }
@@ -146,10 +144,10 @@ import RestaurantService from '../services/restaurant.service';
 
 <style>
   .pa-1 {
-    margin-left: 8%;
+
   } 
   .pa-restaurant {
-    margin-left: 17%;
+
   }
   .title-name {
     width: 100%;
@@ -168,7 +166,6 @@ import RestaurantService from '../services/restaurant.service';
     margin-bottom: 2%;
   }
   .list-meals {
-    margin-left: 15%;
     height: 180px;
   }
   /* .chip-group-class {

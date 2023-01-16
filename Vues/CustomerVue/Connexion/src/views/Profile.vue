@@ -9,7 +9,7 @@
             required
         ></v-text-field>
         <v-text-field
-            v-model="lastName"
+            v-model="surname"
             :rules="lastNameRules"
             label="Nom"
             required
@@ -25,13 +25,6 @@
             :rules="addressRules"
             label="Adresse"
             required
-        ></v-text-field>
-        <v-text-field
-            v-model="password"
-            :rules="passwordRules"
-            label="Mot de passe"
-            required
-            type="password"
         ></v-text-field>
       </div>
       <div class="button-enregistrer">
@@ -60,16 +53,12 @@
       addressRules: [
         v => !!v || "L'adresse est obligatoire"
       ],
-      passwordRules: [
-        v => !!v || 'Le mot de passe est obligatoire',
-        v => (v && v.length >= 8) || 'Le mot de passe doit contenir au moins 8 caractères.'
-      ],
     }),
     methods: {
       validateInfoProfil () {
         if(this.$refs.profilForm.validate()) {
             this.$router.push('/updateUser/11', {
-              name: this.lastName,
+              name: this.surname,
               email: this.email,
             });
         }
@@ -87,12 +76,12 @@
           this.currentUser.name = value;
         }
       },
-      lastName: {
+      surname: {
         get() {
-          return this.currentUser.lastName;
+          return this.currentUser.surname;
         },
         set(value) {
-          this.currentUser.lastName = value;
+          this.currentUser.surname = value;
         }
       },
       email: {
@@ -111,14 +100,6 @@
           this.currentUser.address = value;
         }
       },
-      password: {
-        get() {
-          return this.currentUser.password;
-        },
-        set(value) {
-          this.currentUser.password = value;
-        }
-      }
     },
     mounted() {
       if (!this.currentUser) {

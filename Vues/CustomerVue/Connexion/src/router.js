@@ -63,6 +63,16 @@ export const router = new Router({
                 showNavBar : 'true',
                 showBanner : 'true',
             },
+        },
+        {
+            path: '/details',
+            name: 'details',
+            component: () => import('./App.vue'),
+            props: {
+                showDetailsItems: 'true',
+                showNavBar : 'true',
+                showBanner : 'true',
+            },
         }
     ]
 });

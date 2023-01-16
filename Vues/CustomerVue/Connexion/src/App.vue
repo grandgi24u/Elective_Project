@@ -1,6 +1,14 @@
 <template>
   <v-app>
-    <div id="app">
+    <div id="app" class="app">
+      <Sidebar
+          @MenuRestaurants="RestaurantsView"
+          @MenuFavorite="FavoriteView"
+          @OrdersVue="OrdersView"
+          v-if="showBanner">
+      </Sidebar>
+    <main>
+
   <!--  <v-app-bar
         color="deep-purple accent-4"
         dense
@@ -24,16 +32,11 @@
 
         <router-view/>
 
-        <Banner
-            @MenuRestaurants="RestaurantsView"
-            @MenuFavorite="FavoriteView"
-            @OrdersVue="OrdersView"
-            v-if="showBanner">
-        </Banner>
+
+
         <NavBar
             v-if="showNavBar"
             @ShowChange="ShowHamper"
-            @ResearchRestaurant="DisplayResearchRestaurant"
             v-bind:showResearchRestaurant="showResearchRestaurant"
             v-bind:showLabelProfile="showLabelProfile"
             v-bind:showLabelHamper="showLabelHamper"
@@ -59,7 +62,6 @@
         </DetailsRestaurants>
         <DetailsItems
             v-if="showDetailsItems"
-            v-bind:itemId="item"
             @RetourDetailsRestaurants="DisplayDetailsRestaurants">
         </DetailsItems>
         <Profile
@@ -71,12 +73,13 @@
         <DetailsHamper
             v-if="showDetailsHamper">
         </DetailsHamper>
+      </main>
     </div>
   </v-app>
 </template>
 
 <script>
-import Banner from './views/Banner';
+//import Banner from './views/Banner';
 import NavBar from './views/Nav-bar';
 import Restaurants from './views/Restaurants';
 import Favorite from './views/Favorite';
@@ -86,10 +89,11 @@ import Hamper from './views/Hamper';
 import Profile from './views/Profile';
 import Orders from './views/Orders';
 import DetailsHamper from './views/Details-hamper';
+import Sidebar from "./components/Sidebar.vue";
 
 export default {
   components: {
-    Banner,
+    //Banner,
     NavBar,
     Restaurants,
     Favorite,
@@ -99,6 +103,7 @@ export default {
     DetailsItems,
     Orders,
     DetailsHamper,
+    Sidebar,
   },
   props: ['showBanner',
           'showNavBar',
@@ -108,10 +113,10 @@ export default {
           'showProfile',
           'showLabelProfile',
           'showResearchRestaurant',
-          'showDetailsRestaurants'],
+          'showDetailsRestaurants',
+          'showDetailsItems'],
   data: () => ({
     showFavorite: false,
-    showDetailsItems: false,
     showHamper: false,
     showLabelHamper: false,
     showDetailsHamper: false,
@@ -129,22 +134,18 @@ export default {
     },
     RestaurantsView() {
       this.showFavorite = false;
-      this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
     FavoriteView() {
       this.showFavorite = true;
-      this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
     DetailsRestaurantView() {
       this.showFavorite = false;
-      this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
     OrdersView() {
       this.showFavorite = false;
-      this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
     ShowHamper()
@@ -153,27 +154,19 @@ export default {
     },
     DetailsItemsView(id)
     {
-      this.showDetailsItems = true;
       this.showDetailsHamper = false;
       this.item = id ;
-     // this.restaurantName = restaurant;
     },
     DisplayDetailsRestaurants()
     {
-      this.showDetailsItems = false;
       this.showDetailsHamper = false;
-      //this.restaurantName = restaurant;
     },
     DisplayDetailsHamper()
     {
       this.showFavorite = false;
-      this.showDetailsItems = false;
       this.showDetailsHamper = true;
       this.showLabelHamper = true;
       this.showHamper = false;
-    },
-    DisplayResearchRestaurant() {
-
     },
     handleSearchValue(value) {
       this.searchValueRestaurants = value;
@@ -183,8 +176,40 @@ export default {
 };
 </script>
 
-<style>
-.container {
-  max-width: none;
+<style lang="scss">
+  :root {
+    --primary: #73A8E7;
+    --primary-alt: #22c55e;
+    --grey: #64748b;
+    --dark: #1e293b;
+    --dark-alt: #334155;
+    --light: #f1f5f9;
+    --sidebar-width: 300px;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Fira sans', sans-serif;
+  }
+  body {
+    background: var(--light);
+  }
+  button {
+    cursor: pointer;
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
+  }
+.app {
+  display: flex;
+  main {
+    flex: 1 1 0;
+    @media (max-width: 1024px) {
+      padding-left: 5rem;
+      width: 100%;
+    }
+  }
 }
 </style>
