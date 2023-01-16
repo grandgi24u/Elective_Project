@@ -13,7 +13,7 @@
               <v-list-item
                 v-for="(item, i) in menuLists"
                 :key="i"
-                @click="ViewChoice()"
+                @click="ViewChoice(item.name)"
               >
                 <v-list-item-icon>
                   <v-icon></v-icon>
@@ -108,10 +108,16 @@ import RestaurantService from '../services/restaurant.service';
       {
         this.$router.push({ name: 'details', params: { restaurantId: id, menuId: menuId }});
       },
-      ViewChoice()
+      ViewChoice(name)
       {
-        this.displayMenus = !this.displayMenus;
-        this.displayItems = !this.displayItems;
+        if (name == "Menu")
+        {
+          this.displayMenus = true;
+          this.displayItems = false;
+        } else {
+          this.displayMenus = false;
+          this.displayItems = true;
+        }
       },
       RetourTousRestaurants()
       {

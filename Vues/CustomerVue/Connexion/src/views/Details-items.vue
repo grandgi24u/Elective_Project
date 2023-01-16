@@ -4,7 +4,9 @@
         <v-btn icon  @click="RetourRestaurant(id)">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
+
         <img class="logo-item" src="../assets/repas/entree1_Mauricette.jpg">
+
         <div class="description-item">
          <v-list-item-content>
             <v-list-item-title><strong>{{menuName}}</strong></v-list-item-title>
@@ -19,7 +21,7 @@
           <v-divider></v-divider>
 
           <div v-if="DisplayItemsRequired">
-            Items obligatoires:
+            Composé de :
             <v-list-item
                 v-for="item in detailsMenu.id_required_items"
                 :key="item.id"
@@ -34,7 +36,7 @@
           </div>
 
           <div v-if="DisplayItemsOptional">
-            Items optionels:
+            Possibilité d'ajouter :
             <v-list-item
                 v-for="item in detailsMenu.id_optional_items"
                 :key="item.id"
@@ -45,20 +47,31 @@
               <v-list-item-content>
                 <v-list-item-title>{{item.item_description}}</v-list-item-title>
               </v-list-item-content>
+              <v-list-item-content style="padding-left: 10px">
+                  <v-checkbox v-model="item.id" label="Je veux"></v-checkbox>
+              </v-list-item-content>
             </v-list-item>
+
+            <v-list-item style="display:flex">
+              <v-list-item-content>
+                <v-list-item-title>
+                  <strong>Quantité :</strong>
+                </v-list-item-title>
+                <v-list-item-title>
+                  <v-text-field
+                      solo
+                      hide-details
+                      type="number"
+                      step="1"
+                      min="0"
+                      v-model.number="number"
+                      class="text-field-quantity"
+                      v-model="quantityMenu"/>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
           </div>
-          <!-- <v-row>
-             <v-col
-                 v-for="item in detailsMenu"
-                 :key="item.id"
-                 cols="12"
-                 md="4"
-             >
-               <div class="title-name">
-                 {{item.menu_name}}
-               </div>
-             </v-col>
-           </v-row>-->
 
           <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
             <v-btn @click="$emit('AddToHamper')">Ajouter à mon panier</v-btn>
@@ -77,6 +90,7 @@
      'menuId'],
     data: () => ({
       detailsMenu: [],
+      number: 0,
       DisplayItemsRequired: false,
       DisplayItemsOptional: false,
       menuName: '',
@@ -148,7 +162,8 @@
     margin-left: 6%;
     margin-top: 3%;
   }
-  .d-flex {
-    margin-top: 15%;
+  .text-field-quantity {
+    background-color: #D4D4D4;
+    width: 15%;
   }
 </style>

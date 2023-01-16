@@ -2,7 +2,7 @@
  <v-card>
   <v-toolbar class="toolbar" color="#D4D4D4" fixed>
 
-    <img class="logo" src="../assets/logo-cesi-eat.png" height="76%" >
+    <img class="logo" src="../assets/logo-cesi-eat.png" @click="RetourTousRestaurants()" height="76%" >
 
     <v-spacer></v-spacer>
 
@@ -41,18 +41,23 @@
       emitSearchValue() {
         this.$emit('search-value-changed', this.searchValueRestaurants);
       },
+      RetourTousRestaurants()
+      {
+        this.$router.push('/restaurants');
+      }
+
     }
   }
 </script>
 
 <style>
-.title {
-  text-align: center;
-}
-.toolbar {
+  .title {
+    text-align: center;
+  }
+  .toolbar {
 
-}
-.logo {
-  margin-left: 2%;
-}
+  }
+  .logo {
+    margin-left: 2%;
+  }
 </style>
