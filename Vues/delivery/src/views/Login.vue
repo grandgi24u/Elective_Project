@@ -2,7 +2,7 @@
   <main>
     <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
       <div>
-        <v-tabs v-model="tab" show-arrows background-color="#73A8E7 accent-4" icons-and-text dark grow>
+        <v-tabs v-model="tab" show-arrows background-color="#73A8E7" icons-and-text dark grow>
           <v-tabs-slider color="black"></v-tabs-slider>
           <v-tab class="nav-login" v-for="(val, i) in tabs" :key="i">
             <v-icon large>{{ val.icon }}</v-icon>
@@ -20,7 +20,7 @@
                       <v-text-field v-model="loginPassword" :append-icon="show1?'eye':'eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Mot de passe" hint="Il doit contenir au moins 5 caractères" counter @click:append="show1 = !show1"></v-text-field>
                     </v-col>
                     <v-col class="d-flex " align-center>
-                      <v-btn x-large block :disabled="!valid" color="#73A8E7" @click="validateLogin"> Valider </v-btn>
+                      <v-btn dark x-large block :disabled="!valid" color="#73A8E7" @click="validateLogin"> Valider </v-btn>
                     </v-col>
                   </v-row>
                 </v-form>
@@ -45,10 +45,13 @@
                       <v-text-field v-model="address" :rules="addressRules" label="Adresse" required></v-text-field>
                     </v-col>
                     <v-col cols="12">
+                      <v-text-field v-model="transport_type" label="Type de transport" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
                       <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Mot de passe" hint="Il doit contenir au moins 8 caractères" counter @click:append="show1 = !show1"></v-text-field>
                     </v-col>
                     <v-col class="d-flex">
-                      <v-btn x-large block :disabled="!valid" color="#73A8E7" @click="validateRegister">Créer mon compte</v-btn>
+                      <v-btn dark x-large block :disabled="!valid" color="#73A8E7" @click="validateRegister">Créer mon compte</v-btn>
                     </v-col>
                   </v-row>
                 </v-form>
@@ -82,6 +85,7 @@ export default {
     password: "",
     verify: "",
     loginPassword: "",
+    transport_type: "",
     loginEmail: "",
     loginEmailRules: [
       v => !!v || "Obligatoire",
@@ -112,7 +116,8 @@ export default {
           name: this.lastName,
           email: this.email,
           password: this.password,
-          address: this.address
+          address: this.address,
+          transport_type: this.transport_type
         }).then(
             () => {
               this.$router.push('/home');

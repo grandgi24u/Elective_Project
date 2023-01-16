@@ -108,6 +108,19 @@ const ROUTES = [
     },
 
     {
+        url: '/createDelivery',
+        middleware: [],
+        proxy: {
+            target: "http://localhost:7000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: (path, req)=> {
+                return path.replace(/^\/createDelivery/, '/delivery/createDelivery');
+            },
+        }
+    },
+
+    {
         url: '/getDelivery',
         middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isCustomerOrDelivery],
         proxy: {

@@ -4,7 +4,7 @@ import Delivery from '../models/delivery.model';
 exports.createDelivery = async (req, res) => {
     const delivery = new Delivery({
         transport_type: req.body.transport_type,
-        userId: req.query.userId
+        userId: req.body.userId
     });
     await delivery.save((err, delivery) => {
         if(err){

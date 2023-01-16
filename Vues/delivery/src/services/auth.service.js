@@ -18,8 +18,8 @@ class AuthService {
     logout() {
         localStorage.removeItem('user');
     }
-    register(user) {
-        return axios.post(API_URL + 'signup', {
+    async register(user) {
+        const data = await axios.post(API_URL + 'signup', {
             name: user.name,
             surname: user.surname,
             email: user.email,
@@ -27,7 +27,12 @@ class AuthService {
             password: user.password,
             roleId: 3
         }).then(response => {
-            return response.data;
+            return response;
+        });
+        return await axios.post(API_URL + 'createDelivery',
+            {transport_type: user.transport_type, userId: data.data.utilisateur.id}).then(response=>{
+            localStorage.setItem('delivery', JSON.stringify(response.data));
+            return response;
         });
     }
 }

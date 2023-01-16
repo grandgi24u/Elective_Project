@@ -9,7 +9,7 @@ const checkData = require('../middleware/checkData');
 
 router.get('/', controller.getDeliveries);
 router.get('/:id', controller.getDelivery)
-router.post('/', checkData.checkIfUserIdExist, controller.createDelivery);
+router.post('/createDelivery', checkData.checkIfUserIdExist, controller.createDelivery);
 router.delete('/:id', controller.deleteDelivery);
 router.patch('/:id', controller.updateDelivery);
 router.post('/:id/addOrder', controller.addOrder);
