@@ -17,6 +17,7 @@ exports.createRestaurant = async (req, res) => {
         food_type: req.body.food_type,
         userid: req.body.userid,
     });
+    console.log("MEH "+req);
     await restaurant.save((err) => {
         if(err){
             res.status(404).send({message: err});
