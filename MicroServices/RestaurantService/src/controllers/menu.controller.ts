@@ -54,12 +54,15 @@ exports.getMenu = async (req, res) => {
 }
 
 exports.updateAnMenu = async (req, res) => {
+    console.log(req.body);
     await Menu.findByIdAndUpdate(req.params.idMenu, req.body,
         (err) => {
             if (err) {
                 res.status(404).send({message: err});
             } else {
-                res.status(200).send({message: "Menu updated"});
+                Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').then((menu) => {
+                    res.status(200).json(menu);
+                });
             }
         });
 }
