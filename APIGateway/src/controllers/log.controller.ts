@@ -41,3 +41,34 @@ exports.getLogsByUser = (req, res) => {
         res.status(500).send({message: err.message});
     });
 }
+
+exports.getlast100LogsByUser = (req, res) => {
+    Log.findAll({
+        limit: 100,
+        order: [['createdAt', 'DESC']],
+        where: {
+            userId: req.params.id
+        },
+        attributes: ['action', 'createdAt']
+    }).then((logs) => {
+        res.status(200).send(logs);
+    }).catch((err) => {
+        res.status(500).send({message: err.message});
+    })
+}
+
+exports.getLastLogin = (req, res) => {
+    Log.findAll({
+        limit: 1,
+        order: [['createdAt', 'DESC']],
+        where: {
+            userId: req.params.id,
+            action: 'login'
+        },
+        attributes: ['createdAt']
+    }).then((logs) => {
+        res.status(200).send(logs);
+    }).catch((err) => {
+        res.status(500).send({message: err.message});
+    })
+}

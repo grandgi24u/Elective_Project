@@ -13,4 +13,6 @@ module.exports = (app) => {
     });
     app.get("/getLogs", authJwt.verifyToken, authJwt.isAdmin, controller.getLogs);
     app.get("/getLogsByUser/:id", authJwt.verifyToken, authJwt.isAdmin, controller.getLogsByUser);
+    app.get("/getlast100LogsByUser/:id", authJwt.verifyToken, authJwt.isAdmin, controller.getlast100LogsByUser);
+    app.get("/getLastLogin/:id", authJwt.verifyToken, authJwt.isAdmin, controller.getLastLogin);
 };

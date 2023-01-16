@@ -28,14 +28,23 @@ namespace ServiceAdministratif.Pages
             instance = this;
         }
 
-        private void InitTab(string li)
+        private void InitTab(string li, string li2)
         {
-            dgLogs.ItemsSource = JsonConvert.DeserializeObject<List<Log>>(li); 
+            dgLogs.ItemsSource = JsonConvert.DeserializeObject<List<Log>>(li);
+            List<Log> res = JsonConvert.DeserializeObject<List<Log>>(li2);
+            if(res.Count > 0)
+            {
+                lastLogin.Text = "Dernière connexion : " + res[0].CreatedAt;
+            }  else
+            {
+                lastLogin.Text = "Dernière connexion : jamais";
+            }
+            
         }
 
-        public static void InitialTab(string li)
+        public static void InitialTab(string li, string li2)
         {
-            instance.InitTab(li);
+            instance.InitTab(li, li2);
             MainWindow.ShowLog();
         }
 

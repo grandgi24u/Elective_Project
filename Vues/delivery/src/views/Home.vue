@@ -2,7 +2,6 @@
   <main>
     {{content}}
   </main>
-
 </template>
 
 <script>

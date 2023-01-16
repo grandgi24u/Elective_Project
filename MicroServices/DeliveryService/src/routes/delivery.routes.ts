@@ -8,7 +8,8 @@ const router = express.Router({ mergeParams: true });
 const checkData = require('../middleware/checkData');
 
 router.get('/', controller.getDeliveries);
-router.get('/:id', controller.getDelivery)
+router.get('/:id', controller.getDelivery);
+router.get('/getByUserId/:id', controller.getDeliveryByUserId)
 router.post('/createDelivery', checkData.checkIfUserIdExist, controller.createDelivery);
 router.delete('/:id', controller.deleteDelivery);
 router.patch('/:id', controller.updateDelivery);

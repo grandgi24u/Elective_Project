@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from "@/services/auth-header";
 const API_URL = 'http://localhost:4000/';
 class AuthService {
     login(user) {
@@ -11,6 +12,9 @@ class AuthService {
             .then(response => {
                 if (response.data.accessToken) {
                     localStorage.setItem('user', JSON.stringify(response.data));
+                    axios.get(API_URL + 'delivery/getByUserId/' + response.data.id, { headers: authHeader() }).then(response => {
+                        localStorage.setItem('delivery', JSON.stringify(response.data));
+                    });
                 }
                 return response.data;
             });

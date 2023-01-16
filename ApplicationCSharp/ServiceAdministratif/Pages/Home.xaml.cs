@@ -75,7 +75,7 @@ namespace ServiceAdministratif.Pages
         private void AskLog(object sender, RoutedEventArgs e)
         {
             User obj = ((FrameworkElement)sender).DataContext as User;
-            Logs.InitialTab(api.GetLogOfAnUser(obj));
+            Logs.InitialTab(api.GetLogOfAnUser(obj), api.GetLastLogin(obj));
         }
     }
 }

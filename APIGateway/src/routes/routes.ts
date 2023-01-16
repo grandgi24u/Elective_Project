@@ -32,7 +32,7 @@ const ROUTES = [
     },
     {
         url: '/getrestaurant',
-        middleware: [authJwt.verifyToken,logger.routeAccess , authJwt.isCustomerOrRestaurant],
+        middleware: [authJwt.verifyToken, logger.routeAccess , authJwt.isCustomerOrRestaurant],
         proxy: {
             target: "http://localhost:6000",
             onProxyReq: fixRequestBody,

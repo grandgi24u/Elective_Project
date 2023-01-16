@@ -31,6 +31,14 @@ exports.getDelivery = async (req, res) => {
     });
 }
 
+exports.getDeliveryByUserId = async (req, res) => {
+    await Delivery.find({userId: req.params.id}, (err, delivery) => {
+        if (err)
+            res.status(404).send(err);
+        res.status(200).json(delivery);
+    });
+}
+
 exports.getDeliveries = async (req, res) => {
     await Delivery.find((err, delivery) =>{
         if (err)

@@ -38,7 +38,7 @@
         </v-icon>
         <span class="text">En cours</span>
       </router-link>
-      <router-link to="/profile" class="button">
+      <router-link to="/history" class="button">
         <v-icon
             large
             class="material-icons">
