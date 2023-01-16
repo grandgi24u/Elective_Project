@@ -52,7 +52,7 @@ exports.updateUser = (req, res) => {
             user.email = req.body.email;
             user.address = req.body.address;
             user.save().then(() => {
-                res.status(200).send("Utilisateur mis à jour");
+                res.status(200).send(user);
             }).catch(err => {
                 res.status(500).send({erreur: err.message});
             });

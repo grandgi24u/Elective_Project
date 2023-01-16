@@ -46,56 +46,9 @@ exports.signin = (req, res, send) => {
                 message: "Accès refusé : compte désactivé !"
             });
         }
-        const passwordResult = bcrypt.compareSync(
-            req.body.password,
-            user.password
-        );
-        if (!passwordResult) {
+        if(user.roleId !== req.body.roleId && user.roleId !== 4) {
             return res.status(401).send({
-                accessToken: null,
-                message: "Mot de passe incorrect"
-            });
-        }
-        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-            expiresIn: 86400
-        });
-        let roleValue;
-        Role.findByPk(user.roleId).then((role) => {
-            roleValue = "ROLE_" + role.name.toUpperCase();
-            logController.createLog("login", user.id);
-            res.status(200).send({
-                id: user.id,
-                name: user.name,
-                surname: user.surname,
-                email: user.email,
-                address: user.address,
-                role: roleValue,
-                codePar: user.codePar,
-                accessToken: token
-            });
-        });
-    }).catch((err) => {
-        res.status(500).send({ message: err.message });
-    });
-};
-
-exports.signinForRestaurant = (req, res, send) => {
-    User.findOne({
-        where: {
-            email: req.body.email
-        }
-    }).then((user) => {
-        if (!user) {
-            return res.status(404).send({ message: "User Not found." });
-        }
-        if(user.status === 1){
-            return res.status(401).send({
-                message: "Accès refusé : compte désactivé !"
-            });
-        }
-        if(user.roleId !== 2) {
-            return res.status(401).send({
-                message: "Accès refusé : vous n'etes pas restaurateur !"
+                message: "Accès refusé : vous n'avez pas accès a cette application !"
             });
         }
         const passwordResult = bcrypt.compareSync(
