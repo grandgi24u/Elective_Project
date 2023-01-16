@@ -16,8 +16,7 @@ router.get('/:id',  checkAllData.checkIfOrderExist, controller.getOrder)
 router.post('/',    controller.createOrder);
 router.delete('/:id',  checkAllData.checkIfOrderExist, controller.deleteOrder);
 router.patch('/:id', checkAllData.checkIfOrderExist, controller.updateOrderStatus);
-router.patch('/:id/', checkAllData.checkIfOrderExist, controller.updateOrderPrice);
-
+router.patch('/:id/', checkAllData.checkIfOrderExist, checkAllData.checkOwner, controller.updateOrderPrice);
 
 router.use('/:id/item', itemRoute);
 router.use('/:id/menu', menuRoute);

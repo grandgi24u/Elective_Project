@@ -64,14 +64,17 @@ const ROUTES = [
 
     {
         url: '/getorder',
-        middleware: [authJwt.verifyToken, authJwt.isCustomer],
+        middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isCustomer],
         proxy: {
             target: "http://localhost:5000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
-            pathRewrite: {
-                [`^/getorder`]: '/order',
-            },
+            pathRewrite: (path, req)=> {
+                let newPath = path.replace(/^\/getorder/, '/order');
+                newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
+                console.log(newPath);
+                return newPath;
+            }
         }
     },
 
