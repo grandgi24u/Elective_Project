@@ -20,7 +20,7 @@ export const restaurantStore = {
         },
 
         createMenu({ commit }, menu) {
-            return  Menu.createMenu({name:menu.name, description:menu.description, price:menu.price}).then(
+            return Menu.createMenu({name: menu.name, description: menu.description, price: menu.price}).then(
                 response => {
                     commit('menu_success', response);
                     return Promise.resolve(response.data);
@@ -30,6 +30,32 @@ export const restaurantStore = {
                     return Promise.reject(error);
                 }
             );
+        },
+
+            editMenu({ commit }, menu) {
+                return Menu.editMenu({name: menu.name, description: menu.description, price: menu.price, id:menu.id}).then(
+                    response => {
+                        commit('menu_update_success', response);
+                        return Promise.resolve(response.data);
+                    },
+                    error => {
+                        commit('menu_failed');
+                        return Promise.reject(error);
+                    }
+                )
+        },
+
+        deleteMenu({ commit }, menu) {
+            return Menu.deleteMenu({id:menu.id}).then(
+                response => {
+                    commit('menu_delete', response);
+                    return Promise.resolve(response.data);
+                },
+                error => {
+                    commit('menu_failed');
+                    return Promise.reject(error);
+                }
+            )
         }
     },
     mutations: {
@@ -42,7 +68,18 @@ export const restaurantStore = {
         menu_success(state, menu) {
             state.menu.push(menu.data) ;
         },
+        menu_update_success(state, menu) {
+            //Voir pour enlever l'ancien car sinon doublon ancien/nouveau
+            state.menu.push(menu.data) ;
+        },
+
+        menu_delete(state) {
+            console.log(state);
+            //Voir pour remove l'item suppr
+        },
+
         menu_failed(state) {
-            state.menu = null;        }
+            state.menu = null;
+        },
     }
 };
