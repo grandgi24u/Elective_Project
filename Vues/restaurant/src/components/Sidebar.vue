@@ -38,7 +38,7 @@
             class="material-icons">
           mdi-silverware
         </v-icon>
-        <span class="text">Menus</span>
+        <span class="text">Carte</span>
       </router-link>
 
     </div>

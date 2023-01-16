@@ -45,6 +45,7 @@ exports.deleteItem = async (req, res) => {
         const menu = await Menu.findById(restaurant.id_menus[menu_id]).catch((err) => {
             res.status(500).send({message: err});
         });
+        console.log(menu);
         if(menu.id_required_items.includes(req.params.idItem)){
             await Menu.findByIdAndUpdate(menu._id, {$pull : {id_required_items:req.params.idItem}}).catch((err) => {
                 res.status(500).send({message: err});
