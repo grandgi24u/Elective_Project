@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
     <div>
-      <v-tabs v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
+      <v-tabs v-model="tab" show-arrows background-color="#73A8E7" icons-and-text dark grow>
         <v-tabs-slider color="black"></v-tabs-slider>
         <v-tab class="nav-login" v-for="(val, i) in tabs" :key="i">
           <v-icon large>{{ val.icon }}</v-icon>
@@ -22,7 +22,7 @@
                   </v-col>
                   <v-spacer></v-spacer>
                   <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                    <v-btn x-large block :disabled="!valid" color="success" @click="validateLogin"> Valider </v-btn>
+                    <v-btn dark x-large block :disabled="!valid" color="#73A8E7" @click="validateLogin"> Valider </v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -61,8 +61,8 @@
                   </v-col>
 
                   <v-spacer></v-spacer>
-                  <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-                    <v-btn x-large block :disabled="!valid" color="success" @click="validateRegister">Créer mon compte</v-btn>
+                  <v-col cols="12">
+                    <v-btn dark x-large block :disabled="!valid" color="#73A8E7" @click="validateRegister">Créer mon compte</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -127,7 +127,13 @@ export default {
     validateRegister() {
       if (this.$refs.registerForm.validate()) {
 
-        this.$store.dispatch('auth/register', {name:this.name, surname:this.surname, address:this.address,email: this.email, password: this.password, restaurant_name:this.restaurant_name, restaurant_description:this.restaurant_description, restaurant_food_type:this.restaurant_food_type})
+        this.$store.dispatch('auth/register', {name:this.name, surname:this.surname, address:this.address,email: this.email, password: this.password, restaurant_name:this.restaurant_name, restaurant_description:this.restaurant_description, restaurant_food_type:this.restaurant_food_type},
+            error => {
+              this.message =
+                  (error.response && error.response.data) ||
+                  error.message ||
+                  error.toString();
+            })
       }
     },
     validateLogin () {
@@ -161,7 +167,7 @@ label {
 }
 
 .card {
-  background-color: #f7f7f7;
+  background-color: var(--dark-alt);
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
   margin-top: 50px;

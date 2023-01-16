@@ -4,22 +4,21 @@ const API_URL = 'http://localhost:4000/';
 class AuthService {
     login(user) {
         return axios
-            .post(API_URL + 'signinforRestaurant', {
+            .post(API_URL + 'signin', {
                 email: user.email,
-                password: user.password
+                password: user.password,
+                roleId:2
             })
-            .then(response => {
+            .then(async response => {
                 if (response.data.accessToken) {
                     localStorage.setItem('user', JSON.stringify(response.data));
-                    console.log("USER "+response.data);
-                    console.log("USER ID "+response.data.id);
+                    await axios.get(API_URL + "getrestaurant/getById/" + response.data.id, { headers: authHeader() }).then( response => {
+                            localStorage.setItem('restaurant', JSON.stringify(response.data));
 
-                axios.get(API_URL + "getrestaurant/getById/" + response.data.id, { headers: authHeader() }).then( response => {
-                        localStorage.setItem('restaurant', JSON.stringify(response.data));
-                        console.log(localStorage.getItem('restaurant'));
-                })
+                    })
+                    return response.data;
                 }
-                return response.data;
+
             });
     }
     logout() {
@@ -35,19 +34,25 @@ class AuthService {
             password: user.password,
             roleId: 2
         }).then(response => {
-            return response.data;});
-        console.log(user);
-        return await axios.post(API_URL + 'createRestaurant', {
-            name:user.restaurant_name,
-            description:user.restaurant_description,
-            address:user.address,
-            food_type:user.restaurant_food_type,
-            userid:userid.utilisateur.id
-        }).then(response=>{
-            localStorage.setItem('restaurant', JSON.stringify(response.data));
-            return response;
-        });
-    }
+            return response});
+        console.log(userid);
+
+        if(userid.status===200){
+            return await axios.post(API_URL + 'createRestaurant', {
+                name:user.restaurant_name,
+                description:user.restaurant_description,
+                address:user.address,
+                food_type:user.restaurant_food_type,
+                userid:userid.data.utilisateur.id
+            }).then(response=>{
+                localStorage.setItem('restaurant', JSON.stringify(response.data));
+                return response;
+            });
+        } else {
+            return userid;
+        }
+        }
+
 }
 
 export default new AuthService();

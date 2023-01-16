@@ -27,7 +27,11 @@ exports.signup = async (req, res, send) => {
         redirect: 'follow'
     }).then((data) => data.json())
         .then(result => {
-            res.status(200).send(result)
+            if(result.message === "L'email existe déjà") {
+                res.status(400).send(result)
+            } else {
+                res.status(200).send(result)
+            }
         })
         .catch(error => res.status(500).send(error));
 };

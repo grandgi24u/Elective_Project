@@ -1,13 +1,17 @@
 <template>
-  <div class="container">
-    <div class="justify-center">
-      <h3>{{content}}</h3>
+  <main>
+    <div class="container">
+      <header class="jumbotron mb-8">
+        <h3>
+          <strong>Home</strong>
+        </h3>
+      </header>
     </div>
-  </div>
+  </main>
+
 </template>
 
 <script>
-import UserService from '../services/user.service';
 
 export default {
   name: 'HomePage',
@@ -17,17 +21,7 @@ export default {
     };
   },
   mounted() {
-    UserService.getUsers().then(
-        response => {
-          this.content = response.data;
-        },
-        error => {
-          this.content =
-              (error.response && error.response.data) ||
-              error.message ||
-              error.toString();
-        }
-    );
+
   }
 };
 </script>

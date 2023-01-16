@@ -48,9 +48,7 @@ exports.getMenus = async (req, res) => {
 
 //Get a specific menu with all the items
 exports.getMenu = async (req, res) => {
-    await Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').then((err, menu) => {
-        if (err)
-            res.status(404).send({message: err});
+    await Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').then((menu) => {
         res.status(200).json(menu);
     });
 }

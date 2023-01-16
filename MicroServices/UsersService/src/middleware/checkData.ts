@@ -12,10 +12,10 @@ const checkIfEmailExist = (req, res, next) => {
         }
     }).then(user => {
         if (user) {
-            res.status(400).send({
+            return res.status(400).send({
                 message: "L'email existe déjà"
             });
-            return
+
         }
         next();
     });

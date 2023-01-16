@@ -1,27 +1,41 @@
 <template>
-  <div class="container">
-    <header class="jumbotron">
-      <h3>
-        <strong>{{currentUser.name}}</strong> Profile
-      </h3>
-    </header>
-    <p>
-      <strong>Id:</strong>
-      {{currentUser.id}}
-    </p>
-    <p>
-      <strong>Email:</strong>
-      {{currentUser.email}}
-    </p>
-    <p>
-    <strong>Address:</strong>
-      {{currentUser.address}}
-    </p>
-    <p>
-      <strong>Restaurant name:</strong>
-      {{currentRestaurant.name}}
-    </p>
-  </div>
+    <main>
+      <div class="container">
+        <header class="jumbotron mb-8">
+          <h3>
+            <strong>{{currentRestaurant.restaurant_name}}</strong> Profile
+          </h3>
+        </header>
+        <p>
+          <strong>Identifiant:</strong>
+          {{currentUser.id}}
+        </p>
+        <p>
+          <strong>Prénom, nom:</strong>
+          {{currentUser.surname}} {{currentUser.name}}
+        </p>
+        <p>
+          <strong>Email:</strong>
+          {{currentUser.email}}
+        </p>
+        <p>
+          <strong>Address:</strong>
+          {{currentUser.address}}
+        </p>
+        <p>
+          <strong>Nom du restaurant:</strong>
+          {{currentRestaurant.restaurant_name}}
+        </p>
+        <p>
+          <strong>Description du Restaurant:</strong>
+          {{currentRestaurant.restaurant_description}}
+        </p>
+        <p>
+          <strong>Type:</strong>
+          {{currentRestaurant.food_type}}
+        </p>
+      </div>
+    </main>
 </template>
 
 <script>
@@ -31,8 +45,9 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
+
     currentRestaurant() {
-      return this.$store.state.auth.restaurant;
+      return JSON.parse(localStorage.getItem('restaurant'));
     }
   },
   mounted() {

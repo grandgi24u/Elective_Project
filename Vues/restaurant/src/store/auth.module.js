@@ -1,9 +1,10 @@
 import AuthService from '../services/auth.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
+
 const initialState = user
     ? { status: { loggedIn: true }, user }
-    : { status: { loggedIn: false }, user: null };
+    : { status: { loggedIn: false }, user: null};
 
 export const auth = {
     namespaced: true,
@@ -39,10 +40,9 @@ export const auth = {
         }
     },
     mutations: {
-        loginSuccess(state, user,restaurant) {
+        loginSuccess(state, user) {
             state.status.loggedIn = true;
             state.user = user;
-            state.restaurant = restaurant;
         },
         loginFailure(state) {
             state.status.loggedIn = false;
