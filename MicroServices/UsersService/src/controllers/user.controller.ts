@@ -32,9 +32,23 @@ exports.deleteUser = (req, res) => {
     });
 }
 
-//TODO
 exports.updateUser = (req, res) => {
-    res.status(200).send("User updated");
+    const userId = req.params.id;
+    User.findByPk(userId).then(user => {
+        if (user) {
+            user.name = req.body.name;
+            user.surname = req.body.surname;
+            user.email = req.body.email;
+            user.address = req.body.address;
+            user.save().then(() => {
+                res.status(200).send("Utilisateur mis à jour");
+            }).catch(err => {
+                res.status(500).send({erreur: err.message});
+            });
+        } else {
+            res.status(404).send({message : "Utilisateur non trouvé"});
+        }
+    });
 }
 
 exports.getUser = (req, res) => {
