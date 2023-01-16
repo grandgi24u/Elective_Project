@@ -110,11 +110,6 @@ export default {
   methods: {
     validateRegister() {
       if (this.$refs.registerForm.validate()) {
-        console.log("Nom :", this.firstName);
-        console.log("Prénom :", this.lastName);
-        console.log("Mail :", this.email);
-        console.log("Adresse :", this.address);
-        console.log("Mot de passe :", this.password);
         this.$store.dispatch('auth/register', {
           surname: this.firstName,
           name: this.lastName,
@@ -136,7 +131,7 @@ export default {
     },
     validateLogin () {
       if(this.$refs.loginForm.validate()) {
-        this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword}).then(
+        this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword, roleId: 1}).then(
             () => {
               this.$router.push('/restaurants');
             },

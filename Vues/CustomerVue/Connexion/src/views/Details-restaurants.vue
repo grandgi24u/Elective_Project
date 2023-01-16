@@ -5,7 +5,7 @@
             <v-list-item-group
               color="primary"
             >
-            <v-list-subheader>Bienvenue chez {{restaurant}}</v-list-subheader>
+            <v-list-subheader>Bienvenue chez {{restaurantName}}</v-list-subheader>
               <v-list-item
                 v-for="(item, i) in scroll"
                 :key="i"
@@ -24,21 +24,23 @@
       <div class="div-menu-restaurant">
         <v-row>
           <v-col
-            v-for="item in restaurants[restaurant][choice]"
+            v-for="item in detailsRestaurants"
             :key="item.id"
             cols="12"
             md="4"  
           >
-
+            <!-- v-for="item in restaurants[restaurant][choice]" -->
             <v-img
-              :src="require(`../assets/repas/${item.img}`)"
+                :src="require(`../assets/repas/menu1_Mauricette.jpg`)"
               height="150px"
               class="pa-2"
-              @click="$emit('DetailsItems', item.id, restaurant)"
             />
 
             <div class="title-name">
-              {{item.nom}}
+              {{item.menu_name}}
+            </div>
+            <div>
+              {{item.menu_description}}
             </div>
           </v-col>
         </v-row>
@@ -47,16 +49,15 @@
 </template>
 
 <script>
+import RestaurantService from '../services/restaurant.service';
+
  export default {
     name : "Details-Restaurant-vue",
-    props: {
-      restaurant: {
-        type: String,
-        required: true,
-      },
-    },
+    props: ['restaurantId'],
     data: () => ({
       choice : "Entrée",
+      restaurantName: '',
+      detailsRestaurants : [],
       restaurants: {
         Mauricette : 
         {
@@ -238,7 +239,36 @@
       ClickMenu(choice) {
         this.choice = choice;
       },
-    }
+    },
+   mounted() {
+      //console.log(this.$route.params.restaurantId)
+       RestaurantService.getMenus(this.$route.params.restaurantId).then(
+           response => {
+             this.detailsRestaurants = response.data;
+           },
+           error => {
+             this.content =
+                 (error.response && error.response.data) ||
+                 error.message ||
+                 error.toString();
+           }
+       ),
+
+       console.log("ok"),
+       RestaurantService.getRestaurantById(this.$route.params.restaurantId).then(
+           response => {
+             console.log("fonctionne"),
+             this.restaurantName = response.data;
+           },
+           error => {
+             console.log("fonctionne pas"),
+             this.content =
+                 (error.response && error.response.data) ||
+                 error.message ||
+                 error.toString();
+           }
+       );
+     },
   }
 </script>
 

@@ -45,7 +45,7 @@
       data: () => ({
         drawer: false,
         menuArray: [
-            { title: 'Restaurants', icon: 'mdi-food-fork-drink', fct: '/getrestaurant' },
+            { title: 'Restaurants', icon: 'mdi-food-fork-drink', fct: '/restaurants' },
             { title: 'Mes commandes', icon: 'mdi-baguette', fct: '/order' },
             { title: 'Mes coups de coeur', icon: 'mdi-heart', fct: '/favorite'  },
            // { title: 'Réglages', icon: 'mdi-cog', fct: '/reglages'  },

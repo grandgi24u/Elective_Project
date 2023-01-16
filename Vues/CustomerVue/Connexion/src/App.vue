@@ -27,7 +27,6 @@
         <Banner
             @MenuRestaurants="RestaurantsView"
             @MenuFavorite="FavoriteView"
-            @ProfileVue="ProfileView"
             @OrdersVue="OrdersView"
             v-if="showBanner">
         </Banner>
@@ -56,13 +55,11 @@
         </Favorite>
         <DetailsRestaurants
             v-if="showDetailsRestaurants"
-            v-bind:restaurant="restaurantName"
             @DetailsItems="DetailsItemsView">
         </DetailsRestaurants>
         <DetailsItems
             v-if="showDetailsItems"
             v-bind:itemId="item"
-            v-bind:restaurant="restaurantName"
             @RetourDetailsRestaurants="DisplayDetailsRestaurants">
         </DetailsItems>
         <Profile
@@ -103,10 +100,17 @@ export default {
     Orders,
     DetailsHamper,
   },
-  props: ['showBanner', 'showNavBar', 'showRestaurants', 'showLogin', 'showOrders', 'showProfile', 'showLabelProfile', 'showResearchRestaurant'],
+  props: ['showBanner',
+          'showNavBar',
+          'showRestaurants',
+          'showLogin',
+          'showOrders',
+          'showProfile',
+          'showLabelProfile',
+          'showResearchRestaurant',
+          'showDetailsRestaurants'],
   data: () => ({
     showFavorite: false,
-    showDetailsRestaurants: false,
     showDetailsItems: false,
     showHamper: false,
     showLabelHamper: false,
@@ -125,33 +129,21 @@ export default {
     },
     RestaurantsView() {
       this.showFavorite = false;
-      this.showDetailsRestaurants = false;
       this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
     FavoriteView() {
       this.showFavorite = true;
-      this.showDetailsRestaurants = false;
       this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
-    DetailsRestaurantView(name) {
-      this.showDetailsRestaurants = true;
+    DetailsRestaurantView() {
       this.showFavorite = false;
       this.showDetailsItems = false;
       this.showDetailsHamper = false;
-      this.restaurantName = name;
-    },
-    ProfileView() {
-      this.showFavorite = false;
-      this.showDetailsRestaurants = false;
-      this.showDetailsItems = false;
-      this.showDetailsHamper = false;
-      this.showLabelHamper = false;
     },
     OrdersView() {
       this.showFavorite = false;
-      this.showDetailsRestaurants = false;
       this.showDetailsItems = false;
       this.showDetailsHamper = false;
     },
@@ -159,25 +151,22 @@ export default {
     {
       this.showHamper = !this.showHamper;
     },
-    DetailsItemsView(id, restaurant)
+    DetailsItemsView(id)
     {
-      this.showDetailsRestaurants = false;
       this.showDetailsItems = true;
       this.showDetailsHamper = false;
       this.item = id ;
-      this.restaurantName = restaurant;
+     // this.restaurantName = restaurant;
     },
-    DisplayDetailsRestaurants(restaurant)
+    DisplayDetailsRestaurants()
     {
-      this.showDetailsRestaurants = true;
       this.showDetailsItems = false;
       this.showDetailsHamper = false;
-      this.restaurantName = restaurant;
+      //this.restaurantName = restaurant;
     },
     DisplayDetailsHamper()
     {
       this.showFavorite = false;
-      this.showDetailsRestaurants = false;
       this.showDetailsItems = false;
       this.showDetailsHamper = true;
       this.showLabelHamper = true;

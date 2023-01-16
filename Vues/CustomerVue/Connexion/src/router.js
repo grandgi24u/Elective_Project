@@ -46,7 +46,6 @@ export const router = new Router({
         {
             path: '/profile',
             name: 'profile',
-            // lazy-loaded
             component: () => import('./App.vue'),
             props: () => ({
                 showProfile: 'true',
@@ -54,6 +53,16 @@ export const router = new Router({
                 showBanner : 'true',
                 showLabelProfile : 'true',
             })
+        },
+        {
+            path: '/menu',
+            name: 'menu',
+            component: () => import('./App.vue'),
+            props: {
+                showDetailsRestaurants: 'true',
+                showNavBar : 'true',
+                showBanner : 'true',
+            },
         }
     ]
 });

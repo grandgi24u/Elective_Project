@@ -35,78 +35,51 @@
         multiple
       >
       <v-divider class="divider-menu"></v-divider>
-        <v-row>
-          <v-col
-            v-for="item in filteredItems"
-            :key="item.id"
-            cols="12"
-            md="4"  
-          >
-            <v-item v-slot="{ active, toggle }" class="pa-3">
-              <v-img
-                :src="require(`../assets/restaurant/${item.src}`)"
-                height="150px"
-                class="pa-2"
-                @click="$emit('DetailsRestaurant', item.name)"
-              >
-                <v-btn
-                  icon
-                  dark
-                  class="btn-like"
+        <v-form ref="loginForm" lazy-validation>
+          <v-row>
+            <v-col
+              v-for="item in filteredItems"
+              :key="item.id"
+              cols="12"
+              md="4"
+            >
+              <v-item v-slot="{ active, toggle }" class="pa-3">
+                <v-img
+                  :src="require(`../assets/restaurant/restaurant-1.jpg`)"
+                  height="150px"
+                  class="pa-2"
+                  @click="DetailsRestaurant(item._id)"
                 >
-                  <v-icon
-                    @click="toggle">
-                      {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
-                  </v-icon>
-                </v-btn>
-              </v-img>
-            </v-item>
-            <div class="title-name">
-              {{item.name}}
-            </div>
-          </v-col>
-        </v-row>
+                  <v-btn
+                    icon
+                    dark
+                    class="btn-like"
+                  >
+                    <v-icon
+                      @click="toggle">
+                        {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
+                    </v-icon>
+                  </v-btn>
+                </v-img>
+              </v-item>
+              <div class="title-name">
+                {{item.restaurant_name}}
+              </div>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-item-group>
     </v-container>
 </template>
 
 <script>
+import RestaurantService from '../services/restaurant.service';
+
  export default {
     name: "Restaurants-vue",
     props: ['searchValueRestaurants'],
     data: () => ({
-      items: [
-        {
-          id : 1,
-          name : "Mauricette",
-          src : "restaurant-1.jpg",
-        },
-        {
-          id : 2,
-          name : "Tourbinette",
-          src : "restaurant-2.jpg",
-        },
-        {
-          id : 3,
-          name : "Régalo",
-          src : "regalo.jpg",
-        },
-        {
-          id : 4,
-          name : "SushiTime",
-          src : "restaurant-3.jpg",
-        },
-        {
-          id : 5,
-          name : "Pompette",
-          src : "restaurant-4.jpg",
-        },
-        {
-          id : 6,
-          name : "Tartinette",
-          src : "restaurant-5.jpg",
-        },
-      ],
+      restaurants : [],
       meals: [
         {
           id : 1,
@@ -140,13 +113,34 @@
         },
       ],
     }),
+   mounted() {
+     RestaurantService.getRestaurants().then(
+         response => {
+            console.log(response.data);
+            this.restaurants = response.data;
+         },
+         error => {
+           this.content =
+               (error.response && error.response.data) ||
+               error.message ||
+               error.toString();
+         }
+     );
+   },
    computed: {
       filteredItems() {
-        return this.items.filter(item =>
-            item.name.toLowerCase().includes(this.searchValueRestaurants.toLowerCase())
+        return this.restaurants.filter(item =>
+            item.restaurant_name.toLowerCase().includes(this.searchValueRestaurants.toLowerCase())
         );
       },
-    }
+    },
+   methods: {
+     DetailsRestaurant(id)
+     {
+       this.$router.push({ name: 'menu', params: { restaurantId: id }});
+      // console.log(this.$route.params.restaurantId)
+     }
+   },
   }
 </script>
 
