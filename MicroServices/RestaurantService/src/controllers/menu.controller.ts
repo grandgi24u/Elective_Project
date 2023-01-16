@@ -18,7 +18,7 @@ exports.createMenu = async (req, res) => {
         if(err){
             res.status(500).send(err);
         }
-        res.status(200).send({message: "Menu created successfully"});
+        res.status(200).send(menu);
     });
     await bindMenu(req.params.id, menu._id);
 }

@@ -48,6 +48,7 @@
                           label="Prix*"
                           required
                           type="number"
+                          min="0"
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -100,8 +101,6 @@
 </template>
 
 <script>
-import Menu from "../services/menu.service"
-
 export default {
   name:"MenuPage",
   data(){
@@ -114,7 +113,8 @@ export default {
           value: 'menu_name'
         },
         { text: 'Description', value: 'menu_description' },
-        { text: 'Prix', value: 'menu_price' }
+        { text: 'Prix', value: 'menu_price' },
+        { text: 'Action', value: 'delete' }
       ],
       menus : [],
       name:"",
@@ -126,11 +126,15 @@ export default {
   methods:{
     create_menu() {
       this.dialog = false
-      console.log(this.name);
-      Menu.createMenu({name:this.name, description:this.description, price:this.price})
+      this.$store.dispatch('restaurantStore/createMenu',{name:this.name, description:this.description, price:this.price}).then(()=>{
+        this.menus = this.$store.state.restaurantStore.menu
+      });
     }
   },
   computed: {
+    currentMenus(){
+      return this.$store.state.restaurantStore.menu
+    },
     currentUser() {
       return this.$store.state.auth.user
     },
@@ -139,9 +143,9 @@ export default {
     }
   },
   mounted() {
-    Menu.getMenus().then(response=>{
-      this.menus = response.data
-    })
+    this.$store.dispatch('restaurantStore/getMenus').then(() => {
+      this.menus = this.$store.state.restaurantStore.menu
+    });
   }
 }
 </script>

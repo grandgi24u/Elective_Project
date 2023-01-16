@@ -66,10 +66,7 @@ exports.getRestaurantById = async (req, res) => {
 
 //Get one specific restaurant
 exports.getRestaurant = async (req, res) => {
-    await Restaurant.findById(req.params.id).populate('id_menus').then ((err, restaurant) => {
-        if (err) {
-            res.status(404).send({message: err});
-        }
+    await Restaurant.findById(req.params.id).populate('id_menus').then ((restaurant) => {
         res.status(200).json(restaurant);
     });
 }

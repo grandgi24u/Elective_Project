@@ -11,7 +11,6 @@ class MenuService {
 
     createMenu(menu) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
-        console.log(menu);
         return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu', {name: menu.name, description:menu.description, price:menu.price}, {headers: authHeader()});
     }
 }
