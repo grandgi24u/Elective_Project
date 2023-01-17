@@ -1,8 +1,11 @@
 // @ts-ignore
 import Order from "../models/order.model";
 
-exports.createMenu = (req, res) => {
-    bindMenu(req.params.id, req.body.menu_id)
+exports.createMenu = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {$addToSet : {id_menus:req.body.menu_id}});
+    Order.findById(req.params.id).then(order => {
+        res.status(200).send(order);
+    });
 }
 
 //Delete an item
@@ -13,15 +16,10 @@ exports.deleteMenu = async (req, res) => {
     }
     for (let menu_id in order.id_menus) {
         if (order.id_menus.includes(req.params.idMenu)) {
-            await Order.findByIdAndUpdate(order._id, {$pull: {id_menus: req.params.idMenu}}).catch((err) => {
-                res.status(500).send({message: err});
+            await Order.findByIdAndUpdate(order._id, {$pull: {id_menus: req.params.idMenu}});
+            Order.findById(req.params.id).then(order => {
+                res.status(200).send(order);
             });
         }
     }
-}
-
-const bindMenu = (idOrder, idMenu) => {
-    Order.findByIdAndUpdate(idOrder, {$push : {id_menus:idMenu}},(err) => {
-        return !err;
-    });
 }

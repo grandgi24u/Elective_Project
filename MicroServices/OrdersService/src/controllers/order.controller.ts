@@ -18,7 +18,6 @@ exports.createOrder = (req, res) => {
         deliveryId : "",
         restaurantId : req.body.restaurantId,
     });
-
     order.save((err) => {
         res.status(200).send(order);
     });
@@ -34,16 +33,13 @@ exports.deleteOrder = (req, res) => {
 }
 
 exports.getOrder = (req, res) => {
-    Order.findById(req.params.id).populate('id_menus').populate('id_items').then ((err, order) => {
-        if (err) {
-            res.status(500).send({message: err});
-        }
+    Order.findById(req.params.id).then(order => {
         res.status(200).send(order)
     });
 }
 
 exports.getOrders = (req, res) => {
-    Order.find((err, order) => {
+    Order.find().populate('id_menus').populate('id_items').then((err, order) => {
         if (err){
             res.status(500).send(err);
         }

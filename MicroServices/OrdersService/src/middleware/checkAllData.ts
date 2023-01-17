@@ -7,9 +7,7 @@ import Item from '../models/item.model';
 
 const checkIfOrderExist = (req, res, next) => {
     const OrderId = req.params.id;
-
     Order.find({_id:OrderId}, (err, order) => {
-        console.log(order);
         if (!order || order == ''){
             res.status(400).send({message: "Order not found"});
             return
