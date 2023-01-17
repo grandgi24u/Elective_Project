@@ -6,21 +6,19 @@ import Order from "../models/order.model";
 import Menu from "../models/menu.model";
 
 exports.createItem = (req, res) => {
-    const item = new Item();
-    item.item_name = req.body.name;
-    item.item_id = req.body.id;
-    item.item_quantity = req.body.quantity;
-    item.id_order = req.params.id;
-
+    const item = new Item({
+        item_name: req.body.item_name,
+        item_id: req.body.id,
+        item_quantity: req.body.quantity,
+        id_order: req.params.id,
+    });
     item.save((err) => {
         if(err){
-            res.send(err);
+            res.status(500).send(err);
         }
-
-        res.status(200).send({message: "Item created successfully"});
+        res.status(200).send(item);
     });
     bindItem(req.params.id, item._id)
-
     //If there is an id menu
     if(req.params.idMenu){
         //If there is required item
@@ -31,7 +29,6 @@ exports.createItem = (req, res) => {
         if (req.path.includes('/item_optional/')) {
             bind_Optional_Item_To_Menu(item._id,req.params.idMenu);
         }
-
     }
 }
 
@@ -75,24 +72,21 @@ exports.getItem = async (req, res) => {
     await Item.findById(req.params.idItem, (err, item) => {
         if (err)
             res.status(500).send(err);
-        res.status(200).json(item);
+        res.status(200).send(item);
     });
 }
 
 exports.getItems = (req, res) => {
     Item.find(function(err, users){
         if (err){
-            res.send(err);
+            res.status(500).send(err);
         }
-        res.json(users);
+        res.status(200).send(users);
     });
 }
 
 exports.updateAnItem = (req, res) => {
-    const ItemId = req.params.idItem;
-    const updates = req.body;
-
-    Item.findByIdAndUpdate(ItemId, updates,
+    Item.findByIdAndUpdate(req.params.idItem, req.body,
         (err) => {
             if (err) {
                 res.status(404).send({message: err});
@@ -107,7 +101,6 @@ const bindItem = (idOrder, idItem) => {
         return !err;
     });
 }
-
 
 const bind_Required_Item_To_Menu = (idItem, idMenu) => {
     Menu.findByIdAndUpdate(idMenu, {$push : {id_required_items:idItem}},(err) => {
