@@ -12,7 +12,7 @@ const OrderSchema = new Schema({
     order_date: Date,
     order_price: String,
     order_status: String,
-    id_menus: [{ type: Schema.Types.ObjectId, ref: 'menu' }],
+    id_menus: String,
     id_items: [{ type: Schema.Types.ObjectId, ref: 'item' }],
     userid: String,
     deliveryId: String,
