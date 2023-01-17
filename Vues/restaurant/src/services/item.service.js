@@ -10,8 +10,20 @@ class ItemService {
     }
 
     createItem(item) {
+        //1 = paq de menu
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
-        return axios.post(API_URL + 'restaurant/' + restaurant._id + '/item', {name: item.name, description:item.description, price:item.price}, {headers: authHeader()});
+        if(item.choice===1){
+            return axios.post(API_URL + 'restaurant/' + restaurant._id + '/item', {name: item.name, description:item.description, price:item.price}, {headers: authHeader()});
+        }
+        if(item.choice===2){
+            return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + item.menu_id + '/item_required/', {name: item.name, description:item.description, price:item.price}, {headers: authHeader()});
+        }
+
+        if(item.choice===3){
+            return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + item.menu_id + '/item_optional/', {name: item.name, description:item.description, price:item.price}, {headers: authHeader()});
+
+        }
+
     }
 
     editItem(item){

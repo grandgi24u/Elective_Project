@@ -46,7 +46,7 @@ export const restaurantStore = {
         },
 
         unbindOptionalItem({commit},to_unbind) {
-            return Menu.unbindRequiredItem({idMenu: to_unbind.menu._id, idItem:to_unbind.item_id}).then(
+            return Menu.unbindOptionalItem({idMenu: to_unbind.menu._id, idItem:to_unbind.item_id}).then(
                 message => {
                     commit('menu_unbind_optional_success',to_unbind);
                     return Promise.resolve(message);
@@ -56,6 +56,21 @@ export const restaurantStore = {
                     return Promise.reject(error);
                 }
             )
+        },
+        menu_bind_item({commit},data) {
+            data.requiredItem.forEach(item=>{
+                if(data.menu.id_required_items.includes(item._id)){
+                    data.requiredItem.splice(data.requiredItem.indexOf(item._id),1)
+                }
+            })
+            data.optionalItem.forEach(item=>{
+                if(data.menu.id_optional_items.includes(item._id)){
+                    data.optionalItem.splice(data.optionalItem.indexOf(item._id),1)
+                }
+            })
+            Menu.bindItem(data.requiredItem,data.optionalItem,data.menu._id)
+            commit('item_bind',data);
+            return Promise.resolve("Ok");
         },
 
         createMenu({commit}, menu) {
@@ -71,9 +86,9 @@ export const restaurantStore = {
             );
         },
         createItem({commit}, item) {
-            return Item.createItem({name: item.name, description: item.description, price: item.price}).then(
+            return Item.createItem({name: item.name, description: item.description, price: item.price, choice:item.choice, menu_id:item.menu_id}).then(
                 response => {
-                    commit('item_success', response);
+                    commit('item_success', {response : response, test : item });
                     return Promise.resolve(response.data);
                 },
                 error => {
@@ -160,7 +175,6 @@ export const restaurantStore = {
         menu_unbind_required_success(state,to_unbind) {
             const editedMenu = state.menu.find(x => x._id === to_unbind.menu._id);
             const deletedITem = editedMenu.id_required_items.find(x => x === to_unbind.item_id)
-            console.log(deletedITem);
             const index =editedMenu.id_required_items.indexOf(deletedITem);
             if (index !== -1) {
                 editedMenu.id_required_items.splice(index, 1);
@@ -169,7 +183,6 @@ export const restaurantStore = {
         menu_unbind_optional_success(state,to_unbind) {
             const editedMenu = state.menu.find(x => x._id === to_unbind.menu._id);
             const deletedITem = editedMenu.id_optional_items.find(x => x === to_unbind.item_id)
-            console.log(deletedITem);
             const index =editedMenu.id_optional_items.indexOf(deletedITem);
             if (index !== -1) {
                 editedMenu.id_optional_items.splice(index, 1);
@@ -179,7 +192,12 @@ export const restaurantStore = {
             state.item = item.data;
         },
         item_success(state, item) {
-            state.item.push(item.data);
+            state.item.push(item.response.data);
+            if(item.test.choice === 2) {
+                state.menu.find(x => x._id === item.test.menu_id).id_required_items.push(item.response.data._id)
+            } else if (item.test.choice === 3) {
+                state.menu.find(x => x._id === item.test.menu_id).id_optional_items.push(item.response.data._id)
+            }
         },
         item_failed(state) {
             state.item = null;
@@ -194,12 +212,34 @@ export const restaurantStore = {
             }
         },
         item_delete(state, item) {
+            state.menu.forEach(x => {
+                if(x.id_required_items.includes(item)){
+                    x.id_required_items.splice(x.id_required_items.indexOf(item),1)
+                }
+                if(x.id_optional_items.includes(item)){
+                    x.id_optional_items.splice(x.id_optional_items.indexOf(item),1)
+                }
+            })
+
             const removeItem = state.item.find(x => x._id === item);
             const index = state.item.indexOf(removeItem);
             if (index !== -1) {
                 state.item.splice(index, 1);
             }
-
         },
+
+        item_bind(state,data){
+
+            const menu = state.menu.find(x => x._id === data.menu._id)
+            data.requiredItem.forEach(item => {
+                console.log("Push requis");
+                menu.id_required_items.push(item._id)
+            })
+            data.optionalItem.forEach(item => {
+                menu.id_optional_items.push(item._id)
+                console.log("opt");
+            })
+
+        }
     }
 };
