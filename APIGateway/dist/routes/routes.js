@@ -74,14 +74,14 @@ const ROUTES = [
         }
     },
     {
-        url: '/getorder',
-        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess, middleware_1.authJwt.isCustomer],
+        url: '/order',
+        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess],
         proxy: {
             target: "http://localhost:5000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req) => {
-                let newPath = path.replace(/^\/getorder/, '/order');
+                let newPath = path.replace(/^\/order/, '/order');
                 newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
                 console.log(newPath);
                 return newPath;
@@ -90,7 +90,7 @@ const ROUTES = [
     },
     {
         url: '/gethistories',
-        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess, middleware_1.authJwt.isCustomer],
+        middleware: [middleware_1.authJwt.verifyToken, middleware_1.logger.routeAccess],
         proxy: {
             target: "http://localhost:5000",
             onProxyReq: fixRequestBody,
