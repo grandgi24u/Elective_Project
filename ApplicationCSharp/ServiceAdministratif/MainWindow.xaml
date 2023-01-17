@@ -21,6 +21,8 @@
         </Grid.ColumnDefinitions>
         <Rectangle Name="rect" Fill="#FF36688D" Margin="0,0,669,0" Width="140" VerticalAlignment="Stretch"/>
         <Button x:Name="btnHome" Content="Utilisateurs" Margin="19,27,689,417" Click="btnHome_Click" Style = "{StaticResource myButtonStyle}"></Button>
+        <Button x:Name="btnOrder" Content="Commandes" Margin="24,0,693,275" Click="btnOrder_Click" Style = "{StaticResource myButtonStyle}"></Button>
+
         <Button x:Name="btnLogin" Content="Connexion" Margin="19,405,689,39" Click="btnLogin_Click" Style = "{StaticResource myButtonStyle}"></Button>
         <Button x:Name="btnLogout" Content="Déconnexion" Margin="19,405,689,39" Click="btnLogout_Click" Style = "{StaticResource myButtonStyle}"></Button>
 
@@ -32,6 +34,7 @@
             <local1:Home x:Name="HomePage" Visibility="Collapsed" Grid.RowSpan="2"></local1:Home>
             <local1:Login x:Name="LoginPage" Grid.RowSpan="2"/>
             <local1:Logs x:Name="LogsPage" Visibility="Collapsed" Grid.RowSpan="2"></local1:Logs>
+            <local1:Order x:Name="OrderPage" Visibility="Collapsed" Grid.RowSpan="2"></local1:Order>
         </Grid>
         <Label Content="surname" x:Name="SurnameLabel" HorizontalAlignment="Left" Margin="24,365,0,0" VerticalAlignment="Top" Width="92" FontSize="12" Foreground="White"/>
         <Label Content="name" x:Name="NameLabel" HorizontalAlignment="Left" Margin="24,391,0,0" VerticalAlignment="Top" Width="92" FontSize="14" Foreground="White"/>

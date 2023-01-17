@@ -38,6 +38,7 @@ namespace ServiceAdministratif
                 btnLogin.Visibility = Visibility.Collapsed;
                 btnLogout.Visibility = Visibility.Visible;
                 btnHome.Visibility = Visibility.Visible;
+                btnOrder.Visibility = Visibility.Visible;
                 LoginPage.Visibility = Visibility.Collapsed;
                 HomePage.Visibility = Visibility.Visible;
                 
@@ -46,8 +47,10 @@ namespace ServiceAdministratif
                 LogsPage.Visibility = Visibility.Collapsed;
                 btnHome.Visibility = Visibility.Collapsed;
                 btnLogout.Visibility = Visibility.Collapsed;
+                btnOrder.Visibility = Visibility.Collapsed;
                 btnLogin.Visibility = Visibility.Visible;
                 HomePage.Visibility = Visibility.Collapsed;
+                OrderPage.Visibility = Visibility.Collapsed;
                 LoginPage.Visibility = Visibility.Visible;
             }
             FetchUserDetails();
@@ -96,12 +99,24 @@ namespace ServiceAdministratif
             LoginPage.Visibility = Visibility.Collapsed;
             HomePage.Visibility = Visibility.Visible;
             LogsPage.Visibility = Visibility.Collapsed;
+            OrderPage.Visibility = Visibility.Collapsed;
             Home.InitGridStatic();
+        }
+
+        private void btnOrder_Click(object sender, RoutedEventArgs e)
+        {
+            LoginPage.Visibility = Visibility.Collapsed;
+            HomePage.Visibility = Visibility.Collapsed;
+            LogsPage.Visibility = Visibility.Collapsed;
+            OrderPage.Visibility = Visibility.Visible;
+            Order.CallGrid();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             HomePage.Visibility = Visibility.Collapsed;
+            LogsPage.Visibility = Visibility.Collapsed;
+            OrderPage.Visibility = Visibility.Collapsed;
             LoginPage.Visibility = Visibility.Visible;
         }
 
