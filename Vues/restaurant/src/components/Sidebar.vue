@@ -41,14 +41,28 @@
         <span class="text">Carte</span>
       </router-link>
 
+      <router-link to="/order" class="button">
+        <v-icon
+            large
+            class="material-icons">
+          mdi-order-bool-descending-variant
+        </v-icon>
+        <span class="text">Commande</span>
+      </router-link>
     </div>
-
     <div class="flex"></div>
-
     <div class="menu" v-if="currentUser">
       <h3 class="text">
         {{currentRestaurant.restaurant_name}}
       </h3>
+      <router-link to="/log" class="button">
+        <v-icon
+            large
+            class="material-icons">
+          mdi-weather-cloudy-clock
+        </v-icon>
+        <span class="text">Log</span>
+      </router-link>
       <button @click.prevent="logOut" class="button">
         <v-icon
             large

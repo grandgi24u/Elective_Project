@@ -32,6 +32,19 @@ export const router = new Router({
             name: 'menu',
             // lazy-loaded
             component: () => import('./views/Menu.vue')
+        },
+        {
+            path: '/order',
+            name: 'order',
+            // lazy-loaded
+            component: () => import('./views/Order.vue')
+        },
+        {
+            path: '/log',
+            name: 'log',
+            // lazy-loaded
+            component: () => import('./views/Log.vue')
         }
+
     ]
 });
