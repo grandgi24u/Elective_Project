@@ -92,6 +92,19 @@ const ROUTES = [
     },
 
     {
+        url: '/gethistories',
+        middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isCustomer],
+        proxy: {
+            target: "http://localhost:5000",
+            onProxyReq: fixRequestBody,
+            changeOrigin: true,
+            pathRewrite: {
+                [`^/gethistories`]: '/histories',
+            },
+        }
+    },
+
+    {
         url: '/delivery',
         middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isDelivery],
         proxy: {

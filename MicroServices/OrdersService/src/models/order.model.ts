@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // @ts-ignore
 const today = new Date();
-
+// @ts-ignore
+const History = require('../models/history.model');
 
 // @ts-ignore
 const OrderSchema = new Schema({
@@ -13,7 +14,9 @@ const OrderSchema = new Schema({
     order_status: String,
     id_menus: [{ type: Schema.Types.ObjectId, ref: 'menu' }],
     id_items: [{ type: Schema.Types.ObjectId, ref: 'item' }],
-    userid: Number
+    userid: Number,
+    deliveryId: Number,
+    restaurantId: Number,
 })
 
 OrderSchema.path('order_date').validate(function (value) {

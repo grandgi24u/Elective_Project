@@ -9,13 +9,15 @@ const itemRoute = require("./item.routes");
 // @ts-ignore
 const menuRoute = require("./menu.routes");
 // @ts-ignore
+const historyRoute = require("./history.routes");
+// @ts-ignore
 const checkAllData = require('../middleware/checkAllData');
 
 router.get('/', controller.getOrders);
 router.get('/:id',  checkAllData.checkIfOrderExist, controller.getOrder)
 router.post('/',    controller.createOrder);
 router.delete('/:id',  checkAllData.checkIfOrderExist, controller.deleteOrder);
-router.patch('/:id', checkAllData.checkIfOrderExist, controller.updateOrderStatus);
+router.patch('/:id', checkAllData.checkIfOrderExist, checkAllData.checkStatusOrder, controller.updateOrderStatus);
 router.patch('/:id/', checkAllData.checkIfOrderExist, checkAllData.checkOwner, controller.updateOrderPrice);
 
 router.use('/:id/item', itemRoute);

@@ -16,6 +16,8 @@ app.get('/', (req, res) => {
 });
 const orderRoute = require("./routes/order.routes");
 app.use("/order", orderRoute);
+const historyRoute = require("./routes/history.routes");
+app.use("/histories", historyRoute);
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`);
 });

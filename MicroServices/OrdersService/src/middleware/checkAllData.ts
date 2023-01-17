@@ -83,6 +83,21 @@ const checkOwner = (req, res, next) => {
     });
 }
 
+const checkStatusOrder = (req, res, next) => {
+    const OrderId = req.params.id;
+
+    Order.find({_id:OrderId}, (err, order) => {
+        console.log(order);
+        if (!order || order.status == '5'){
+            order.history.push(order._id);
+            res.status(400).send({message: "Order close"});
+            return
+        }
+        next();
+    });
+}
+
+
 // @ts-ignore
 const checkAllData = {
     checkIfOrderExist:checkIfOrderExist,
@@ -90,6 +105,7 @@ const checkAllData = {
     checkIfItemExist:checkIfItemExist,
     checkIfItemBind:checkIfItemBind,
     checkOwner:checkOwner,
+    checkStatusOrder:checkStatusOrder,
 };
 
 module.exports = checkAllData;

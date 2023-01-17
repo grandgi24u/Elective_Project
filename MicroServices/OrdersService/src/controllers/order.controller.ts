@@ -4,6 +4,9 @@ import Order from '../models/order.model';
 import Menu from "../models/menu.model";
 // @ts-ignore
 import menu from "./menu.controller";
+// @ts-ignore
+import History from "../models/history.model";
+import mongoose from "mongoose";
 
 exports.createOrder = (req, res) => {
     const order = new Order();
@@ -11,6 +14,8 @@ exports.createOrder = (req, res) => {
     order.order_price = req.body.price;
     order.order_status = req.body.status;
     order.userid = req.query.userId;
+    order.deliveryId = "";
+    order.restaurantId = req.body.restaurantId;
 
     order.save(function(err){
         if(err){
@@ -55,7 +60,19 @@ exports.updateOrderStatus = (req, res) => {
 
     Order.findByIdAndUpdate(orderId, updates,
         (err, order) => {
-            if (err) {
+            if (req.body.order_status === "5") {
+                res.status(200).send({message: "Order push to histories"});
+                History.create({
+                    order_price: order.order_price,
+                    order_date: order.order_date,
+                    userid: order.userid,
+                    id_menus: order.id_menus,
+                    id_items: order.id_items,
+                    restaurantId: order.restaurantId,
+                    deliveryId: order.deliveryId,
+                })
+                order.remove({_id: req.params.id});
+            } else if (err) {
                 res.status(404).send({message: err});
             } else {
                 res.status(200).send({message: "Order updated"});
@@ -76,6 +93,5 @@ exports.updateOrderPrice = (req, res) => {
             }
         })
 }
-
 
 
