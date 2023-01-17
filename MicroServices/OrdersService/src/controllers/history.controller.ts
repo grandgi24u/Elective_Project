@@ -21,17 +21,15 @@ exports.getHistoryOrderById = async (req, res) => {
     });
 }
 
-exports.getHistoryOrderByUserId = (req, res) => {
-     History.findbyId(req.params.idHistory).populate('id_menus').populate('id_items').then ((history) => {
+//Get one specific restaurant by user id
+exports.getHistoryOrderByUserId = async (req, res) => {
+    await History.find({userid:req.params.idUser}).then ((history) => {
         res.status(200).json(history);
     });
 }
 
-exports.getHistoryOrderByRestaurantId = (req, res) => {
-    History.find(req.params.restaurantId)(function(err, history){
-        if (err){
-            res.send(err);
-        }
-        res.json(history);
+exports.getHistoryOrderByRestaurantId = async (req, res) => {
+    await History.find({restaurantId:req.params.restaurantId}).then ((history) => {
+        res.status(200).json(history);
     });
 }

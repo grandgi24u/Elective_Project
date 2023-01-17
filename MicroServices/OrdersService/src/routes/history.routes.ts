@@ -15,7 +15,7 @@ const checkAllData = require('../middleware/checkAllData');
 
 router.get('/', controller.getHistoriesOrders);
 router.get('/:idHistory', controller.getHistoryOrderById);
-router.get('/:userid', controller.getHistoryOrderByUserId);
-router.get('/:restaurantId', controller.getHistoryOrderByRestaurantId);
+router.get('/getByIdUser/:idUser', controller.getHistoryOrderByUserId);
+router.get('/getByIdRestaurant/:restaurantId', controller.getHistoryOrderByRestaurantId);
 
 module.exports = router;
