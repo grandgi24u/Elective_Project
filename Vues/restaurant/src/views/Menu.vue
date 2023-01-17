@@ -46,6 +46,83 @@
                             <tr style="background-color: rgb(115, 168, 231)">
                               <th class="text-left" style="width:40%">
                                 Item requis
+                                <v-icon
+                                    small
+                                    color="black"
+                                    class="mr-2"
+                                    @click="dialog_required_item=true"
+                                >
+                                  mdi-plus-box
+                                </v-icon>
+                                <v-dialog
+                                    @keydown.esc="dialog_required_item = false"
+                                    v-model="dialog_required_item"
+                                    persistent
+                                    max-width="600px"
+                                >
+                                  <v-card>
+                                    <v-card-title>
+                                      <span class="text-h5">Créer Item Requis</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                      <v-container>
+                                        <v-row>
+                                          <v-col cols="12">
+                                            <v-text-field
+                                                v-model="name"
+                                                label="Nom*"
+                                                required
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col cols="12">
+                                            <v-text-field
+                                                v-model="price"
+                                                label="Prix*"
+                                                required
+                                                type="number"
+                                                min="0"
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col cols="12">
+                                            <v-text-field
+                                                v-model="description"
+                                                label="Description*"
+                                                required
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col
+                                              cols="12"
+                                              sm="6"
+                                          >
+                                          </v-col>
+                                          <v-col
+                                              cols="12"
+                                              sm="6"
+                                          >
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                      <small>*Obligatoire</small>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn
+                                          color="blue darken-1"
+                                          text
+                                          @click="dialog_required_item = false"
+                                      >
+                                        Close
+                                      </v-btn>
+                                      <v-btn
+                                          color="blue darken-1"
+                                          text
+                                          @click="create_item(2,item._id)"
+                                      >
+                                        Create
+                                      </v-btn>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
                               </th>
                               <th class="text-left" style="width:50%">
                                 Description
@@ -53,7 +130,6 @@
                               <th class="text-left" style="width:10%">
                                   Actions
                               </th>
-
                             </tr>
                             </thead>
                             <tbody>
@@ -70,11 +146,22 @@
                               <td>
                                 <v-icon
                                     small
-                                    @click="unbindRequiredItem(i,item)"
+                                    @click="dialogRequiredUnbind=true"
                                 >
                                   mdi-delete
                                 </v-icon>
                               </td>
+                              <v-dialog :retain-focus="false" v-model="dialogRequiredUnbind" max-width="500px">
+                                <v-card>
+                                  <v-card-title class="text-h5">Voulez-vous enlever cet item (R) du menu ?</v-card-title>
+                                  <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @click="unbindRequiredItem(i,item)">OK</v-btn>
+                                    <v-spacer></v-spacer>
+                                  </v-card-actions>
+                                </v-card>
+                              </v-dialog>
                             </tr>
                             </tbody>
                           </template>
@@ -85,6 +172,84 @@
                             <tr style="background-color: rgb(115, 168, 231)">
                               <th class="text-left" style="width:40%">
                                 Item optionnel
+                                <v-icon
+                                    small
+                                    color="black"
+                                    class="mr-2"
+                                    @click="dialog_optional_item=true"
+                                >
+                                  mdi-plus-box
+                                </v-icon>
+
+                                <v-dialog
+                                    @keydown.esc="dialog_optional_item = false"
+                                    v-model="dialog_optional_item"
+                                    persistent
+                                    max-width="600px"
+                                >
+                                  <v-card>
+                                    <v-card-title>
+                                      <span class="text-h5">Créer Item optionnel</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                      <v-container>
+                                        <v-row>
+                                          <v-col cols="12">
+                                            <v-text-field
+                                                v-model="name"
+                                                label="Nom*"
+                                                required
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col cols="12">
+                                            <v-text-field
+                                                v-model="price"
+                                                label="Prix*"
+                                                required
+                                                type="number"
+                                                min="0"
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col cols="12">
+                                            <v-text-field
+                                                v-model="description"
+                                                label="Description*"
+                                                required
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col
+                                              cols="12"
+                                              sm="6"
+                                          >
+                                          </v-col>
+                                          <v-col
+                                              cols="12"
+                                              sm="6"
+                                          >
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                      <small>*Obligatoire</small>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn
+                                          color="blue darken-1"
+                                          text
+                                          @click="dialog_optional_item = false"
+                                      >
+                                        Close
+                                      </v-btn>
+                                      <v-btn
+                                          color="blue darken-1"
+                                          text
+                                          @click="create_item(3,item._id)"
+                                      >
+                                        Create
+                                      </v-btn>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
                               </th>
                               <th class="text-left" style="width:50%">
                                 Description
@@ -109,31 +274,27 @@
                               <td>
                                 <v-icon
                                     small
-                                    @click="unbindOptionalItem(j,item)"
-                                >
+                                    @click="dialogOptionalUnbind=true">
                                   mdi-delete
                                 </v-icon>
                               </td>
+                              <v-dialog :retain-focus="false" v-model="dialogOptionalUnbind" max-width="500px">
+                                <v-card>
+                                  <v-card-title class="text-h5">Voulez-vous enlever cet item (O) du menu ?</v-card-title>
+                                  <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                                    <v-btn color="blue darken-1" text @click="unbindOptionalItem(j,item)">OK</v-btn>
+                                    <v-spacer></v-spacer>
+                                  </v-card-actions>
+                                </v-card>
+                              </v-dialog>
                             </tr>
                             </tbody>
                           </template>
                         </v-simple-table>
                       </td>
                     </template>
-
-
-                    <v-dialog v-model="dialogDelete" max-width="500px">
-                      <v-card>
-                        <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                          <v-btn color="blue darken-1" text @click="deleteMenuConfirm">OK</v-btn>
-                          <v-spacer></v-spacer>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-
                     <template v-slot:[`item.actions`]="{ item }">
                       <v-icon
                           small
@@ -144,10 +305,84 @@
                       </v-icon>
                       <v-icon
                           small
+                          class="mr-2"
                           @click="deleteMenu(item)"
                       >
                         mdi-delete
                       </v-icon>
+
+                      <v-icon
+                          small
+                          color="gray"
+                          class="mr-2"
+                          @click="dialogBind=true"
+                      >
+                        mdi-arrow-right-box
+                      </v-icon>
+
+                      <v-dialog
+                          :retain-focus="false"
+                          @keydown.esc="dialogBind = false"
+                          v-model="dialogBind"
+                          persistent
+                          max-width="600px"
+
+                      >
+                        <v-card>
+                          <v-card-title>
+                            <span class="text-h5">Bind Item</span>
+                          </v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <v-row>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                >
+                                  <v-combobox
+                                      :items="items_restaurant"
+                                      v-model="selectRequiredItem"
+                                      item-text="item_name"
+                                      item-value="item_name"
+                                      label="Item requis"
+                                      multiple
+                                  ></v-combobox>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                >
+                                  <v-combobox
+                                      :items="items_restaurant"
+                                      v-model="selectOptionalItem"
+                                      item-text="item_name"
+                                      item-value="item_name"
+                                      label="Item optionnel"
+                                      multiple
+                                  ></v-combobox>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="blue darken-1"
+                                text
+                                @click="dialogBind = false"
+                            >
+                              Close
+                            </v-btn>
+                            <v-btn
+                                color="blue darken-1"
+                                text
+                                @click="bind_item(item)"
+                            >
+                              Bind
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </template>
                   </v-data-table>
 
@@ -314,7 +549,7 @@
 
                       <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
-                          <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                          <v-card-title class="text-h5">Voulez-vous supprimer définitivement ce menu ?</v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -340,19 +575,6 @@
                       :items-per-page="5"
                       class="mb-3"
                   >
-
-                    <v-dialog v-model="dialogItemDelete" max-width="500px">
-                      <v-card>
-                        <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                          <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                          <v-spacer></v-spacer>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-
                     <template v-slot:[`item.actions`]="{ item }">
                       <v-icon
                           small
@@ -441,7 +663,7 @@
                             <v-btn
                                 color="blue darken-1"
                                 text
-                                @click="create_item"
+                                @click="create_item(1,null)"
                             >
                               Create
                             </v-btn>
@@ -516,7 +738,7 @@
 
                       <v-dialog v-model="dialogItemDelete" max-width="500px">
                         <v-card>
-                          <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+                          <v-card-title class="text-h5">Voulez-vous supprimer définitivement cet item ?</v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -584,6 +806,13 @@ export default {
       dialogDelete: false,
       dialogItemEdit: false,
       dialogItemDelete: false,
+      dialogOptionalUnbind: false,
+      dialogRequiredUnbind: false,
+      dialogRequiredItem: false,
+      dialog_required_item: false,
+      dialog_optional_item: false,
+      dialogBind: false,
+
 
       expanded: [],
       singleExpand: false,
@@ -628,6 +857,9 @@ export default {
         this.menus = this.$store.state.restaurantStore.menu
       });
       this.closeDelete()
+      this.$store.dispatch('restaurantStore/getMenus').then(() => {
+        this.menus = this.$store.state.restaurantStore.menu
+      });
     },
 
     deleteItemConfirm() {
@@ -640,6 +872,12 @@ export default {
     closeDelete() {
       this.dialogDelete = false
       this.dialogItemDelete = false
+      this.dialogOptionalUnbind = false
+      this.dialogRequiredUnbind = false
+      this.dialog_item = false
+      this.dialog_required_item = false
+      this.dialog_optional_item = false
+      this.dialogBind = false
     },
 
 
@@ -652,18 +890,24 @@ export default {
         requiredItem: this.selectRequiredItem,
         optionalItem: this.selectOptionalItem
       }).then(() => {
+        this.selectRequiredItem = [];
+        this.selectOptionalItem = [];
         this.menus = this.$store.state.restaurantStore.menu
       });
     },
-    create_item() {
-      this.dialog_item = false
+    create_item(choice,menu) {
+      //1 = pas de menu 2 = required 3 = optional
       this.$store.dispatch('restaurantStore/createItem', {
         name: this.name,
         description: this.description,
-        price: this.price
+        price: this.price,
+        choice:choice,
+        menu_id:menu
+
       }).then(() => {
         this.items_restaurant = this.$store.state.restaurantStore.item
       });
+      this.closeDelete()
     },
     edit_menu() {
       this.dialogEdit = false
@@ -696,6 +940,7 @@ export default {
       }).then(() => {
         this.menus = this.$store.state.restaurantStore.menu
       });
+      this.closeDelete()
     },
 
   unbindOptionalItem(item,menu){
@@ -705,14 +950,23 @@ export default {
     }).then(() => {
       this.menus = this.$store.state.restaurantStore.menu
     });
-  }
+    this.closeDelete()
+  },
+
+    bind_item(menu){
+      this.dialogBind = false
+      this.$store.dispatch('restaurantStore/menu_bind_item', {
+        menu: menu,
+        requiredItem: this.selectRequiredItem,
+        optionalItem: this.selectOptionalItem
+      }).then(() => {
+        this.menus = this.$store.state.restaurantStore.menu
+      });
+    }
 },
 
 
   computed: {
-    currentMenus() {
-      return this.$store.state.restaurantStore.menu
-    },
     currentUser() {
       return this.$store.state.auth.user
     },

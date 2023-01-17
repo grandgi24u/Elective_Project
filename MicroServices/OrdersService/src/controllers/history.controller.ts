@@ -1,8 +1,6 @@
 // @ts-ignore
 import Order from '../models/order.model';
 // @ts-ignore
-import Menu from "../models/menu.model";
-// @ts-ignore
 import History from "../models/history.model";
 
 
@@ -12,6 +10,12 @@ exports.getHistoriesOrders = (req, res) => {
             res.send(err);
         }
         res.json(history);
+    });
+}
+
+exports.get100LastHistoriesOrders = async (req, res) => {
+    await History.find().sort({ order_date: -1 }).limit(100).then ((history) => {
+        res.status(200).json(history);
     });
 }
 

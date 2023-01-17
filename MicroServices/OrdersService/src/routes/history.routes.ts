@@ -14,6 +14,7 @@ const orderRoute = require("./order.routes");
 const checkAllData = require('../middleware/checkAllData');
 
 router.get('/', controller.getHistoriesOrders);
+router.get('/get100', controller.get100LastHistoriesOrders);
 router.get('/:idHistory', controller.getHistoryOrderById);
 router.get('/getByIdUser/:idUser', controller.getHistoryOrderByUserId);
 router.get('/getByIdRestaurant/:restaurantId', controller.getHistoryOrderByRestaurantId);

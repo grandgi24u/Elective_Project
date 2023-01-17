@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="contrainer-restaurants">
       <v-row justify="space-around" class="list-meals pa-1">
         <v-col
           cols="12"
@@ -185,5 +185,10 @@ import RestaurantService from '../services/restaurant.service';
   }
   .v-image__image {
     border-radius: 18px;
+  }
+  .container {
+    max-width: 70%;
+    margin-right: 0;
+    margin-left: 0;
   }
 </style>

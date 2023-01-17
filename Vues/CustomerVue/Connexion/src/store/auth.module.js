@@ -52,9 +52,7 @@ export const auth = {
             state.user = null;
         },
         registerSuccess(state) {
-           // console.log("ok register")
             state.status.loggedIn = false;
-           // state.user = user;
         },
         registerFailure(state) {
             state.status.loggedIn = false;

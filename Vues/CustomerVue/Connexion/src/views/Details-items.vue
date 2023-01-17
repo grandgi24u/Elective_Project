@@ -1,81 +1,64 @@
 <template>
   <v-container class="div-container">
       <div class="div-menu-item">
-        <v-btn icon  @click="RetourRestaurant(id)">
+        <v-btn icon  @click="RetourRestaurant()">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
 
         <img class="logo-item" src="../assets/repas/entree1_Mauricette.jpg">
 
         <div class="description-item">
-         <v-list-item-content>
-            <v-list-item-title><strong>{{menuName}}</strong></v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-content>
-            <v-list-item-title>{{menuPrice}} €</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-content>
-            <v-list-item-title>{{menuDescription}}</v-list-item-title>
-          </v-list-item-content>
+          <v-form ref="validFormItem" lazy-validation>
+           <v-list-item-content>
+              <v-list-item-title><strong>{{menuName}}</strong></v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-content>
+              <v-list-item-title>{{menuPrice}} €</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-content>
+              <v-list-item-title>{{menuDescription}}</v-list-item-title>
+            </v-list-item-content>
 
-          <v-divider></v-divider>
+            <v-divider></v-divider>
 
-          <div v-if="DisplayItemsRequired">
-            Composé de :
-            <v-list-item
-                v-for="item in detailsMenu.id_required_items"
-                :key="item.id"
-            >
-              <v-list-item-content>
-                <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-list-item-title>{{item.item_description}}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </div>
+            <div v-if="DisplayItemsRequired">
+              Composé de :
+              <v-list-item
+                  v-for="item in detailsMenu.id_required_items"
+                  :key="item.id"
+              >
+                <v-list-item-content>
+                  <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content>
+                  <v-list-item-title>{{item.item_description}}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </div>
 
-          <div v-if="DisplayItemsOptional">
-            Possibilité d'ajouter :
-            <v-list-item
-                v-for="item in detailsMenu.id_optional_items"
-                :key="item.id"
-            >
-              <v-list-item-content>
-                <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-content>
-                <v-list-item-title>{{item.item_description}}</v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-content style="padding-left: 10px">
-                  <v-checkbox v-model="item.id" label="Je veux"></v-checkbox>
-              </v-list-item-content>
-            </v-list-item>
+            <div v-if="DisplayItemsOptional">
+              Possibilité d'ajouter :
+              <v-list-item
+                  v-for="item in detailsMenu.id_optional_items"
+                  :key="item.id"
+              >
+                <v-list-item-content>
+                  <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content>
+                  <v-list-item-title>{{item.item_description}}</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content style="padding-left: 10px">
+                    <v-checkbox v-model="item.id" label="Je veux"></v-checkbox>
+                </v-list-item-content>
+              </v-list-item>
 
-            <v-list-item style="display:flex">
-              <v-list-item-content>
-                <v-list-item-title>
-                  <strong>Quantité :</strong>
-                </v-list-item-title>
-                <v-list-item-title>
-                  <v-text-field
-                      solo
-                      hide-details
-                      type="number"
-                      step="1"
-                      min="0"
-                      v-model.number="number"
-                      class="text-field-quantity"
-                      v-model="quantityMenu"/>
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+            </div>
 
-          </div>
-
-          <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-            <v-btn @click="$emit('AddToHamper')">Ajouter à mon panier</v-btn>
-          </v-col>
+            <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
+              <v-btn @click="AddItemToHamper()">Ajouter à mon panier</v-btn>
+            </v-col>
+           </v-form>
         </div>
       </div>
   </v-container> 
@@ -90,7 +73,6 @@
      'menuId'],
     data: () => ({
       detailsMenu: [],
-      number: 0,
       DisplayItemsRequired: false,
       DisplayItemsOptional: false,
       menuName: '',
@@ -100,20 +82,53 @@
       restaurantName: '',
     }),
      methods: {
-       RetourRestaurant(id)
+       RetourRestaurant()
        {
-         this.$router.push({ name: 'menu', params: { restaurantId: id }});
+         this.$router.push({ name: 'menu', params: { restaurantId: this.id }});
+       },
+       AddItemToHamper() {
+        // console.log(this.$store.state.orderModule.order);
+         if ((this.$store.state.orderModule.order) == null) {
+              // Création de la commande
+              console.log(this.$route.params.menuId)
+              this.$store.dispatch('orderModule/register', {
+                price: this.menuPrice,
+                restaurantId: this.id,
+                menuId: this.$route.params.menuId,
+              })
+            } else {
+                console.log(this.$store.state.orderModule.order);
+             /*  this.$store.dispatch('orderModule/registerItem', {
+                 id: this.$store.state.orderModule.order._id,
+                 menuId: this.$route.params.menuId,
+               }).then(
+                   () => {
+
+                   },
+                   error => {
+                     this.message =
+                         (error.response && error.response.data) ||
+                         error.message ||
+                         error.toString();
+                   }
+               ); */
+            }
+       },
+     },
+     computed: {
+       currentUser() {
+         return this.$store.state.auth.user;
        },
      },
      mounted() {
-       console.log(this.$route.params.restaurantId),
-       console.log(this.$route.params.menuId);
+       //console.log(this.$route.params.restaurantId),
+       //console.log(this.$route.params.menuId);
        this.id = this.$route.params.restaurantId;
 
            RestaurantService.getDetailsMenu(this.$route.params.menuId, this.$route.params.restaurantId).then(
            response => {
              this.detailsMenu = response.data;
-             console.log(this.detailsMenu.id_required_items)
+             //console.log(this.detailsMenu.id_required_items)
              if ((this.detailsMenu.id_required_items) != "")
              {
                this.DisplayItemsRequired = true;

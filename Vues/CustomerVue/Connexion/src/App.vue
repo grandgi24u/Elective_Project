@@ -32,15 +32,15 @@
 
         <router-view/>
 
-
-
         <NavBar
             v-if="showNavBar"
             @ShowChange="ShowHamper"
             v-bind:showResearchRestaurant="showResearchRestaurant"
+            v-bind:showResearchItems="showResearchItems"
             v-bind:showLabelProfile="showLabelProfile"
             v-bind:showLabelHamper="showLabelHamper"
             v-on:search-value-changed="handleSearchValue"
+            v-on:search-item="handleSearchValueItem"
            >
         </NavBar>
         <Hamper
@@ -58,7 +58,8 @@
         </Favorite>
         <DetailsRestaurants
             v-if="showDetailsRestaurants"
-            @DetailsItems="DetailsItemsView">
+            @DetailsItems="DetailsItemsView"
+            v-bind:searchValueItem="searchValueItem">
         </DetailsRestaurants>
         <DetailsItems
             v-if="showDetailsItems"
@@ -79,7 +80,6 @@
 </template>
 
 <script>
-//import Banner from './views/Banner';
 import NavBar from './views/Nav-bar';
 import Restaurants from './views/Restaurants';
 import Favorite from './views/Favorite';
@@ -93,7 +93,6 @@ import Sidebar from "./components/Sidebar.vue";
 
 export default {
   components: {
-    //Banner,
     NavBar,
     Restaurants,
     Favorite,
@@ -114,13 +113,15 @@ export default {
           'showLabelProfile',
           'showResearchRestaurant',
           'showDetailsRestaurants',
-          'showDetailsItems'],
+          'showDetailsItems',
+          'showResearchItems'],
   data: () => ({
     showFavorite: false,
     showHamper: false,
     showLabelHamper: false,
     showDetailsHamper: false,
     searchValueRestaurants: "",
+    searchValueItem: "",
   }),
   computed: {
     currentUser() {
@@ -170,7 +171,9 @@ export default {
     },
     handleSearchValue(value) {
       this.searchValueRestaurants = value;
-      console.log(value);
+    },
+    handleSearchValueItem(value) {
+      this.searchValueItem = value;
     },
   }
 };
@@ -207,7 +210,6 @@ export default {
   main {
     flex: 1 1 0;
     @media (max-width: 1024px) {
-      padding-left: 5rem;
       width: 100%;
     }
   }

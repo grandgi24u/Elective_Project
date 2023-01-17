@@ -30,40 +30,23 @@
       <div class="div-menu-restaurant" v-if="displayMenus">
         <v-row>
           <v-col
-            v-for="item in filteredMenus"
+            v-for="item in listMenus"
             :key="item.id"
             cols="12"
-            md="4"
-            style="padding-top: 0;"
+            md="4"  
           >
-            <v-card
-                class="mx-auto my-12"
-                max-width="374"
-            >
-              <template slot="progress">
-                <v-progress-linear
-                    color="deep-purple"
-                    height="10"
-                    indeterminate
-                ></v-progress-linear>
-              </template>
-
-              <v-img
-                  :src="require(`../assets/repas/menu1_Mauricette.jpg`)"
-                  height="150"
-                  @click="DetailsItem(item._id, id)"
-              />
-
-              <v-card-title style="padding-bottom: 0">{{item.menu_name}}</v-card-title>
-
-              <v-card-text>
-                <div class="my-4 text-subtitle-1">
-                  {{item.menu_price}} €
-                </div>
-
-                <div style="text-align: justify">{{item.menu_description}}</div>
-              </v-card-text>
-            </v-card>
+            <v-img
+                :src="require(`../assets/repas/menu1_Mauricette.jpg`)"
+                height="150px"
+                class="pa-2"
+                @click="DetailsItem(item._id, id)"
+            />
+            <div class="title-name">
+              {{item.menu_name}}
+            </div>
+            <div class="subtitle-name">
+              {{item.menu_price}} €
+            </div>
           </v-col>
         </v-row>
       </div>
@@ -71,38 +54,23 @@
     <div class="div-menu-restaurant" v-if="displayItems">
       <v-row>
         <v-col
-            v-for="item in filteredItems"
+            v-for="item in listItems"
             :key="item.id"
             cols="12"
             md="4"
         >
-          <v-card
-              class="mx-auto my-12"
-              max-width="374"
-          >
-            <template slot="progress">
-              <v-progress-linear
-                  color="deep-purple"
-                  height="10"
-                  indeterminate
-              ></v-progress-linear>
-            </template>
+          <v-img
+              :src="require(`../assets/repas/menu1_Mauricette.jpg`)"
+              height="150px"
+              class="pa-2"
+          />
 
-            <v-img
-                :src="require(`../assets/repas/menu1_Mauricette.jpg`)"
-                height="150"
-            />
-
-            <v-card-title style="padding-bottom: 0">{{item.item_name}}</v-card-title>
-
-            <v-card-text>
-              <div class="my-4 text-subtitle-1">
-                {{item.item_price}} €
-              </div>
-
-              <div style="text-align: justify">{{item.item_description}}</div>
-            </v-card-text>
-          </v-card>
+          <div class="title-name">
+            {{item.item_name}}
+          </div>
+          <div class="subtitle-name">
+            {{item.item_description}}
+          </div>
         </v-col>
       </v-row>
     </div>
@@ -114,7 +82,7 @@ import RestaurantService from '../services/restaurant.service';
 
  export default {
     name : "Details-Restaurant-vue",
-    props: ['restaurantId', 'searchValueItem'],
+    props: ['restaurantId'],
     data: () => ({
       listMenus : [],
       listItems : [],
@@ -197,18 +165,6 @@ import RestaurantService from '../services/restaurant.service';
             }
         );
      },
-     computed: {
-       filteredMenus() {
-         return this.listMenus.filter(item =>
-             item.menu_name.toLowerCase().includes(this.searchValueItem.toLowerCase())
-         );
-       },
-       filteredItems() {
-         return this.listItems.filter(item =>
-             item.item_name.toLowerCase().includes(this.searchValueItem.toLowerCase())
-         );
-       },
-     },
   }
 </script>
 
@@ -219,7 +175,7 @@ import RestaurantService from '../services/restaurant.service';
   }
   .div-container {
     display : flex;
-    margin-left: 0px;
+    margin-left: 0px
   }
   .div-menu-restaurant {
     margin-left: 2%;

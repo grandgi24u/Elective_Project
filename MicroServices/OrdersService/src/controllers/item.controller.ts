@@ -2,12 +2,10 @@
 import Item from '../models/item.model';
 // @ts-ignore
 import Order from "../models/order.model";
-// @ts-ignore
-import Menu from "../models/menu.model";
+
 
 exports.createItem = (req, res) => {
     const item = new Item({
-        item_name: req.body.item_name,
         item_id: req.body.id,
         item_quantity: req.body.quantity,
         id_order: req.params.id,
@@ -19,17 +17,6 @@ exports.createItem = (req, res) => {
         res.status(200).send(item);
     });
     bindItem(req.params.id, item._id)
-    //If there is an id menu
-    if(req.params.idMenu){
-        //If there is required item
-        if (req.path.includes('/item_required/')) {
-            bind_Required_Item_To_Menu(item._id,req.params.idMenu);
-        }
-        //If there is optional item
-        if (req.path.includes('/item_optional/')) {
-            bind_Optional_Item_To_Menu(item._id,req.params.idMenu);
-        }
-    }
 }
 
 //Delete an item
@@ -40,19 +27,19 @@ exports.deleteItem = async (req, res) => {
     }
     for (let menu_id in order.id_menus)
     {
-        const menu = await Menu.findById(order.id_menus[menu_id]).catch((err) => {
-            res.status(500).send({message: err});
-        });
-        if(menu.id_required_items.includes(req.params.idItem)){
-            await Menu.findByIdAndUpdate(menu._id, {$pull : {id_required_items:req.params.idItem}}).catch((err) => {
-                res.status(500).send({message: err});
-            });
-        }
-        if(menu.id_optional_items.includes(req.params.idItem)){
-            await Menu.findByIdAndUpdate(menu._id, {$pull : {id_optional_items:req.params.idItem}}).catch((err) => {
-                res.status(500).send({message: err});
-            });
-        }
+        // const menu = await Menu.findById(order.id_menus[menu_id]).catch((err) => {
+        //     res.status(500).send({message: err});
+        // });
+        // if(menu.id_required_items.includes(req.params.idItem)){
+        //     await Menu.findByIdAndUpdate(menu._id, {$pull : {id_required_items:req.params.idItem}}).catch((err) => {
+        //         res.status(500).send({message: err});
+        //     });
+        // }
+        // if(menu.id_optional_items.includes(req.params.idItem)){
+        //     await Menu.findByIdAndUpdate(menu._id, {$pull : {id_optional_items:req.params.idItem}}).catch((err) => {
+        //         res.status(500).send({message: err});
+        //     });
+        // }
         if(order.id_items.includes(req.params.idItem)){
             await Order.findByIdAndUpdate(order._id, {$pull : {id_items:req.params.idItem}}).catch((err) => {
                 res.status(500).send({message: err});
@@ -98,18 +85,6 @@ exports.updateAnItem = (req, res) => {
 
 const bindItem = (idOrder, idItem) => {
     Order.findByIdAndUpdate(idOrder, {$push : { id_items:idItem}},(err) => {
-        return !err;
-    });
-}
-
-const bind_Required_Item_To_Menu = (idItem, idMenu) => {
-    Menu.findByIdAndUpdate(idMenu, {$push : {id_required_items:idItem}},(err) => {
-        return !err;
-    });
-}
-
-const bind_Optional_Item_To_Menu = (idItem, idMenu) => {
-    Menu.findByIdAndUpdate(idMenu, {$push: {id_optional_items: idItem}}, (err) => {
         return !err;
     });
 }

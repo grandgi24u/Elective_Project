@@ -72,8 +72,10 @@ exports.updateAnMenu = async (req, res) => {
 exports.bindRequiredItem = async (req, res) => {
     await Menu.findByIdAndUpdate(req.params.idMenu, {$push : {id_required_items:req.params.idItem}},(err) => {
         if (err) {
+            console.log("erreur "+req.params.idItem);
             res.status(404).send({message: err});
         } else {
+            console.log("okay " + req.params.idItem);
             res.status(200).send({message: "Item add to Menu"});
         }
     });
@@ -90,7 +92,6 @@ exports.bindOptionalItem = async (req, res) => {
 }
 
 exports.unbindRequiredItem = async (req, res) => {
-    console.log("Meh");
     await Menu.findByIdAndUpdate(req.params.idMenu, {$pull : {id_required_items:req.params.idItem}}).then((menu) => {
         res.status(200).send({menu});
     });

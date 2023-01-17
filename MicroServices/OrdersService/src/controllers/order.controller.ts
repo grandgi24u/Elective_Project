@@ -2,8 +2,12 @@
 import Order from '../models/order.model';
 // @ts-ignore
 import History from "../models/history.model";
-
-
+// @ts-ignore
+const WebSocket = require('ws');
+// @ts-ignore
+const ws = new WebSocket("ws://localhost:5500");
+// @ts-ignore
+const wss = new WebSocket.Server({ port: 5500 });
 
 exports.createOrder = (req, res) => {
     const order = new Order({
@@ -16,9 +20,6 @@ exports.createOrder = (req, res) => {
     });
 
     order.save((err) => {
-        if(err){
-            res.status(500).send(err);
-        }
         res.status(200).send(order);
     });
 }
@@ -53,8 +54,7 @@ exports.getOrders = (req, res) => {
 exports.updateOrderStatus = (req, res) => {
         Order.findByIdAndUpdate(req.params.id, {order_status: req.body.status},
             (err, order) => {
-                // @ts-ignore
-                if (req.body.order_status === "5") {
+                if (req.body.order_status === 5) {
                     History.create({
                         order_price: order.order_price,
                         order_date: order.order_date,
@@ -71,6 +71,7 @@ exports.updateOrderStatus = (req, res) => {
                 } else {
                     res.status(200).send({message: "Order updated"});
                 }
+                ws.send(JSON.stringify(order));
             })
 }
 
@@ -84,5 +85,7 @@ exports.updateOrderPrice = (req, res) => {
             }
         })
 }
+
+
 
 
