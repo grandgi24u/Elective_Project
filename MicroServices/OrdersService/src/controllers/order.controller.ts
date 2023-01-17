@@ -2,14 +2,15 @@
 import Order from '../models/order.model';
 // @ts-ignore
 import History from "../models/history.model";
-import mongoose from "mongoose";
+
+
 
 exports.createOrder = (req, res) => {
     const order = new Order({
         order_date : req.body.date,
         order_price : req.body.price,
         order_status : req.body.status,
-        userid : req.body.userid,
+        userid: req.query.userId,
         deliveryId : "",
         restaurantId : req.body.restaurantId,
     });
@@ -50,26 +51,27 @@ exports.getOrders = (req, res) => {
 }
 
 exports.updateOrderStatus = (req, res) => {
-    Order.findByIdAndUpdate(req.params.id, {order_status: req.body.status},
-        (err, order) => {
-            if (req.body.order_status === "5") {
-                History.create({
-                    order_price: order.order_price,
-                    order_date: order.order_date,
-                    userid: order.userid,
-                    id_menus: order.id_menus,
-                    id_items: order.id_items,
-                    restaurantId: order.restaurantId,
-                    deliveryId: order.deliveryId,
-                })
-                order.remove({_id: req.params.id});
-                res.status(200).send({message: "Order push to histories"});
-            } else if (err) {
-                res.status(404).send({message: err});
-            } else {
-                res.status(200).send({message: "Order updated"});
-            }
-        })
+        Order.findByIdAndUpdate(req.params.id, {order_status: req.body.status},
+            (err, order) => {
+                // @ts-ignore
+                if (req.body.order_status === "5") {
+                    History.create({
+                        order_price: order.order_price,
+                        order_date: order.order_date,
+                        userid: order.userid,
+                        id_menus: order.id_menus,
+                        id_items: order.id_items,
+                        restaurantId: order.restaurantId,
+                        deliveryId: order.deliveryId,
+                    })
+                    order.remove({_id: req.params.id});
+                    res.status(200).send({message: "Order push to histories"});
+                } else if (err) {
+                    res.status(404).send({message: err});
+                } else {
+                    res.status(200).send({message: "Order updated"});
+                }
+            })
 }
 
 exports.updateOrderPrice = (req, res) => {

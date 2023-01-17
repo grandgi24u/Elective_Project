@@ -16,7 +16,7 @@ const checkAllData = require('../middleware/checkAllData');
 router.get('/', controller.getOrders);
 router.get('/:id',  checkAllData.checkIfOrderExist, controller.getOrder)
 router.post('/',    controller.createOrder);
-// router.delete('/:id',  checkAllData.checkIfOrderExist, controller.deleteOrder);
+router.delete('/:id',  checkAllData.checkIfOrderExist, controller.deleteOrder);
 router.patch('/:id', checkAllData.checkIfOrderExist, checkAllData.checkStatusOrder, controller.updateOrderStatus);
 router.patch('/:id/', checkAllData.checkIfOrderExist, controller.updateOrderPrice);
 
