@@ -1,8 +1,6 @@
 // @ts-ignore
 import Order from '../models/order.model';
 // @ts-ignore
-import Menu from "../models/menu.model";
-// @ts-ignore
 import History from "../models/history.model";
 
 

@@ -20,10 +20,4 @@ router.delete('/:idMenu',  checkAllData.checkOwner, controller.deleteMenu, check
 // router.post('/:idMenu/item_optional/',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, Item.createItem)
 // router.post('/:idMenu/item_required/',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, Item.createItem)
 
-router.post('/:idMenu/bind_required_item/:idItem',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, checkAllData.checkIfItemExist, controller.bindRequiredItem);
-router.post('/:idMenu/bind_optional_item/:idItem',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, checkAllData.checkIfItemExist, controller.bindOptionalItem);
-
-router.post('/:idMenu/unbind_required_item/:idItem',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, checkAllData.checkIfItemExist, checkAllData.checkIfItemBind, controller.unbindRequiredItem);
-router.post('/:idMenu/unbind_optional_item/:idItem',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, checkAllData.checkIfItemExist, checkAllData.checkIfItemBind, controller.unbindOptionalItem);
-
 module.exports = router;
