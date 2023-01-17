@@ -4,11 +4,7 @@ import Menu from '../models/menu.model';
 import Order from "../models/order.model";
 
 exports.createMenu = (req, res) => {
-    const menu = new Menu({
-        menu_id : req.body.menu_id,
-        id_order : req.body._id,
-    });
-    bindMenu(req.params.id, menu._id)
+    bindMenu(req.params.id, req.body.menu_id)
 }
 
 //Delete an item
