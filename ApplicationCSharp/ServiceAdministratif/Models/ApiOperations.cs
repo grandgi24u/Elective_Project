@@ -154,7 +154,7 @@ namespace ServiceAdministratif.Models
 
         public string GetHistory()
         {
-            string endpoint = baseUrl + "/gethistories/";
+            string endpoint = baseUrl + "/gethistories/get100";
             string access_token = Globals.LoggedInUser.AccessToken;
             using (var client = new WebClient())
             {

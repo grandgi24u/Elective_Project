@@ -6,7 +6,7 @@ namespace ServiceAdministratif.Models
 {
     class History
     {
-        public string Id { get; set; }
+        public string _Id { get; set; }
         public string[] Id_menus { get; set; }
         public string[] Id_items { get; set; }
         public string Order_price { get; set; }
