@@ -22,16 +22,105 @@
           </v-toolbar>
 
           <v-tabs-items v-model="model">
-<!--TAB #1-->
+            <!--TAB #1-->
             <v-tab-item :value="`tab-1`">
               <v-card flat>
                 <v-card-text>
                   <v-data-table
+                      :expanded.sync="expanded"
+                      single-expand
+                      show-expand
                       :headers="headers"
                       :items="menus"
                       :items-per-page="5"
                       class="mb-3"
+
+                      item-key="menu_name"
+
                   >
+                    <template v-slot:expanded-item="{headers,item}">
+                      <td :colspan="headers.length" class="white">
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                            <tr style="background-color: rgb(115, 168, 231)">
+                              <th class="text-left" style="width:40%">
+                                Item requis
+                              </th>
+                              <th class="text-left" style="width:50%">
+                                Description
+                              </th>
+                              <th class="text-left" style="width:10%">
+                                  Actions
+                              </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr
+                                v-for="(i, index) in item.id_required_items"
+                                :key="index"
+                            >
+                              <td>
+                                {{currentItem.find(x => x._id === i).item_name}}
+                              </td>
+                              <td>
+                                {{currentItem.find(x => x._id === i).item_description}}
+                              </td>
+                              <td>
+                                <v-icon
+                                    small
+                                    @click="unbindRequiredItem(i,item)"
+                                >
+                                  mdi-delete
+                                </v-icon>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                        <v-simple-table>
+                          <template v-slot:default>
+                            <thead>
+                            <tr style="background-color: rgb(115, 168, 231)">
+                              <th class="text-left" style="width:40%">
+                                Item optionnel
+                              </th>
+                              <th class="text-left" style="width:50%">
+                                Description
+                              </th>
+                              <th class="text-left" style="width:10%">
+                                Actions
+                              </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr
+                                v-for="(j, index2 ) in item.id_optional_items"
+                                :key="index2"
+                            >
+                              <td>
+                                {{currentItem.find(x => x._id === j).item_name}}
+                              </td>
+                              <td>
+                                {{currentItem.find(x => x._id === j).item_description}}
+                              </td>
+                              <td>
+                                <v-icon
+                                    small
+                                    @click="unbindOptionalItem(j,item)"
+                                >
+                                  mdi-delete
+                                </v-icon>
+                              </td>
+                            </tr>
+                            </tbody>
+                          </template>
+                        </v-simple-table>
+                      </td>
+                    </template>
+
 
                     <v-dialog v-model="dialogDelete" max-width="500px">
                       <v-card>
@@ -83,7 +172,7 @@
                             <span class="text-h5">Créer Menu</span>
                           </v-card-title>
                           <v-card-text>
-                            <v-container >
+                            <v-container>
                               <v-row>
                                 <v-col cols="12">
                                   <v-text-field
@@ -112,11 +201,27 @@
                                     cols="12"
                                     sm="6"
                                 >
+                                  <v-combobox
+                                      :items="items_restaurant"
+                                      v-model="selectRequiredItem"
+                                      item-text="item_name"
+                                      item-value="item_name"
+                                      label="Item requis"
+                                      multiple
+                                  ></v-combobox>
                                 </v-col>
                                 <v-col
                                     cols="12"
                                     sm="6"
                                 >
+                                  <v-combobox
+                                      :items="items_restaurant"
+                                      v-model="selectOptionalItem"
+                                      item-text="item_name"
+                                      item-value="item_name"
+                                      label="Item optionnel"
+                                      multiple
+                                  ></v-combobox>
                                 </v-col>
                               </v-row>
                             </v-container>
@@ -225,10 +330,10 @@
                 </v-card-text>
               </v-card>
             </v-tab-item>
-<!--#TAB 2-->
+            <!--#TAB 2-->
             <v-tab-item :value="`tab-2`">
               <v-card flat>
-                <v-card-text >
+                <v-card-text>
                   <v-data-table
                       :headers="headers2"
                       :items="items_restaurant"
@@ -285,7 +390,7 @@
                             <span class="text-h5">Créer Item</span>
                           </v-card-title>
                           <v-card-text>
-                            <v-container >
+                            <v-container>
                               <v-row>
                                 <v-col cols="12">
                                   <v-text-field
@@ -424,7 +529,7 @@
                     <v-col cols="0" md="4">
                     </v-col>
                   </v-row>
-                  </v-card-text>
+                </v-card-text>
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -435,11 +540,10 @@
 </template>
 
 
-
 <script>
 export default {
-  name:"MenuPage",
-  data(){
+  name: "MenuPage",
+  data() {
     return {
       model: 'tab-1',
       headers: [
@@ -449,9 +553,10 @@ export default {
           sortable: false,
           value: 'menu_name'
         },
-        { text: 'Description', value: 'menu_description' },
-        { text: 'Prix', value: 'menu_price' },
-        { text: 'Actions', value: 'actions', sortable: false }
+        {text: 'Description', value: 'menu_description'},
+        {text: 'Prix (€)', value: 'menu_price'},
+        {text: 'Actions', value: 'actions', sortable: false},
+        { text: '', value: 'data-table-expand' },
       ],
       headers2: [
         {
@@ -460,16 +565,19 @@ export default {
           sortable: false,
           value: 'item_name'
         },
-        { text: 'Description', value: 'item_description' },
-        { text: 'Prix', value: 'item_price' },
-        { text: 'Actions', value: 'actions', sortable: false }
+        {text: 'Description', value: 'item_description'},
+        {text: 'Prix (€)', value: 'item_price'},
+        {text: 'Actions', value: 'actions', sortable: false}
       ],
-      
-      menus : [],
-      items_restaurant : [],
-      name:"",
-      description:"",
-      price:"",
+
+      menus: [],
+      items_restaurant: [],
+      selectRequiredItem: [],
+      selectOptionalItem: [],
+
+      name: "",
+      description: "",
+      price: "",
       dialog: false,
       dialog_item: false,
       dialogEdit: false,
@@ -477,55 +585,59 @@ export default {
       dialogItemEdit: false,
       dialogItemDelete: false,
 
+      expanded: [],
+      singleExpand: false,
+
       editedMenu: {
         menu_name: '',
-        menu_description:'',
+        menu_description: '',
         menu_price: 0,
         id: "",
       },
 
       editedItem: {
         item_name: '',
-        item_description:'',
+        item_description: '',
         item_price: 0,
         id: "",
       }
-    }},
+    }
+  },
 
-  methods:{
+  methods: {
 
-    editMenu (item) {
+    editMenu(item) {
       this.editedMenu = Object.assign({}, item)
       this.dialogEdit = true
     },
-    editItem (item) {
+    editItem(item) {
       this.editedItem = Object.assign({}, item)
       this.dialogItemEdit = true
     },
 
-    deleteMenu (item) {
+    deleteMenu(item) {
       this.editedMenu = Object.assign({}, item)
       this.dialogDelete = true
     },
-    deleteItem (item) {
+    deleteItem(item) {
       this.editedItem = Object.assign({}, item)
       this.dialogItemDelete = true
     },
-    deleteMenuConfirm () {
-      this.$store.dispatch('restaurantStore/deleteMenu',{id:this.editedMenu._id}).then(()=>{
+    deleteMenuConfirm() {
+      this.$store.dispatch('restaurantStore/deleteMenu', {id: this.editedMenu._id}).then(() => {
         this.menus = this.$store.state.restaurantStore.menu
       });
       this.closeDelete()
     },
 
-    deleteItemConfirm () {
-      this.$store.dispatch('restaurantStore/deleteItem',{id:this.editedItem._id}).then(()=>{
+    deleteItemConfirm() {
+      this.$store.dispatch('restaurantStore/deleteItem', {id: this.editedItem._id}).then(() => {
         this.items_restaurant = this.$store.state.restaurantStore.item
       });
       this.closeDelete()
     },
 
-    closeDelete () {
+    closeDelete() {
       this.dialogDelete = false
       this.dialogItemDelete = false
     },
@@ -533,38 +645,82 @@ export default {
 
     create_menu() {
       this.dialog = false
-      this.$store.dispatch('restaurantStore/createMenu',{name:this.name, description:this.description, price:this.price}).then(()=>{
+      this.$store.dispatch('restaurantStore/createMenu', {
+        name: this.name,
+        description: this.description,
+        price: this.price,
+        requiredItem: this.selectRequiredItem,
+        optionalItem: this.selectOptionalItem
+      }).then(() => {
         this.menus = this.$store.state.restaurantStore.menu
       });
     },
     create_item() {
       this.dialog_item = false
-      this.$store.dispatch('restaurantStore/createItem',{name:this.name, description:this.description, price:this.price}).then(()=>{
+      this.$store.dispatch('restaurantStore/createItem', {
+        name: this.name,
+        description: this.description,
+        price: this.price
+      }).then(() => {
         this.items_restaurant = this.$store.state.restaurantStore.item
       });
     },
     edit_menu() {
       this.dialogEdit = false
-      this.$store.dispatch('restaurantStore/editMenu',{name:this.editedMenu.menu_name, description:this.editedMenu.menu_description, price:this.editedMenu.menu_price, id:this.editedMenu._id}).then(()=>{
+      this.$store.dispatch('restaurantStore/editMenu', {
+        name: this.editedMenu.menu_name,
+        description: this.editedMenu.menu_description,
+        price: this.editedMenu.menu_price,
+        id: this.editedMenu._id
+      }).then(() => {
         this.menus = this.$store.state.restaurantStore.menu
       });
     },
 
     edit_item() {
       this.dialogItemEdit = false
-      this.$store.dispatch('restaurantStore/editItem',{name:this.editedItem.item_name, description:this.editedItem.item_description, price:this.editedItem.item_price, id:this.editedItem._id}).then(()=>{
+      this.$store.dispatch('restaurantStore/editItem', {
+        name: this.editedItem.item_name,
+        description: this.editedItem.item_description,
+        price: this.editedItem.item_price,
+        id: this.editedItem._id
+      }).then(() => {
         this.items_restaurant = this.$store.state.restaurantStore.item
       });
-    }
-  },
+    },
+
+    unbindRequiredItem(item,menu){
+      this.$store.dispatch('restaurantStore/unbindRequiredItem',{
+        item_id : item,
+        menu: menu
+      }).then(() => {
+        this.menus = this.$store.state.restaurantStore.menu
+      });
+    },
+
+  unbindOptionalItem(item,menu){
+    this.$store.dispatch('restaurantStore/unbindOptionalItem',{
+      item_id : item,
+      menu: menu
+    }).then(() => {
+      this.menus = this.$store.state.restaurantStore.menu
+    });
+  }
+},
+
 
   computed: {
-    currentMenus(){
+    currentMenus() {
       return this.$store.state.restaurantStore.menu
     },
     currentUser() {
       return this.$store.state.auth.user
     },
+
+    currentItem() {
+      return this.$store.state.restaurantStore.item
+    },
+
     currentRestaurant() {
       return JSON.parse(localStorage.getItem('restaurant'))
     }

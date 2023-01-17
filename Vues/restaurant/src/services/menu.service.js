@@ -11,7 +11,13 @@ class MenuService {
 
     createMenu(menu) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
-        return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu', {name: menu.name, description:menu.description, price:menu.price}, {headers: authHeader()});
+
+        let requiredItem = menu.requiredItem.map(({ _id }) => _id);
+
+        let optionalItem = menu.optionalItem.map(({ _id }) => _id);
+
+
+        return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu', {name: menu.name, description:menu.description, price:menu.price, required_items:requiredItem, optional_items:optionalItem}, {headers: authHeader()});
     }
 
     editMenu(menu){
@@ -24,6 +30,16 @@ class MenuService {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
 
         return axios.delete(API_URL + 'restaurant/' + restaurant._id + '/menu/' + menu.id, {headers: authHeader()});
+    }
+
+    unbindRequiredItem(to_unbind){
+        const restaurant = JSON.parse(localStorage.getItem('restaurant'));
+        return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + to_unbind.idMenu + "/unbind_required_item/" + to_unbind.idItem, {}, {headers: authHeader()});
+    }
+
+    unbindOptionalItem(to_unbind){
+        const restaurant = JSON.parse(localStorage.getItem('restaurant'));
+        return axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + to_unbind.idMenu + "/unbind_optional_item/" + to_unbind.idItem, {}, {headers: authHeader()});
     }
 }
 export default new MenuService();

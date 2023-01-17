@@ -12,6 +12,8 @@ exports.createMenu = async (req, res) => {
         menu_description: req.body.description,
         menu_price: req.body.price,
         menu_type: req.body.type,
+        id_required_items: req.body.required_items,
+        id_optional_items: req.body.optional_items
 
     });
     await menu.save((err) => {
@@ -88,12 +90,9 @@ exports.bindOptionalItem = async (req, res) => {
 }
 
 exports.unbindRequiredItem = async (req, res) => {
-    await Menu.findByIdAndUpdate(req.params.idMenu, {$pull : {id_required_items:req.params.idItem}},(err) => {
-        if (err) {
-            res.status(404).send({message: err});
-        } else {
-            res.status(200).send({message: "Item remove from the Menu"});
-        }
+    console.log("Meh");
+    await Menu.findByIdAndUpdate(req.params.idMenu, {$pull : {id_required_items:req.params.idItem}}).then((menu) => {
+        res.status(200).send({menu});
     });
 }
 

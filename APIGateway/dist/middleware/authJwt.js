@@ -9,6 +9,7 @@ const db = require("../models");
 // @ts-ignore
 const User = db.user;
 const verifyToken = (req, res, next) => {
+    console.log(req.headers);
     let token = req.headers["x-access-token"];
     if (!token) {
         return res.status(403).send({
