@@ -62,6 +62,7 @@ export const router = new Router({
                 showDetailsRestaurants: 'true',
                 showNavBar : 'true',
                 showBanner : 'true',
+                showResearchItems: 'true',
             },
         },
         {

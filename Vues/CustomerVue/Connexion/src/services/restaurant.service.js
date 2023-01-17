@@ -19,6 +19,9 @@ class RestaurantService {
     getDetailsMenu(menuId, restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' + menuId, { headers: authHeader() }).catch(err => { console.log(err)});
     }
+    setItemsToHamper(restaurantId) {
+        return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' , { headers: authHeader() }).catch(err => { console.log(err)});
+    }
     getItemsInMenu(menuId, restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' + menuId, { headers: authHeader() }).catch(err => { console.log(err)});
     }
