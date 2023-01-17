@@ -7,7 +7,6 @@ import Menu from "../models/menu.model";
 
 exports.createItem = (req, res) => {
     const item = new Item({
-        item_name: req.body.item_name,
         item_id: req.body.id,
         item_quantity: req.body.quantity,
         id_order: req.params.id,
