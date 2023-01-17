@@ -5,7 +5,6 @@ import Order from "../models/order.model";
 
 exports.createMenu = (req, res) => {
     const menu = new Menu({
-        menu_name : req.body.menu_name,
         menu_id : req.body.menu_id,
         menu_quantity : req.body.menu_quantity,
         id_order : req.body._id,
