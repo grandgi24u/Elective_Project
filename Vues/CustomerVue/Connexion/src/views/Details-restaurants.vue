@@ -1,13 +1,16 @@
 <template>
   <v-container class="div-container">
-    <v-card>
-      <v-toolbar class="toolbar" color="#E5E7E9">
-        <v-btn icon @click="RetourTousRestaurants()">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
 
-        <v-toolbar-title><strong>Bienvenue chez {{restaurantName}}</strong></v-toolbar-title>
-
+    <v-list nav dense>
+      <v-list-item-group
+          color="primary"
+      >
+        <v-list>
+          <v-btn icon @click="RetourTousRestaurants()">
+            <v-icon>mdi-arrow-left</v-icon>
+          </v-btn>
+          Bienvenue chez {{restaurantName}}
+        </v-list>
         <v-list-item
             v-for="(item, i) in menuLists"
             :key="i"
@@ -21,8 +24,8 @@
             <v-list-item-title><strong>{{item.name}}</strong></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-      </v-toolbar>
+      </v-list-item-group>
+    </v-list>
 
 
       <div class="div-menu-restaurant" v-if="displayMenus">
@@ -106,7 +109,7 @@
         </v-col>
       </v-row>
     </div>
-    </v-card>
+
   </v-container>
 </template>
 
