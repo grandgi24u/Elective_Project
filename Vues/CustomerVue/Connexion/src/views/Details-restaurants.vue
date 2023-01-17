@@ -1,31 +1,29 @@
 <template>
   <v-container class="div-container">
-    <v-btn icon @click="RetourTousRestaurants()">
-      <v-icon>mdi-arrow-left</v-icon>
-    </v-btn>
+    <v-card>
+      <v-toolbar class="toolbar" color="#E5E7E9">
+        <v-btn icon @click="RetourTousRestaurants()">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
 
-    <div class="list-choice">
-          <v-list nav dense>
-            <v-list-item-group
-              color="primary"
-            >
-            <v-list>Bienvenue chez {{restaurantName}}</v-list>
-              <v-list-item
-                v-for="(item, i) in menuLists"
-                :key="i"
-                @click="ViewChoice(item.name)"
-              >
-                <v-list-item-icon>
-                  <v-icon></v-icon>
-                </v-list-item-icon>
+        <v-toolbar-title><strong>Bienvenue chez {{restaurantName}}</strong></v-toolbar-title>
 
-                <v-list-item-content>
-                  <v-list-item-title><strong>{{item.name}}</strong></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-      </div>
+        <v-list-item
+            v-for="(item, i) in menuLists"
+            :key="i"
+            @click="ViewChoice(item.name)"
+        >
+          <v-list-item-icon>
+            <v-icon></v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title><strong>{{item.name}}</strong></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+      </v-toolbar>
+
 
       <div class="div-menu-restaurant" v-if="displayMenus">
         <v-row>
@@ -97,16 +95,19 @@
 
             <v-card-text>
               <div class="my-4 text-subtitle-1">
-                {{item.item_price}} €
+                Prix : {{item.item_price}} €
               </div>
 
-              <div style="text-align: justify">{{item.item_description}}</div>
+              <div style="text-align: justify;margin-bottom: 10px">{{item.item_description}}</div>
+
+              <div>  <v-btn @click="AddItemToHamper()">Ajouter à mon panier</v-btn></div>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
     </div>
-  </v-container> 
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -117,6 +118,7 @@ import RestaurantService from '../services/restaurant.service';
     props: ['restaurantId', 'searchValueItem'],
     data: () => ({
       listMenus : [],
+      drawer: true,
       listItems : [],
       displayItems : false,
       displayMenus : true,
@@ -139,6 +141,18 @@ import RestaurantService from '../services/restaurant.service';
       DetailsItem(menuId, id)
       {
         this.$router.push({ name: 'details', params: { restaurantId: id, menuId: menuId }});
+      },
+      AddItemToHamper() {
+        /*if ((this.$store.state.orderModule.order) == null) {
+          console.log(this.$route.params.menuId)
+          this.$store.dispatch('orderModule/register', {
+            price: this.menuPrice,
+            restaurantId: this.id,
+            menuId: this.$route.params.menuId,
+          })
+        } else {
+          console.log(this.$store.state.orderModule.order);
+        }*/
       },
       ViewChoice(name)
       {
@@ -215,11 +229,11 @@ import RestaurantService from '../services/restaurant.service';
 <style>
   .list-choice {
     width: 20%;
-    border-right : 1px dashed black;
   }
   .div-container {
     display : flex;
     margin-left: 0px;
+    padding: 0px;
   }
   .div-menu-restaurant {
     margin-left: 2%;

@@ -98,20 +98,6 @@
               })
             } else {
                 console.log(this.$store.state.orderModule.order);
-             /*  this.$store.dispatch('orderModule/registerItem', {
-                 id: this.$store.state.orderModule.order._id,
-                 menuId: this.$route.params.menuId,
-               }).then(
-                   () => {
-
-                   },
-                   error => {
-                     this.message =
-                         (error.response && error.response.data) ||
-                         error.message ||
-                         error.toString();
-                   }
-               ); */
             }
        },
      },
