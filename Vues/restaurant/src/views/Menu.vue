@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="container">
+    <div class="container box">
       <template>
         <v-card>
           <v-toolbar
@@ -39,13 +39,13 @@
 
                   >
                     <template v-slot:expanded-item="{headers,item}">
-                      <td :colspan="headers.length" class="white">
-                        <v-simple-table>
+                      <td :colspan="headers.length" class="white pa-0">
+                        <v-simple-table class="table">
                           <template v-slot:default>
                             <thead>
                             <tr style="background-color: rgb(115, 168, 231)">
                               <th class="text-left" style="width:40%">
-                                Item requis
+                                Item*
                                 <v-icon
                                     small
                                     color="black"
@@ -124,10 +124,10 @@
                                   </v-card>
                                 </v-dialog>
                               </th>
-                              <th class="text-left" style="width:50%">
+                              <th class="text-left" style="width:40%">
                                 Description
                               </th>
-                              <th class="text-left" style="width:10%">
+                              <th class="text-left" style="width:40%">
                                   Actions
                               </th>
                             </tr>
@@ -137,13 +137,13 @@
                                 v-for="(i, index) in item.id_required_items"
                                 :key="index"
                             >
-                              <td>
+                              <td data-label="Item*">
                                 {{currentItem.find(x => x._id === i).item_name}}
                               </td>
-                              <td>
+                              <td data-label="Description">
                                 {{currentItem.find(x => x._id === i).item_description}}
                               </td>
-                              <td>
+                              <td data-label="Actions">
                                 <v-icon
                                     small
                                     @click="dialogRequiredUnbind=true"
@@ -166,12 +166,12 @@
                             </tbody>
                           </template>
                         </v-simple-table>
-                        <v-simple-table>
+                        <v-simple-table class="table">
                           <template v-slot:default>
                             <thead>
                             <tr style="background-color: rgb(115, 168, 231)">
                               <th class="text-left" style="width:40%">
-                                Item optionnel
+                                Item
                                 <v-icon
                                     small
                                     color="black"
@@ -251,10 +251,10 @@
                                   </v-card>
                                 </v-dialog>
                               </th>
-                              <th class="text-left" style="width:50%">
+                              <th class="text-left" style="width:40%">
                                 Description
                               </th>
-                              <th class="text-left" style="width:10%">
+                              <th class="text-left" style="width:20%">
                                 Actions
                               </th>
 
@@ -265,13 +265,13 @@
                                 v-for="(j, index2 ) in item.id_optional_items"
                                 :key="index2"
                             >
-                              <td>
+                              <td data-label="Item">
                                 {{currentItem.find(x => x._id === j).item_name}}
                               </td>
-                              <td>
+                              <td data-label="Description">
                                 {{currentItem.find(x => x._id === j).item_description}}
                               </td>
-                              <td>
+                              <td data-label="Actions">
                                 <v-icon
                                     small
                                     @click="dialogOptionalUnbind=true">
@@ -990,3 +990,45 @@ export default {
   }
 }
 </script>
+
+<style>
+@media screen and (max-width: 600px) {
+  .table {
+    border: 0;
+  }
+
+  .table thead {
+
+  }
+
+  .table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+
+  .table td {
+    margin-top: 10px;
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    float: left;
+  }
+
+  .table td:last-child {
+    border-bottom: 0;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .box{
+    padding: 0;
+  }
+}
+</style>

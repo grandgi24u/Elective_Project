@@ -59,13 +59,13 @@ export const restaurantStore = {
         },
         menu_bind_item({commit},data) {
             data.requiredItem.forEach(item=>{
-                if(data.menu.id_required_items.includes(item._id)){
-                    data.requiredItem.splice(data.requiredItem.indexOf(item._id),1)
+                if(data.menu.id_required_items.find(element => element === item._id)){
+                    data.requiredItem.splice(data.requiredItem.indexOf(item),1);
                 }
             })
             data.optionalItem.forEach(item=>{
-                if(data.menu.id_optional_items.includes(item._id)){
-                    data.optionalItem.splice(data.optionalItem.indexOf(item._id),1)
+                if(data.menu.id_optional_items.find(element => element === item._id)){
+                    data.optionalItem.splice(data.optionalItem.indexOf(item),1);
                 }
             })
             Menu.bindItem(data.requiredItem,data.optionalItem,data.menu._id)
@@ -227,19 +227,14 @@ export const restaurantStore = {
                 state.item.splice(index, 1);
             }
         },
-
         item_bind(state,data){
-
             const menu = state.menu.find(x => x._id === data.menu._id)
             data.requiredItem.forEach(item => {
-                console.log("Push requis");
                 menu.id_required_items.push(item._id)
             })
             data.optionalItem.forEach(item => {
                 menu.id_optional_items.push(item._id)
-                console.log("opt");
             })
-
         }
     }
 };

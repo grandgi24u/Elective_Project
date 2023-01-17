@@ -22,9 +22,9 @@ router.post('/:idMenu/item_optional/',checkData.checkRole,checkData.checkOwner,c
 router.post('/:idMenu/item_required/',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemBind, Item.createItem)
 
 router.post('/:idMenu/bind_required_item/:idItem',checkData.checkRole,checkData.checkOwner,checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindRequiredItem);
-router.post('/:idMenu/bind_optional_item/:idItem',checkData.checkRole,checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.bindOptionalItem);
+router.post('/:idMenu/bind_optional_item/:idItem',checkData.checkRole,checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBindOptionnal, controller.bindOptionalItem);
 
 router.post('/:idMenu/unbind_required_item/:idItem',checkData.checkRole,checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.unbindRequiredItem);
-router.post('/:idMenu/unbind_optional_item/:idItem',checkData.checkRole,checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBind, controller.unbindOptionalItem);
+router.post('/:idMenu/unbind_optional_item/:idItem',checkData.checkRole,checkData.checkOwner, checkData.checkIfRestaurantExist, checkData.checkIfMenuExist,checkData.checkIfItemExist, checkData.checkIfItemBindOptionnal, controller.unbindOptionalItem);
 
 module.exports = router;

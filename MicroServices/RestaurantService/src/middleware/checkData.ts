@@ -43,7 +43,30 @@ const checkIfItemBind = (req, res, next) => {
     const ItemId = req.params.idItem;
     const MenuId = req.params.idMenu;
 
-    Menu.find({$or:[{ id_required_items: ItemId},{id_optional_items:ItemId}],$and:[{ _id:MenuId}]}, function(err, bind_item)
+    Menu.find({$or:[{ id_required_items: ItemId}],$and:[{ _id:MenuId}]}, function(err, bind_item)
+    {
+        if (!(bind_item === undefined || bind_item.length == 0) && !(req.path.includes('unbind')))
+        {
+            res.status(403).send({message: "Item already bind to the restaurant"});
+            return
+        }
+
+        if ((bind_item === undefined || bind_item.length == 0) && (req.path.includes('unbind')))
+        {
+            res.status(404).send({message: "Item already unbind from the restaurant"});
+            return
+        }
+
+        next();
+
+    });
+}
+
+const checkIfItemBindOptionnal = (req, res, next) => {
+    const ItemId = req.params.idItem;
+    const MenuId = req.params.idMenu;
+
+    Menu.find({$or:[{id_optional_items:ItemId}],$and:[{ _id:MenuId}]}, function(err, bind_item)
     {
         if (!(bind_item === undefined || bind_item.length == 0) && !(req.path.includes('unbind')))
         {
@@ -101,6 +124,7 @@ const checkData = {
     checkIfMenuExist : checkIfMenuExist,
     checkIfItemExist : checkIfItemExist,
     checkIfItemBind : checkIfItemBind,
+    checkIfItemBindOptionnal : checkIfItemBindOptionnal,
     checkOwner:checkOwner,
     checkRole : checkRole
 };

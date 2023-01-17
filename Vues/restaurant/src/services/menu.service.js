@@ -44,16 +44,11 @@ class MenuService {
     bindItem(arrayRequired,arrayOptional,id_menu){
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
         arrayRequired.forEach(item=>{
-            console.log("Foreach Requis")
-            console.log(item._id)
-            axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + id_menu + "/bind_required_item/" + item._id, {}, {headers: authHeader()});
-        })
-
+            axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + id_menu + '/bind_required_item/' + item._id, {}, {headers: authHeader()});
+        });
         arrayOptional.forEach(item=>{
-            console.log("Optionnal")
-            axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + id_menu + "/bind_optional_item/" + item._id, {}, {headers: authHeader()});
-        })
-
+            axios.post(API_URL + 'restaurant/' + restaurant._id + '/menu/' + id_menu + '/bind_optional_item/' + item._id, {}, {headers: authHeader()});
+        });
         return true;
     }
 }
