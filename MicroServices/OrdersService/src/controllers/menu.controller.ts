@@ -8,7 +8,7 @@ exports.createMenu = (req, res) => {
         menu_name : req.body.menu_name,
         menu_id : req.body.menu_id,
         menu_quantity : req.body.menu_quantity,
-        id_order : req.body.id,
+        id_order : req.body._id,
     });
     menu.save((err) => {
         if(err){
@@ -51,7 +51,7 @@ exports.getMenus = (req, res) => {
 }
 
 exports.getMenu = (req, res) => {
-    Menu.findById(req.params.idMenu).populate('id_required_items').populate('id_optional_items').then((err, menu) => {
+    Menu.findById(req.params.idMenu).populate('id_optional_items').then((err, menu) => {
         if (err)
             res.status(404).send({message: err});
         res.status(200).send(menu);

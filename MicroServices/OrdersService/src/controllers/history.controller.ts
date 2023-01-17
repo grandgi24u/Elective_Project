@@ -15,6 +15,12 @@ exports.getHistoriesOrders = (req, res) => {
     });
 }
 
+exports.get100LastHistoriesOrders = async (req, res) => {
+    await History.find().sort({ order_date: -1 }).limit(100).then ((history) => {
+        res.status(200).json(history);
+    });
+}
+
 exports.getHistoryOrderById = async (req, res) => {
      History.findById(req.params.idHistory).then ((history) => {
         res.status(200).json(history);

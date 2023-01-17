@@ -18,7 +18,7 @@ router.delete('/:idMenu',  checkAllData.checkOwner, controller.deleteMenu, check
 router.patch('/:idMenu', checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, controller.updateAnMenu);
 
 router.post('/:idMenu/item_optional/',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, Item.createItem)
-router.post('/:idMenu/item_required/',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, Item.createItem)
+// router.post('/:idMenu/item_required/',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, Item.createItem)
 
 router.post('/:idMenu/bind_required_item/:idItem',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, checkAllData.checkIfItemExist, controller.bindRequiredItem);
 router.post('/:idMenu/bind_optional_item/:idItem',checkAllData.checkOwner, checkAllData.checkIfOrderExist, checkAllData.checkIfMenuExist, checkAllData.checkIfItemExist, controller.bindOptionalItem);

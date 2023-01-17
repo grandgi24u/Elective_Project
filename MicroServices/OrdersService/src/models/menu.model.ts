@@ -9,7 +9,7 @@ const MenuSchema = new Schema({
     menu_id : Number,
     menu_quantity: Number,
     id_order: {type: Schema.Types.ObjectId, ref:'Order'},
-    id_required_items: [{ type: Schema.Types.ObjectId, ref: 'item' }],
+    // id_required_items: [{ type: Schema.Types.ObjectId, ref: 'item' }],
     id_optional_items: [{ type: Schema.Types.ObjectId, ref: 'item' }]
 })
 
