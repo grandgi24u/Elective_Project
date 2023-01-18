@@ -12,6 +12,8 @@ const menuRoute = require("./menu.routes");
 const checkAllData = require('../middleware/checkAllData');
 
 router.get('/', controller.getOrders);
+router.get('/getNumberOrder', controller.getNumberOrder);
+router.get('/getNumberOrder/getByStatus/:order_status', controller.getNumberOrderByStatus);
 router.get('/:id',  checkAllData.checkIfOrderExist, controller.getOrder)
 router.get('/getByIdRestaurant/:restaurantId/getByStatus/:order_status', controller.getOrderByRestaurantIdAndByStatus);
 router.post('/',    controller.createOrder);

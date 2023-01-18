@@ -96,5 +96,26 @@ exports.getOrderByRestaurantIdAndByStatus = async (req, res) => {
     });
 }
 
+exports.getNumberOrder = async (req, res) => {
+    await Order.countDocuments((err, count) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json(`Number of orders: ${count}`);
+        }
+    });
+}
+
+const orderStatus = 2;
+exports.getNumberOrderByStatus = async (req, res) => {
+        Order.countDocuments({ order_status:req.params.order_status},(err, count) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.status(200).json(`Number of orders with status ${req.params.order_status}: ${count}`);
+            }
+        });
+}
+
 
 

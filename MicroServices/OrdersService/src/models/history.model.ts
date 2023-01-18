@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 // @ts-ignore
 const HistorySchema = new Schema({
     order_date: Date,
-    order_price: String,
+    order_price: Number,
     id_menus: [String],
     id_items: [{ type: Schema.Types.ObjectId, ref: 'item' }],
     userid: String,

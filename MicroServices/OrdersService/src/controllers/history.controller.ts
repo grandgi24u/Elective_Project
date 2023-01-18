@@ -49,3 +49,17 @@ exports.getHistoryOrderByRestaurantIdAndByStatus = async (req, res) => {
         res.status(200).json(history);
     });
 }
+
+let total_price = 0;
+exports.getTotalMoneyOfOrderHistory = async (req, res) => {
+    History.find({}, (err, history) => {
+        if (err) {
+            console.log(err);
+        } else {
+            history.every(history => {
+                total_price += history.order_price;
+                res.status(200).json(total_price);
+            });
+        }
+    });
+}
