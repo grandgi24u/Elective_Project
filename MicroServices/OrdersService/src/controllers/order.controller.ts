@@ -58,7 +58,7 @@ exports.getOrders = (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
         await Order.findByIdAndUpdate(req.params.id, {order_status: req.body.order_status},
             async (err, order) => {
-                if (req.body.order_status === 5) {
+                if (req.body.order_status === "5") {
                     History.create({
                         order_price: order.order_price,
                         order_date: order.order_date,
