@@ -1,5 +1,6 @@
 <template>
   <main>
+    <div class="container">
     <h3>Historiques des commandes</h3>
     <v-simple-table>
       <template v-slot:default>
@@ -29,6 +30,7 @@
         </tbody>
       </template>
     </v-simple-table>
+    </div>
   </main>
 </template>
 
@@ -54,3 +56,4 @@ export default {
     });  }
 };
 </script>
+

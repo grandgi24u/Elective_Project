@@ -1,5 +1,6 @@
 <template>
   <main id="about-page">
+    <div class="container">
     <v-row
         justify="center"
         class="mt-2"
@@ -31,6 +32,7 @@
           </v-col>
         </v-row>
       </v-form>
+    </div>
   </main>
 </template>
 

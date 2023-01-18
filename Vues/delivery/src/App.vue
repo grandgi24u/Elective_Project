@@ -56,10 +56,13 @@ button {
   display: flex;
   main {
     flex: 1 1 0;
-    padding: 1rem;
+    padding-top: 1rem;
     @media (max-width: 1024px) {
-      padding-left: 5rem;
+      padding-left: 4rem;
       width: 100%;
+    }
+    @media (max-width: 767px) {
+      padding-top: 0;
     }
   }
 }

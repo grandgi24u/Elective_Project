@@ -30,7 +30,7 @@
         </v-icon>
         <span class="text">Profile</span>
       </router-link>
-      <router-link to="/profile" class="button">
+      <router-link to="/order" class="button">
         <v-icon
             large
             class="material-icons">

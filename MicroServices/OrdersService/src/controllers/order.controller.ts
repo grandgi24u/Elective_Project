@@ -58,7 +58,7 @@ exports.getOrders = (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
         await Order.findByIdAndUpdate(req.params.id, {order_status: req.body.order_status},
             async (err, order) => {
-                if (req.body.order_status === "5") {
+                if (req.body.order_status === 5) {
                     History.create({
                         order_price: order.order_price,
                         order_date: order.order_date,
@@ -75,8 +75,10 @@ exports.updateOrderStatus = async (req, res) => {
                 } else {
                     res.status(200).send({message: "Order updated"});
                 }
-            }).then(order => {
-            ws.send(JSON.stringify(order));
+            }).then(async order => {
+            await Order.findById(req.params.id).then(order => {
+                ws.send(JSON.stringify(order));
+            });
         })
 }
 
@@ -93,6 +95,29 @@ exports.updateOrderPrice = (req, res) => {
 
 exports.getOrderByRestaurantIdAndByStatus = async (req, res) => {
     await Order.find({restaurantId:req.params.restaurantId,order_status:req.params.order_status}).then ((order) => {
+        res.status(200).json(order);
+    });
+}
+
+exports.getOrderByStatus = async (req, res) => {
+    await Order.find({order_status:req.params.order_status}).then ((order) => {
+        res.status(200).json(order);
+    });
+}
+
+exports.assignDelivery = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {deliveryId: req.params.idDelivery},
+        (err, order) => {
+            if (err) {
+                res.status(500).send({message: err});
+            } else {
+                res.status(200).send({message: "Order updated"});
+            }
+        })
+}
+
+exports.getDeliveryOrder = async (req, res) => {
+    await Order.find({deliveryId:req.params.idDelivery}).then ((order) => {
         res.status(200).json(order);
     });
 }
