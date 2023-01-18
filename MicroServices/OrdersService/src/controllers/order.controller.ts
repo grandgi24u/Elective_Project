@@ -39,7 +39,7 @@ exports.getOrder = (req, res) => {
 }
 
 exports.getOrders = (req, res) => {
-    Order.find().populate('id_menus').populate('id_items').then((err, order) => {
+    Order.find().then((err, order) => {
         if (err){
             res.status(500).send(err);
         }
@@ -48,9 +48,9 @@ exports.getOrders = (req, res) => {
 }
 
 exports.updateOrderStatus = (req, res) => {
-        Order.findByIdAndUpdate(req.params.id, {order_status: req.body.status},
+        Order.findByIdAndUpdate(req.params.id, {order_status: req.body.order_status},
             (err, order) => {
-                if (req.body.order_status === 5) {
+                if (req.body.order_status === "5") {
                     History.create({
                         order_price: order.order_price,
                         order_date: order.order_date,

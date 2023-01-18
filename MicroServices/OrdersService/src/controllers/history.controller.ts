@@ -37,3 +37,9 @@ exports.getHistoryOrderByRestaurantId = async (req, res) => {
         res.status(200).json(history);
     });
 }
+
+exports.getHistoryOrderByDeliveryId = async (req, res) => {
+    await History.find({deliveryId:req.params.deliveryId}).then ((history) => {
+        res.status(200).json(history);
+    });
+}

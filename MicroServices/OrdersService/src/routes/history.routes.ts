@@ -18,5 +18,6 @@ router.get('/get100', controller.get100LastHistoriesOrders);
 router.get('/:idHistory', controller.getHistoryOrderById);
 router.get('/getByIdUser/:idUser', controller.getHistoryOrderByUserId);
 router.get('/getByIdRestaurant/:restaurantId', controller.getHistoryOrderByRestaurantId);
+router.get('/getByIdDelivery/:deliveryId', controller.getHistoryOrderByDeliveryId);
 
 module.exports = router;
