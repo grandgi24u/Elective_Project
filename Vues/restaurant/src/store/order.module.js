@@ -39,6 +39,18 @@ export const orderStore = {
                     return Promise.reject(error);
                 }
             );
+        },
+
+       deliveryOrder({commit},order){
+            return Order.updateOrders(order.order._id,3).then(
+                result => {
+                    commit('order_get_to_delivery', order.order._id);
+                    return Promise.resolve(result);
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
         }
     },
 
@@ -53,6 +65,13 @@ export const orderStore = {
             const index = state.order.indexOf(state.order.find(x => x._id === order));
             if (index !== -1) {
                 state.order.splice(index, 1);
+            }
+        },
+
+        order_get_to_delivery(state,order){
+            const index = state.validateOrder.indexOf(state.validateOrder.find(x => x._id === order));
+            if (index !== -1) {
+                state.validateOrder.splice(index, 1);
             }
         }
 

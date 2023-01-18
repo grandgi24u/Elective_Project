@@ -22,10 +22,32 @@
                   style="background-color: #73A8E7"
                   class="text-center"
               >Détails</v-btn>
+              <v-btn
+                  color="white"
+                  text
+                  @click="dialog_delivery_order = true"
+                  style="background-color: #73A8E7"
+                  class="text-center ml-5"
+              >Livraison</v-btn>
               <v-dialog :retain-focus="false" v-model="dialog_detail_order" max-width="500px">
                 <v-card>
                   <v-card-title class="text-h6 justify-center">Détail</v-card-title>
-                  {{item}}
+                  <table>
+                    <thead><tr>
+                      <th>
+                      Nom
+                      </th>
+                      <th>
+                        Prix
+                      </th>
+                    </tr></thead>
+                    <tbody>
+                    <tr v-for="(i,index) in item.id_menus " :key="index">
+                      <td>{{get_Menu(i)}}</td>
+                    </tr>
+
+                    </tbody>
+                  </table>
 
                   <v-card-actions class="justify-center">
                     <v-btn
@@ -35,6 +57,27 @@
                         style="background-color: #73A8E7"
                         class="text-center"
                     >Ok</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+              <v-dialog :retain-focus="false" v-model="dialog_delivery_order" max-width="500px">
+                <v-card>
+                  <v-card-title class="text-h5 justify-center">Commande prête pour la livraison ?</v-card-title>
+                  <v-card-actions class="justify-center">
+                    <v-btn
+                        color="white"
+                        text
+                        @click="update_order(item)"
+                        style="background-color: #73A8E7"
+                        class="text-center"
+                    >Accept</v-btn>
+                    <v-btn
+                        color="white"
+                        text
+                        @click="dialog_delivery_order = false"
+                        style="background-color: #73A8E7"
+                        class="text-center"
+                    >Cancel</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -94,8 +137,10 @@
 </template>
 
 <script>
-//import MenuService from "@/services/menu.service";
+import MenuService from "../services/menu.service"
+
 export default {
+
   name: 'OrderPage',
   data() {
     return {
@@ -121,8 +166,19 @@ export default {
         {text: 'Actions', value: 'actions', align: 'center',sortable: false},
       ],
 
+      menu_name: [
+        {
+          text: 'Nom ',
+          align: 'left',
+          sortable: false,
+          value: 'menu_name'
+        },
+        {text: 'Prix', value: 'menu_price'},
+      ],
+
       dialog_accept_order: false,
       dialog_detail_order: false,
+      dialog_delivery_order: false,
       connection:null,
       content: '',
     };
@@ -133,6 +189,22 @@ export default {
         this.orders = this.$store.state.orderStore.order
       });
       this.dialog_accept_order=false;
+    },
+
+    update_order(order){
+      this.$store.dispatch('orderStore/deliveryOrder',{order}).then(() => {
+        this.orders = this.$store.state.orderStore.order
+      });
+      this.dialog_delivery_order=false;
+    },
+
+    async get_Menu(order){
+      if(order){
+       const meh = await MenuService.getMenu(order)
+        console.log(meh.menu_name)
+       return meh;
+      }
+
     }
   },
   computed:{
@@ -150,7 +222,6 @@ export default {
 
     this.connection = new WebSocket('ws://localhost:5500');
     this.connection.onopen = () => {
-      console.log("connected");
     };
     this.connection.onmessage = (message) => {
       const incomeOrder = JSON.parse(message['data']);

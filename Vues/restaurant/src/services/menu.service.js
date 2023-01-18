@@ -4,14 +4,18 @@ import authHeader from "@/services/auth-header";
 const API_URL = 'http://localhost:4000/';
 
 class MenuService {
-    getMenus() {
+    getMenus(id_menu) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
-        return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/', {headers: authHeader()});
+        return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/' + id_menu, {headers: authHeader()});
     }
 
     getMenu(id) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
-        return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/'+ id, {headers: authHeader()});
+        if(id){
+            return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/'+ id, {headers: authHeader()}).then(response => {
+                return response.data
+            });
+        }
     }
 
 
