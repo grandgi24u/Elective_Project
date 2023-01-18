@@ -55,7 +55,8 @@ export const orderStore = {
             }
         },
         order_accept(state, order) {
-            state.valideOrder = order;
+            console.log(order.order);
+            state.valideOrder = order.order;
             state.order.splice(state.order.indexOf(order), 1);
         },
         valid_Order(state) {

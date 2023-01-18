@@ -127,10 +127,13 @@ export default {
     };
     this.connection.onmessage = (message) => {
       const incomeOrder = JSON.parse(message['data']);
+      const delivery = JSON.parse(localStorage.getItem('delivery'));
       if(incomeOrder.order_status==="3"){
         if(!this.$store.state.orderStore.order.find(x => x._id === incomeOrder._id)){
           this.$store.state.orderStore.order.push(incomeOrder);
         }
+      }else if(incomeOrder.order_status==="4" && incomeOrder.deliveryId === delivery[0]._id){
+        this.$store.state.orderStore.validateOrder = incomeOrder;
       }
     }
     this.$store.dispatch('orderStore/getOrder');

@@ -181,6 +181,7 @@ export default {
       dialog_delivery_order: false,
       connection:null,
       content: '',
+      test: []
     };
   },
   methods:{
@@ -200,9 +201,10 @@ export default {
 
     async get_Menu(order){
       if(order){
-       const meh = await MenuService.getMenu(order)
-        console.log(meh.menu_name)
-       return meh;
+
+        this.test = await MenuService.getMenu(order)
+        console.log(this.test)
+        return this.test;
       }
 
     }

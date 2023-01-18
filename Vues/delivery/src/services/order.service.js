@@ -17,7 +17,6 @@ class OrderService{
     }
     acceptOrder(order) {
         const delivery = JSON.parse(localStorage.getItem('delivery'));
-        console.log(order)
         return axios.post(API_URL + 'order/' + order.order._id + '/assignDelivery/' + delivery[0]._id, order,{ headers: authHeader() }).then(response => {
             return response.data;
         });

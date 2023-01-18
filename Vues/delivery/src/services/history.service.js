@@ -4,8 +4,9 @@ import authHeader from './auth-header';
 const API_URL = 'http://localhost:4000/gethistories/';
 
 class HistoryService {
-    getHistoryByUser(data) {
-        return axios.get(API_URL + 'getByIdDelivery/' + data.id,{ headers: authHeader() }).then(response => {
+    getHistoryByUser() {
+        const delivery = JSON.parse(localStorage.getItem('delivery'));
+        return axios.get(API_URL + 'getByIdDelivery/' + delivery[0]._id,{ headers: authHeader() }).then(response => {
             return response.data;
         });
     }

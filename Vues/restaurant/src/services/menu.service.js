@@ -4,11 +4,10 @@ import authHeader from "@/services/auth-header";
 const API_URL = 'http://localhost:4000/';
 
 class MenuService {
-    getMenus(id_menu) {
+    getMenus() {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
-        return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/' + id_menu, {headers: authHeader()});
+        return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/', {headers: authHeader()});
     }
-
     getMenu(id) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
         if(id){
@@ -17,8 +16,6 @@ class MenuService {
             });
         }
     }
-
-
     createMenu(menu) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
 
