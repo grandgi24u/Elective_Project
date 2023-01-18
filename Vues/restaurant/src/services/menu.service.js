@@ -9,6 +9,12 @@ class MenuService {
         return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/', {headers: authHeader()});
     }
 
+    getMenu(id) {
+        const restaurant = JSON.parse(localStorage.getItem('restaurant'));
+        return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/menu/'+ id, {headers: authHeader()});
+    }
+
+
     createMenu(menu) {
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));
 

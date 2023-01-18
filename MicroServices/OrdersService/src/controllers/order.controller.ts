@@ -55,8 +55,8 @@ exports.getOrders = (req, res) => {
     });
 }
 
-exports.updateOrderStatus = (req, res) => {
-        Order.findByIdAndUpdate(req.params.id, {order_status: req.body.order_status},
+exports.updateOrderStatus = async (req, res) => {
+        await Order.findByIdAndUpdate(req.params.id, {order_status: req.body.order_status},
             async (err, order) => {
                 if (req.body.order_status === "5") {
                     History.create({
@@ -75,8 +75,9 @@ exports.updateOrderStatus = (req, res) => {
                 } else {
                     res.status(200).send({message: "Order updated"});
                 }
-                ws.send(JSON.stringify(order));
-            })
+            }).then(order => {
+            ws.send(JSON.stringify(order));
+        })
 }
 
 exports.updateOrderPrice = (req, res) => {
