@@ -1,90 +1,50 @@
 // @ts-ignore
-import Item from '../models/item.model';
-// @ts-ignore
 import Order from "../models/order.model";
 
 
-exports.createItem = (req, res) => {
-    const item = new Item({
-        item_id: req.body.id,
-        item_quantity: req.body.quantity,
-        id_order: req.params.id,
+exports.createItem = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {$addToSet : {id_items:req.body.itemId}});
+    Order.findById(req.params.id).then(order => {
+        res.status(200).send(order);
     });
-    item.save((err) => {
-        if(err){
-            res.status(500).send(err);
-        }
-        res.status(200).send(item);
-    });
-    bindItem(req.params.id, item._id)
 }
 
-//Delete an item
+exports.createOptionalItem = async (req, res) => {
+    await Order.findByIdAndUpdate(req.params.id, {$addToSet : {id_items_optional:req.body.itemOptionalId}});
+    Order.findById(req.params.id).then(order => {
+        res.status(200).send(order);
+    });
+}
+
+// delete an Item
 exports.deleteItem = async (req, res) => {
     const order = await Order.findById(req.params.id);
-    if(!order){
-        return res.status(404).send({message:"order not found"});
+    if (!order) {
+        return res.status(404).send({message: "order not found"});
     }
-    for (let menu_id in order.id_menus)
-    {
-        // const menu = await Menu.findById(order.id_menus[menu_id]).catch((err) => {
-        //     res.status(500).send({message: err});
-        // });
-        // if(menu.id_required_items.includes(req.params.idItem)){
-        //     await Menu.findByIdAndUpdate(menu._id, {$pull : {id_required_items:req.params.idItem}}).catch((err) => {
-        //         res.status(500).send({message: err});
-        //     });
-        // }
-        // if(menu.id_optional_items.includes(req.params.idItem)){
-        //     await Menu.findByIdAndUpdate(menu._id, {$pull : {id_optional_items:req.params.idItem}}).catch((err) => {
-        //         res.status(500).send({message: err});
-        //     });
-        // }
-        if(order.id_items.includes(req.params.idItem)){
-            await Order.findByIdAndUpdate(order._id, {$pull : {id_items:req.params.idItem}}).catch((err) => {
-                res.status(500).send({message: err});
+    for (let itemId in order.id_items) {
+        if (order.id_items.includes(req.params.itemId)) {
+            await Order.findByIdAndUpdate(order._id, {$pull: {id_items: req.params.itemId}});
+            Order.findById(req.params._id).then(order => {
+                res.status(200).send({message: "item deleted"});
             });
         }
     }
-    await Item.remove({_id: req.params.idItem}, (err) => {
-        if (err){
-            res.status(500).send(err);
+}
+
+// delete an Optional Item
+exports.deleteOptionalItem = async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+        return res.status(404).send({message: "order not found"});
+    }
+    for (let itemOptionalId in order.id_items_optional) {
+        if (order.id_items_optional.includes(req.params.itemOptionalId)) {
+            await Order.findByIdAndUpdate(order._id, {$pull: {id_items_optional: req.params.itemOptionalId}});
+            Order.findById(req.params._id).then(order => {
+                res.status(200).send({message: "item optional deleted"});
+            });
         }
-        res.status(200).send({message: "Item deleted"});
-    });
+    }
 }
 
-//Get a specific item
-exports.getItem = async (req, res) => {
-    await Item.findById(req.params.idItem, (err, item) => {
-        if (err)
-            res.status(500).send(err);
-        res.status(200).send(item);
-    });
-}
-
-exports.getItems = (req, res) => {
-    Item.find(function(err, users){
-        if (err){
-            res.status(500).send(err);
-        }
-        res.status(200).send(users);
-    });
-}
-
-exports.updateAnItem = (req, res) => {
-    Item.findByIdAndUpdate(req.params.idItem, req.body,
-        (err) => {
-            if (err) {
-                res.status(404).send({message: err});
-            } else {
-                res.status(200).send({message: "Item quantity updated"});
-            }
-        })
-}
-
-const bindItem = (idOrder, idItem) => {
-    Order.findByIdAndUpdate(idOrder, {$push : { id_items:idItem}},(err) => {
-        return !err;
-    });
-}
