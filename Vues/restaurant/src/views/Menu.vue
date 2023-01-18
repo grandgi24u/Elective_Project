@@ -144,24 +144,26 @@
                                 {{currentItem.find(x => x._id === i).item_description}}
                               </td>
                               <td data-label="Actions">
-                                <v-icon
-                                    small
-                                    @click="dialogRequiredUnbind=true"
-                                >
-                                  mdi-delete
-                                </v-icon>
+                                <v-dialog :retain-focus="false" v-model="removeTest[`${i}_${item._id}`]" max-width="500px">
+                                  <template v-slot:activator="{ on, attrs }"><v-icon
+                                        small
+                                        v-bind="attrs" v-on="on"
+                                    >
+                                      mdi-delete
+                                    </v-icon>
+                                  </template>
+                                  <v-card>
+                                    <v-card-title class="text-h5">Voulez-vous enlever cet item (R) du menu ?</v-card-title>
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn color="blue darken-1" text @click="removeTest[`${i}_${item._id}`] = false">Cancel</v-btn>
+                                      <v-btn color="blue darken-1" text @click="unbindRequiredItem(i,item)">OK</v-btn>
+                                      <v-spacer></v-spacer>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
                               </td>
-                              <v-dialog :retain-focus="false" v-model="dialogRequiredUnbind" max-width="500px">
-                                <v-card>
-                                  <v-card-title class="text-h5">Voulez-vous enlever cet item (R) du menu ?</v-card-title>
-                                  <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                    <v-btn color="blue darken-1" text @click="unbindRequiredItem(i,item)">OK</v-btn>
-                                    <v-spacer></v-spacer>
-                                  </v-card-actions>
-                                </v-card>
-                              </v-dialog>
+
                             </tr>
                             </tbody>
                           </template>
@@ -272,23 +274,25 @@
                                 {{currentItem.find(x => x._id === j).item_description}}
                               </td>
                               <td data-label="Actions">
-                                <v-icon
-                                    small
-                                    @click="dialogOptionalUnbind=true">
-                                  mdi-delete
-                                </v-icon>
+                                <v-dialog :retain-focus="false" v-model="removeTest2[`${j}_${item._id}`]" max-width="500px">
+                                  <template v-slot:activator="{ on, attrs }"><v-icon
+                                      small
+                                      v-bind="attrs" v-on="on"
+                                  >
+                                    mdi-delete
+                                  </v-icon>
+                                  </template>
+                                  <v-card>
+                                    <v-card-title class="text-h5">Voulez-vous enlever cet item (R) du menu ?</v-card-title>
+                                    <v-card-actions>
+                                      <v-spacer></v-spacer>
+                                      <v-btn color="blue darken-1" text @click="removeTest2[`${j}_${item._id}`] = false">Cancel</v-btn>
+                                      <v-btn color="blue darken-1" text @click="unbindOptionalItem(j,item)">OK</v-btn>
+                                      <v-spacer></v-spacer>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog>
                               </td>
-                              <v-dialog :retain-focus="false" v-model="dialogOptionalUnbind" max-width="500px">
-                                <v-card>
-                                  <v-card-title class="text-h5">Voulez-vous enlever cet item (O) du menu ?</v-card-title>
-                                  <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                                    <v-btn color="blue darken-1" text @click="unbindOptionalItem(j,item)">OK</v-btn>
-                                    <v-spacer></v-spacer>
-                                  </v-card-actions>
-                                </v-card>
-                              </v-dialog>
                             </tr>
                             </tbody>
                           </template>
@@ -814,6 +818,10 @@ export default {
       dialogBind: false,
 
 
+
+      removeTest: [],
+      removeTest2: [],
+
       expanded: [],
       singleExpand: false,
 
@@ -933,7 +941,7 @@ export default {
       });
     },
 
-    unbindRequiredItem(item,menu){
+    unbindRequiredItem(item, menu){
       this.$store.dispatch('restaurantStore/unbindRequiredItem',{
         item_id : item,
         menu: menu
