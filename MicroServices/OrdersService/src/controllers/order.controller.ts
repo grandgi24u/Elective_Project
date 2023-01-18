@@ -5,9 +5,17 @@ import History from "../models/history.model";
 // @ts-ignore
 const WebSocket = require('ws');
 // @ts-ignore
-const ws = new WebSocket("ws://localhost:5500");
-// @ts-ignore
 const wss = new WebSocket.Server({ port: 5500 });
+const ws = new WebSocket('ws://localhost:5500');
+wss.on('connection', (ws) => {
+    ws.on('message', function incoming(message) {
+        wss.clients.forEach(function each(client) {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(JSON.parse(message)));
+            }
+        });
+    });
+});
 
 exports.createOrder = (req, res) => {
     const order = new Order({
@@ -49,7 +57,7 @@ exports.getOrders = (req, res) => {
 
 exports.updateOrderStatus = (req, res) => {
         Order.findByIdAndUpdate(req.params.id, {order_status: req.body.order_status},
-            (err, order) => {
+            async (err, order) => {
                 if (req.body.order_status === "5") {
                     History.create({
                         order_price: order.order_price,

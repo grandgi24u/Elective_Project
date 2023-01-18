@@ -40,7 +40,6 @@ const ROUTES = [
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/getrestaurant/, '/restaurant');
                 const newQuery = req.userId ;
-                console.log(newPath);
                 return newPath;
             },
         }
@@ -69,7 +68,6 @@ const ROUTES = [
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/restaurant/, '/restaurant');
                 newPath = `${newPath.split('?')[0]}?${"roleId="+ req.roleId + "&userId=" + req.userId}`;
-                console.log(newPath);
                 return newPath;
             }
         }
@@ -85,7 +83,6 @@ const ROUTES = [
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/order/, '/order');
                 newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
-                console.log(newPath);
                 return newPath;
             }
         }
@@ -114,7 +111,6 @@ const ROUTES = [
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/delivery/, '/delivery');
                 newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
-                console.log(newPath);
                 return newPath;
             }
         }
@@ -143,7 +139,6 @@ const ROUTES = [
             pathRewrite: (path, req)=> {
                 let newPath = path.replace(/^\/getDelivery/, '/delivery');
                 newPath = `${newPath.split('?')[0]}?${"&userId=" + req.userId}`;
-                console.log(newPath);
                 return newPath;
             }
         }

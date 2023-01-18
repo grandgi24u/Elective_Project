@@ -12,7 +12,6 @@ const login = (req, res, next) => {
 }
 
 const routeAccess = (req, res, next) => {
-    console.log(req)
     controller.createLog(JSON.stringify({
         method: req.method,
         url: req.url,
