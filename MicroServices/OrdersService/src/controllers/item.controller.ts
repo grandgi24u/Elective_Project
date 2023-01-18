@@ -22,14 +22,14 @@ exports.deleteItem = async (req, res) => {
     if (!order) {
         return res.status(404).send({message: "order not found"});
     }
-    for (let itemId in order.id_items) {
+    //for (let itemId in order.id_items) {
         if (order.id_items.includes(req.params.itemId)) {
             await Order.findByIdAndUpdate(order._id, {$pull: {id_items: req.params.itemId}});
             Order.findById(req.params._id).then(order => {
                 res.status(200).send({message: "item deleted"});
             });
         }
-    }
+  //  }
 }
 
 // delete an Optional Item

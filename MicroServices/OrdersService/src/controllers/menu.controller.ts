@@ -14,12 +14,9 @@ exports.deleteMenu = async (req, res) => {
     if (!order) {
         return res.status(404).send({message: "order not found"});
     }
-    for (let menu_id in order.id_menus) {
-        if (order.id_menus.includes(req.params.idMenu)) {
-            await Order.findByIdAndUpdate(order._id, {$pull: {id_menus: req.params.idMenu}});
-            Order.findById(req.params.id).then(order => {
-                res.status(200).send(order);
-            });
-        }
+
+    if (order.id_menus.includes(req.params.idMenu)) {
+        await Order.findByIdAndUpdate(order._id, {$pull: {id_menus: req.params.idMenu}});
+         return  res.status(200).send("menu delete");
     }
 }

@@ -1,6 +1,5 @@
 <template>
   <aside :class="`${is_expanded ? 'is-expanded' : ''}`">
-
     <div class="menu-toggle-wrap">
       <button class="menu-toggle" @click="ToggleMenu">
         <v-icon
@@ -26,17 +25,9 @@
         <v-icon
             large
             class="material-icons">
-          mdi-account
+          mdi-book-open-blank-variant
         </v-icon>
         <span class="text">Mes commandes</span>
-      </router-link>
-      <router-link to="/favorite" class="button">
-        <v-icon
-            large
-            class="material-icons">
-          mdi-heart
-        </v-icon>
-        <span class="text">Mes coups de coeur</span>
       </router-link>
     </div>
 
@@ -44,6 +35,11 @@
 
     <div class="menu" v-if="currentUser">
       <router-link to="/profile" class="button">
+        <v-icon
+            large
+            class="material-icons">
+          mdi-account
+        </v-icon>
         <h3 class="text">
           {{currentUser.surname}} {{currentUser.name}}
         </h3>

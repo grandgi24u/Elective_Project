@@ -84,9 +84,7 @@
       ]
     }),
     methods: {
-      // ShowHamper() {
-      //   this.hamperIsEnable = !this.hamperIsEnable;
-      // },
+
     }
   }
 </script>
@@ -113,5 +111,8 @@
   }
   .icon-basket {
     margin-left: 45%;
+  }
+  .ml-auto {
+    margin-left: 0px;
   }
 </style>

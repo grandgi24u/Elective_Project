@@ -7,23 +7,73 @@ class AuthOrder {
             .post(API_URL + 'order', {
                 price: order.price,
                 status: 0,
-                restaurantId: order.restaurantId,
-                menu_id: order.menuId,
+                restaurantId: order.restaurantId
             }, { headers: authHeader() })
             .then(response => {
                 return response.data;
             });
     }
 
-   registerItem(order) {
+    registerMenu(order) {
         return axios
             .post(API_URL + 'order/' + order.id + '/menu', {
-                id: order.menuId,
+                menu_id: order.menuId,
             }, { headers: authHeader() })
             .then(response => {
                 return response.data;
             });
     }
+    deleteMenu(order) {
+        return axios
+            .delete(API_URL + 'order/' + order.orderId + '/menu/'+ order.menuId, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+   }
+
+    registerItem(order) {
+        return axios
+            .post(API_URL + 'order/' + order.id + '/item', {
+                itemId: order.itemId,
+            }, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
+    deleteItem(order) {
+        return axios
+            .delete(API_URL + 'order/' + order.orderId + '/item/'+ order.itemId, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
+
+    registerItemOptionnel(order) {
+        return axios
+            .post(API_URL + 'order/' + order.id + '/item/optional', {
+                itemOptionalId: order.itemId,
+            }, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
+    deleteItemOptionnel(order) {
+        return axios
+            .delete(API_URL + 'order/' + order.orderId + '/item/optional/'+ order.itemId, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
+    validationOrder(order) {
+        return axios
+            .patch(API_URL + 'order/' + order.orderId , {
+                order_status: 1,
+            }, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
+
 }
 
 export default new AuthOrder();

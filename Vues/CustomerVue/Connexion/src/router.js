@@ -24,19 +24,12 @@ export const router = new Router({
         {
             path: '/restaurants',
             name: 'restaurants',
-            component: () => import('./App.vue'),
-            props: () => ({
-                showLogin: 'false',
-                showNavBar : 'true',
-                showBanner : 'true',
-                showRestaurants : 'true',
-                showResearchRestaurant: 'true',
-            })
+            component: () => import('./views/Restaurants.vue'),
         },
         {
             path: '/order',
             name: 'order',
-            component: () => import('./App.vue'),
+            component: () => import('./views/Orders.vue'),
             props: () => ({
                 showOrders: 'true',
                 showNavBar : 'true',
@@ -46,34 +39,28 @@ export const router = new Router({
         {
             path: '/profile',
             name: 'profile',
-            component: () => import('./App.vue'),
+            component: () => import('./views/Profile.vue'),
             props: () => ({
-                showProfile: 'true',
-                showNavBar : 'true',
-                showBanner : 'true',
                 showLabelProfile : 'true',
             })
         },
         {
             path: '/menu',
             name: 'menu',
-            component: () => import('./App.vue'),
-            props: {
-                showDetailsRestaurants: 'true',
-                showNavBar : 'true',
-                showBanner : 'true',
+            component: () => import('./views/Details-restaurants.vue'),
+            props: () => ({
                 showResearchItems: 'true',
-            },
+            })
         },
         {
             path: '/details',
             name: 'details',
-            component: () => import('./App.vue'),
-            props: {
-                showDetailsItems: 'true',
-                showNavBar : 'true',
-                showBanner : 'true',
-            },
+            component: () => import('./views/Details-items.vue'),
+        },
+        {
+            path: '/validcommande',
+            name: 'validcommande',
+            component: () => import('./views/Details-hamper.vue'),
         }
     ]
 });

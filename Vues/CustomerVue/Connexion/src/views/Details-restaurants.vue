@@ -1,7 +1,6 @@
 <template>
-  <v-container class="div-container">
-
-    <v-list nav dense>
+  <v-container class="contrainer-restaurants">
+    <v-list nav dense style="min-width: 23%">
       <v-list-item-group
           color="primary"
       >
@@ -31,7 +30,7 @@
       <div class="div-menu-restaurant" v-if="displayMenus">
         <v-row>
           <v-col
-            v-for="item in filteredMenus"
+            v-for="item in listMenus"
             :key="item.id"
             cols="12"
             md="4"
@@ -72,7 +71,7 @@
     <div class="div-menu-restaurant" v-if="displayItems">
       <v-row>
         <v-col
-            v-for="item in filteredItems"
+            v-for="item in listItems"
             :key="item.id"
             cols="12"
             md="4"
@@ -103,7 +102,7 @@
 
               <div style="text-align: justify;margin-bottom: 10px">{{item.item_description}}</div>
 
-              <div>  <v-btn @click="AddItemToHamper()">Ajouter à mon panier</v-btn></div>
+              <div>  <v-btn @click="AddItemToHamper(item._id, item.item_price)">Ajouter à mon panier</v-btn></div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -145,17 +144,24 @@ import RestaurantService from '../services/restaurant.service';
       {
         this.$router.push({ name: 'details', params: { restaurantId: id, menuId: menuId }});
       },
-      AddItemToHamper() {
-        /*if ((this.$store.state.orderModule.order) == null) {
-          console.log(this.$route.params.menuId)
+      AddItemToHamper(itemId, itemPrice) {
+        console.log(itemId);
+        if ((this.$store.state.orderModule.order) == null) {
           this.$store.dispatch('orderModule/register', {
-            price: this.menuPrice,
-            restaurantId: this.id,
-            menuId: this.$route.params.menuId,
+            price: itemPrice,
+            restaurantId: this.$route.params.restaurantId
+          }).then (() => {
+            this.$store.dispatch('orderModule/registerItem', {
+              id: this.$store.state.orderModule.order._id,
+              itemId: itemId,
+            })
           })
         } else {
-          console.log(this.$store.state.orderModule.order);
-        }*/
+          this.$store.dispatch('orderModule/registerItem', {
+            id: this.$store.state.orderModule.order._id,
+            itemId: itemId,
+          })
+        }
       },
       ViewChoice(name)
       {
@@ -174,12 +180,11 @@ import RestaurantService from '../services/restaurant.service';
       }
     },
    mounted() {
-       this.id = this.$route.params.restaurantId;
+        this.id = this.$route.params.restaurantId;
 
        RestaurantService.getMenus(this.$route.params.restaurantId).then(
            response => {
              this.listMenus = response.data;
-             console.log(response.data);
            },
            error => {
              this.content =
@@ -202,11 +207,9 @@ import RestaurantService from '../services/restaurant.service';
        ),
        RestaurantService.getRestaurantById(this.$route.params.restaurantId).then(
             response => {
-              //console.log(response.data)
               this.restaurantName = response.data.restaurant_name;
             },
             error => {
-              console.log("fonctionne pas"),
                   this.content =
                       (error.response && error.response.data) ||
                       error.message ||

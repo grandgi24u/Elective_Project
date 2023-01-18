@@ -19,12 +19,20 @@ class RestaurantService {
     getDetailsMenu(menuId, restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' + menuId, { headers: authHeader() }).catch(err => { console.log(err)});
     }
+
+    getDetailsItem(itemId, restaurantId) {
+        return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/item/' + itemId, { headers: authHeader() }).catch(err => { console.log(err)});
+    }
+
+    getDetailsOrder(orderId) {
+        return axios.get(API_URL + 'order/' + orderId, { headers: authHeader() }).catch(err => { console.log(err)});
+    }
+
     setItemsToHamper(restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' , { headers: authHeader() }).catch(err => { console.log(err)});
     }
     getItemsInMenu(menuId, restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' + menuId, { headers: authHeader() }).catch(err => { console.log(err)});
     }
-
 }
 export default new RestaurantService();

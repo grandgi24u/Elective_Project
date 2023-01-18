@@ -54,15 +54,9 @@
 </script>
 
 <style>
-  .mx-auto-orders {
-    margin-left: 16%;
-  }
   .v-image-orders .v-image__image {
     height: 100px;
     width: 100px;
-  }
-  .mx-auto-orders {
-    margin-left: 17%;
   }
   .list-item-subtitle {
     margin-left: 5%;
