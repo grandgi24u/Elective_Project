@@ -8,8 +8,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 // @ts-ignore
 const checkAllData = require("../middleware/checkAllData")
-// @ts-ignore
-const Item = require('../controllers/item.controller');
+
 
 // router.get('/', controller.getMenus, checkAllData.checkIfOrderExist);
 // router.get('/:idMenu',  controller.getMenu, checkAllData.checkIfMenuExist, checkAllData.checkIfOrderExist)

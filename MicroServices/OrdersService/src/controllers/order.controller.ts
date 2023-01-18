@@ -90,6 +90,11 @@ exports.updateOrderPrice = (req, res) => {
         })
 }
 
+// exports.getOrderByRestaurantIdAndByStatus = async (req, res) => {
+//     await Order.find({restaurantId:req.params.restaurantId},{order_status:req.params.order_status}).then ((order) => {
+//         res.status(200).json(order);
+//     });
+// }
 
 
 
