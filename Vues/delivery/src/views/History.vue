@@ -6,18 +6,25 @@
         <thead>
         <tr>
           <th class="text-left">
-            Name
+            Date
           </th>
           <th class="text-left">
-            Calories
+            Price
           </th>
         </tr>
         </thead>
         <tbody>
         <tr
+            v-for="(item,key) in history"
+            :key="key"
         >
-          <td></td>
-          <td></td>
+          <td data-label="Date">
+            {{item.order_date}}
+          </td>
+          <td data-label="Price">
+            {{item.order_price}}
+          </td>
+
         </tr>
         </tbody>
       </template>
@@ -42,7 +49,8 @@ export default {
     if (!this.$store.state.auth.user) {
       this.$router.push('/login');
     }
-    this.history = HistoryService.getHistoryByUser({id: this.currentUser.id});
-  }
+    HistoryService.getHistoryByUser({id: this.currentUser._id}).then(response => {
+      this.history=response;
+    });  }
 };
 </script>
