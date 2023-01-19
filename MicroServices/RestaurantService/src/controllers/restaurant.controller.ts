@@ -17,7 +17,6 @@ exports.createRestaurant = async (req, res) => {
         food_type: req.body.food_type,
         userid: req.body.userid,
     });
-    console.log("MEH "+req);
     await restaurant.save((err) => {
         if(err){
             res.status(404).send({message: err});
@@ -62,6 +61,12 @@ exports.getRestaurantById = async (req, res) => {
     await Restaurant.findOne({userid:req.params.idUser}).populate('id_menus').then ((restaurant) => {
         res.status(200).json(restaurant);
     });
+}
+
+exports.getRestaurantByType = async (req,res) => {
+    await Restaurant.find({food_type:req.params.type}).then((restaurant) => {
+        res.status(200).json(restaurant);
+    })
 }
 
 //Get one specific restaurant

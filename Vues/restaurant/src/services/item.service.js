@@ -9,6 +9,15 @@ class ItemService {
         return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/item/', {headers: authHeader()});
     }
 
+    getItem(id) {
+        const restaurant = JSON.parse(localStorage.getItem('restaurant'));
+        if (id) {
+            return axios.get(API_URL + 'getrestaurant/' + restaurant._id + '/item/' + id, {headers: authHeader()}).then(response => {
+                return response.data
+            });
+        }
+    }
+
     createItem(item) {
         //1 = paq de menu
         const restaurant = JSON.parse(localStorage.getItem('restaurant'));

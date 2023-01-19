@@ -1,5 +1,6 @@
 import Order from '../services/order.service';
 import MenuService from "@/services/menu.service";
+import ItemService from "@/services/item.service";
 
 const initialState = {order: [], validateOrder:[] };
 
@@ -61,10 +62,21 @@ export const orderStore = {
         },
         order_get_active(state, active_order) {
             active_order.forEach(element => {
-                element.test = [];
+                element.order_menu = [];
                 element.id_menus.forEach(elem => {
                     MenuService.getMenu(elem).then(res => {
-                        element.test.push(res);
+                        element.order_menu.push(res);
+                    })
+                });
+                element.order_item = [];
+                element.id_items_optional.forEach(elem => {
+                    ItemService.getItem(elem).then(res => {
+                        element.order_item.push(res);
+                    })
+                });
+                element.id_items.forEach(elem => {
+                    ItemService.getItem(elem).then(res => {
+                        element.order_item.push(res);
                     })
                 });
             });
