@@ -7,8 +7,8 @@
         >
 
       <img class="logo" src="../assets/logo-cesi-eat.png" @click="RetourTousRestaurants()" height="76%" >
-
       <v-spacer></v-spacer>
+     <!-- <v-spacer></v-spacer>
 
       <v-btn icon v-if="showResearchRestaurant">
         <v-icon>mdi-magnify</v-icon>
@@ -33,7 +33,7 @@
           @input="emitSearchValueItem"
           v-model="searchValueItem"
           v-if="showResearchItems"/>
-      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>-->
       <v-toolbar-title v-if="showLabelProfile" class="title"><strong>Mon profil</strong></v-toolbar-title>
       <v-toolbar-title v-if="showLabelHamper" class="title"><strong>Récapitulatif de ma commande</strong></v-toolbar-title>
 

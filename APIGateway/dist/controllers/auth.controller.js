@@ -27,7 +27,7 @@ const fetch = require("node-fetch");
 // @ts-ignore
 const logController = require("../controllers/log.controller");
 exports.signup = (req, res, send) => __awaiter(void 0, void 0, void 0, function* () {
-    yield fetch("http://localhost:3000/createUser", {
+    yield fetch("http://172.16.44.17:3000/createUser", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

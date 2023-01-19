@@ -116,6 +116,11 @@
     methods: {
       ValidationFinale()
       {
+        this.$store.dispatch('orderModule/updatePrice', {
+          price: this.priceOrder,
+          orderId: this.$store.state.orderModule.order._id
+        })
+
         this.$store.dispatch('orderModule/validationOrder', {
           orderId: this.$store.state.orderModule.order._id
         })

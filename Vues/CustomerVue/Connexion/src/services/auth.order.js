@@ -82,6 +82,16 @@ class AuthOrder {
                 return response.data;
             });
     }
+
+    updatePrice(order) {
+        return axios
+            .patch(API_URL + 'order/price/' + order.orderId , {
+                order_price: order.price,
+            }, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
 }
 
 export default new AuthOrder();

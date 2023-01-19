@@ -102,6 +102,18 @@ export const orderModule = {
                 }
             );
         },
+        updatePrice({ commit }, order) {
+            return AuthOrder.updatePrice(order).then(
+                response => {
+                    commit('updatePriceSuccess', order.orderId);
+                    return Promise.resolve(response);
+                },
+                error => {
+                    commit('updatePriceFailure', error);
+                    return Promise.reject(error);
+                }
+            );
+        },
     },
     mutations: {
         registerSuccess(state, order) {
@@ -127,6 +139,13 @@ export const orderModule = {
             console.log(order);
         },
         addItemFailure(state) {
+            console.log(state);
+        },
+        updatePriceSuccess(state, order) {
+            state.order.order_price = order.order_price;
+            console.log(order);
+        },
+        updatePriceailure(state) {
             console.log(state);
         },
         deleteItemSuccess(state, order) {

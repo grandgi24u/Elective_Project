@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // @ts-ignore
 const middleware_1 = require("../middleware");
 const { fixRequestBody } = require('http-proxy-middleware');
-
+const querystring = require('querystring');
 const ROUTES = [
     {
         url: '/users',
