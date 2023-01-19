@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 mongoose.set('strictQuery', true);
 
 //Connexion à la bdd
-mongoose.connect(process.env.DB_Host, {
+mongoose.connect("mongodb://172.16.44.14/Delivery", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

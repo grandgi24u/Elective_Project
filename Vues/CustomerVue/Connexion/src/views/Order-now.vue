@@ -41,7 +41,7 @@
       price: '',
     }),
      mounted() {
-       this.connection = new WebSocket('ws://localhost:5500');
+       this.connection = new WebSocket('ws://172.16.44.17:5500');
        this.connection.onopen = () => {
        };
        this.connection.onmessage = (message) => {

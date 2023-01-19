@@ -18,7 +18,7 @@ const fetch = require("node-fetch");
 const logController = require("../controllers/log.controller");
 
 exports.signup = async (req, res, send) => {
-    await fetch("http://localhost:3000/createUser", {
+    await fetch("http://172.16.44.17:3000/createUser", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

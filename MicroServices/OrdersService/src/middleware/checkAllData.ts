@@ -1,9 +1,5 @@
 // @ts-ignore
 import Order from '../models/order.model';
-// @ts-ignore
-import Menu from '../models/menu.model';
-// @ts-ignore
-import Item from '../models/item.model';
 
 const checkIfOrderExist = (req, res, next) => {
     const OrderId = req.params.id;
@@ -26,18 +22,6 @@ const checkIfOrderExist = (req, res, next) => {
 //         next();
 //     });
 // }
-
-const checkIfItemExist = (req, res, next) => {
-    const ItemId = req.params.idItem;
-    Item.find({_id:ItemId},  (err, item) => {
-        if (!item || item == ''){
-            res.status(400).send({message: "Item not found"});
-            return
-        }
-        next();
-    });
-}
-
 
 
 const checkOwner = (req, res, next) => {
@@ -77,8 +61,7 @@ const checkStatusOrder = (req, res, next) => {
 // @ts-ignore
 const checkAllData = {
     checkIfOrderExist:checkIfOrderExist,
-    // checkIfMenuExist:checkIfMenuExist,
-    checkIfItemExist:checkIfItemExist,
+
     checkOwner:checkOwner,
     checkStatusOrder:checkStatusOrder,
 };

@@ -127,7 +127,7 @@ export default {
     if (!this.$store.state.auth.user) {
       this.$router.push('/login');
     }
-    this.connection = new WebSocket('ws://localhost:5500');
+    this.connection = new WebSocket('ws://172.16.44.17:5500');
     this.connection.onopen = () => {
       console.log("connected");
     };

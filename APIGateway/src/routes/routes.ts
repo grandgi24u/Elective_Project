@@ -8,7 +8,7 @@ const ROUTES = [
         url: '/users',
         middleware: [authJwt.verifyToken, logger.routeAccess],
         proxy: {
-            target: "http://localhost:3000",
+            target: "http://172.16.44.17:3000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -22,7 +22,7 @@ const ROUTES = [
         url: '/admin/users',
         middleware: [authJwt.verifyToken, authJwt.isAdmin],
         proxy: {
-            target: "http://localhost:3000",
+            target: "http://172.16.44.17:3000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: {
@@ -34,7 +34,7 @@ const ROUTES = [
         url: '/getrestaurant',
         middleware: [authJwt.verifyToken, logger.routeAccess , authJwt.isCustomerOrRestaurant],
         proxy: {
-            target: "http://localhost:6000",
+            target: "http://172.16.44.17:6000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -49,7 +49,7 @@ const ROUTES = [
         url: '/createRestaurant',
         middleware: [],
         proxy: {
-            target: "http://localhost:6000",
+            target: "http://172.16.44.17:6000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -62,7 +62,7 @@ const ROUTES = [
         url: '/restaurant',
         middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isRestaurant],
         proxy: {
-            target: "http://localhost:6000",
+            target: "http://172.16.44.17:6000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -77,7 +77,7 @@ const ROUTES = [
         url: '/order',
         middleware: [authJwt.verifyToken, logger.routeAccess],
         proxy: {
-            target: "http://localhost:5000",
+            target: "http://172.16.44.17:5000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -92,7 +92,7 @@ const ROUTES = [
         url: '/gethistories',
         middleware: [authJwt.verifyToken, logger.routeAccess],
         proxy: {
-            target: "http://localhost:5000",
+            target: "http://172.16.44.17:5000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: {
@@ -105,7 +105,7 @@ const ROUTES = [
         url: '/delivery',
         middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isDelivery],
         proxy: {
-            target: "http://localhost:7000",
+            target: "http://172.16.44.17:7000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -120,7 +120,7 @@ const ROUTES = [
         url: '/createDelivery',
         middleware: [],
         proxy: {
-            target: "http://localhost:7000",
+            target: "http://172.16.44.17:7000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {
@@ -133,7 +133,7 @@ const ROUTES = [
         url: '/getDelivery',
         middleware: [authJwt.verifyToken, logger.routeAccess, authJwt.isCustomerOrDelivery],
         proxy: {
-            target: "http://localhost:7000",
+            target: "http://172.16.44.17:7000",
             onProxyReq: fixRequestBody,
             changeOrigin: true,
             pathRewrite: (path, req)=> {

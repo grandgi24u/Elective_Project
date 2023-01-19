@@ -6,7 +6,7 @@ import History from "../models/history.model";
 const WebSocket = require('ws');
 // @ts-ignore
 const wss = new WebSocket.Server({ port: 5500 });
-const ws = new WebSocket('ws://localhost:5500');
+const ws = new WebSocket('ws://172.16.44.17:5500');
 wss.on('connection', (ws) => {
     ws.on('message', function incoming(message) {
         wss.clients.forEach(function each(client) {
