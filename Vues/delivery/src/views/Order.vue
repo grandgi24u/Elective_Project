@@ -13,8 +13,10 @@
               <v-card-subtitle>Date : {{currentActiveOrder.order_date}}<br/>
                 Adresse : {{currentActiveOrder.user.address}}<br/>
                 Prénom : {{currentActiveOrder.user.name}} {{currentActiveOrder.user.surname}}<br/>
-                Prix : {{currentActiveOrder.order_price}}</v-card-subtitle>
-
+                Prix : {{currentActiveOrder.order_price}}<br /> <br/>
+              <h5>Restaurant :</h5><br/>
+              Nom : {{currentActiveOrder.restaurant.restaurant_name}}<br/>
+              Adresse : {{currentActiveOrder.restaurant.restaurant_address}}</v-card-subtitle>
               <v-card-actions>
                 <v-btn text @click="validateLivraison()">
                   Valider la livraison
@@ -75,6 +77,7 @@
 
 <script>
 import UserService from "@/services/user.service";
+import OrderService from "@/services/order.service";
 
 export default {
   name: 'OrderPage',
@@ -138,7 +141,10 @@ export default {
       }else if(incomeOrder.order_status==="4" && incomeOrder.deliveryId === delivery[0]._id){
         UserService.getUser(incomeOrder.userid).then(res => {
           incomeOrder.user = res;
-          this.$store.state.orderStore.validateOrder = incomeOrder;
+          OrderService.getRestaurant(incomeOrder.restaurantId).then(res => {
+            incomeOrder.restaurant = res;
+            this.$store.state.orderStore.validateOrder = incomeOrder;
+          });
         });
       }
     }

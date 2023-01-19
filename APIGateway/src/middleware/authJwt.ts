@@ -118,7 +118,7 @@ const isCustomerOrRestaurant =  (req, res, next) => {
     User.findByPk(req.userId).then((user) => {
         if(user){
             user.getRole().then(role => {
-                if (role.name === "restaurant" || role.name === "customer") {
+                if (role.name === "restaurant" || role.name === "customer" || role.name === "delivery") {
                     next();
                 } else {
                     res.status(403).send({

@@ -34,23 +34,24 @@
                   <v-card-title class="text-h5 justify-center">Détail</v-card-title>
                   <h3 class="ml-4">Menu</h3>
                   <v-simple-table>
-                    <thead><tr>
+                    <thead>
+                    <tr>
                       <th style="width: 50%">
                         Nom
                       </th>
                       <th style="width: 50%">
                         Prix
                       </th>
-                    </tr></thead>
-                    <tbody>
-                    <tr v-for="(i,index) in item.order_menu " :key="index">
-                      <td>{{i.menu_name}}</td>
-                      <td>{{i.menu_price}}</td>
                     </tr>
-
+                    </thead>
+                    <tbody>
+                      <tr class="ml-3" v-for="(i,index) in item.order_menu " :key="index">
+                        <td>{{i.menu_name}}</td>
+                        <td>{{i.menu_price}}</td>
+                      </tr>
                     </tbody>
                   </v-simple-table>
-                  <h3 class="ml-4">Items</h3>
+                  <h3 class="ml-4 mt-2">Items</h3>
                   <v-simple-table>
                     <thead><tr>
                       <th style="width: 50%">
@@ -60,10 +61,12 @@
                         Prix
                       </th>
                     </tr></thead>
+                    <tbody>
                     <tr v-for="(i,index) in item.order_item " :key="index">
                       <td>{{i.item_name}}</td>
                       <td>{{i.item_price}}</td>
                     </tr>
+                    </tbody>
                     <h3 class="ml-4 mt-5">Total: {{item.order_price}}€</h3>
                   </v-simple-table>
 

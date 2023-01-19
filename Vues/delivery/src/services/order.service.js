@@ -26,6 +26,11 @@ class OrderService{
             return response.data;
         });
     }
+    getRestaurant(id_Restaurant) {
+        return axios.get(API_URL + 'getrestaurant/' + id_Restaurant,{ headers: authHeader() }).then(response => {
+            return response.data;
+        });
+    }
 }
 
 export default new OrderService();

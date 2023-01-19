@@ -1,5 +1,6 @@
 import Order from '../services/order.service';
 import UserService from "@/services/user.service";
+import OrderService from "../services/order.service";
 
 const initialState = {order: [], validateOrder:null };
 
@@ -53,8 +54,11 @@ export const orderStore = {
         order_get_active(state, active_order) {
             if(active_order.length > 0){
                 UserService.getUser(active_order[0].userid).then(res => {
-                     active_order[0].user = res;
-                    state.validateOrder = active_order[0];
+                    active_order[0].user = res;
+                    OrderService.getRestaurant(active_order[0].restaurantId).then(res => {
+                        active_order[0].restaurant = res;
+                        state.validateOrder = active_order[0];
+                    });
                 });
             }
         },
