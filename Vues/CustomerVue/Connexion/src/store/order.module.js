@@ -169,8 +169,23 @@ export const orderModule = {
         },
         validationOrderSuccess(state, order) {
             console.log(order);
-            console.log(state.order);
-            state.order = [];
+            state.order = null;
+            /*   state.order.id_items = "";
+             state.order.id_items_optional = "";
+             state.order.id_menus = "";
+             state.order.order_price = "";
+             state.order.restaurantId = "";
+           let count = 0;
+             for (const key in state.order)
+             {
+                 state.order[key] = '';
+                 count++;
+                 if (count === 9)
+                 {
+                     break;
+                 }
+             }*/
+            console.log("fin");
             console.log(state.order);
         },
         validationOrderFailure(state) {

@@ -161,6 +161,8 @@ import RestaurantService from '../services/restaurant.service';
       AddItemToHamper(itemId, itemPrice) {
         if (this.$store.state.orderModule.order !== null)
         {
+          console.log(this.$store.state.orderModule.order.restaurantId);
+          console.log(this.restaurantIdd);
           if (this.restaurantIdd !== (this.$store.state.orderModule.order.restaurantId))
           {
             // la variable existe

@@ -66,6 +66,10 @@
     <v-snackbar v-model="snackProblemeLogin" timeout="5000">
       Un compte existe déjà avec ce mail.
     </v-snackbar>
+
+    <v-snackbar v-model="snackProblemeRegister" timeout="5000">
+      Mail ou mot de passe incorrect.
+    </v-snackbar>
   </v-dialog>
 </template>
 
@@ -76,6 +80,7 @@ export default {
   data: () => ({
     dialog: true,
     snackProblemeLogin: false,
+    snackProblemeRegister: false,
     tab: 0,
     tabs: [
       {name:"Connexion", icon:"mdi-account"},
@@ -143,10 +148,12 @@ export default {
               this.$router.push('/restaurants');
             },
             error => {
-              this.message =
+              this.snackProblemeRegister = true
+              console.log(error);
+             /* this.message =
                   (error.response && error.response.data) ||
                   error.message ||
-                  error.toString();
+                  error.toString();*/
             }
         );
       }
