@@ -47,48 +47,6 @@ export default {
       this.$store.dispatch('auth/logout');
       this.$router.push('/login');
     },
-    RestaurantsView() {
-      this.showFavorite = false;
-      this.showDetailsHamper = false;
-    },
-    FavoriteView() {
-      this.showFavorite = true;
-      this.showDetailsHamper = false;
-    },
-    DetailsRestaurantView() {
-      this.showFavorite = false;
-      this.showDetailsHamper = false;
-    },
-    OrdersView() {
-      this.showFavorite = false;
-      this.showDetailsHamper = false;
-    },
-    ShowHamper()
-    {
-      this.showHamper = !this.showHamper;
-    },
-    DetailsItemsView(id)
-    {
-      this.showDetailsHamper = false;
-      this.item = id ;
-    },
-    DisplayDetailsRestaurants()
-    {
-      this.showDetailsHamper = false;
-    },
-    DisplayDetailsHamper()
-    {
-      this.showFavorite = false;
-      this.showDetailsHamper = true;
-      this.showLabelHamper = true;
-      this.showHamper = false;
-    },
-    handleSearchValue(value) {
-      this.searchValueRestaurants = value;
-    },
-    handleSearchValueItem(value) {
-      this.searchValueItem = value;
-    },
   }
 };
 </script>

@@ -1,9 +1,9 @@
 <template>
   <div class="form-profile">
-    <v-form ref="profilForm">
+    <v-form ref="profilForm" v-model="valid">
       <div class="form-details">
         <v-text-field
-            v-model="firstName"
+            v-model="name"
             :rules="firstNameRules"
             label="Prénom"
             required
@@ -28,7 +28,7 @@
         ></v-text-field>
       </div>
       <div class="button-enregistrer">
-       <v-btn type="submit" @click="validateInfoProfil">Enregistrer</v-btn>
+       <v-btn :disabled="!valid" @click="validateInfo">Enregistrer</v-btn>
       </div>
     </v-form>
   </div>
@@ -38,6 +38,11 @@
   export default {
     name: 'Profile-vue',
     data: () => ({
+      valid: true,
+      name: "",
+      surname: "",
+      email: "",
+      address: "",
       firstNameRules: [
         v => !!v || 'Le prénom est obligatoire',
         v => /^[a-zA-Z]+$/.test(v) || 'Le prénom doit contenir uniquement des lettres'
@@ -55,57 +60,27 @@
       ],
     }),
     methods: {
-      validateInfoProfil () {
-        if(this.$refs.profilForm.validate()) {
-            this.$router.push('/updateUser/11', {
-              name: this.surname,
-              email: this.email,
-            });
-        }
+      validateInfo () {
+        this.$store.dispatch('auth/updateUser', {
+          id: this.$store.state.auth.user.id,
+          name: this.name,
+          surname: this.surname,
+          email: this.email,
+          address: this.address
+        })
       }
     },
     computed: {
       currentUser() {
         return this.$store.state.auth.user;
-      },
-      firstName: {
-        get() {
-          return this.currentUser.name;
-        },
-        set(value) {
-          this.currentUser.name = value;
-        }
-      },
-      surname: {
-        get() {
-          return this.currentUser.surname;
-        },
-        set(value) {
-          this.currentUser.surname = value;
-        }
-      },
-      email: {
-        get() {
-          return this.currentUser.email;
-        },
-        set(value) {
-          this.currentUser.email = value;
-        }
-      },
-      address: {
-        get() {
-          return this.currentUser.address;
-        },
-        set(value) {
-          this.currentUser.address = value;
-        }
-      },
+      }
     },
     mounted() {
-      if (!this.currentUser) {
-        this.$router.push('/login');
-      }
-    }
+      this.name = this.currentUser.name;
+      this.surname = this.currentUser.surname;
+      this.email = this.currentUser.email;
+      this.address = this.currentUser.address;
+    },
   }
 </script>
 

@@ -17,6 +17,10 @@ export default {
     };
   },
   mounted() {
+    if (!this.$store.state.auth.user)
+    {
+      this.$router.push('/login');
+    }
     UserService.getUsers().then(
         response => {
           this.content = response.data;

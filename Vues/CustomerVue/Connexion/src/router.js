@@ -61,6 +61,11 @@ export const router = new Router({
             path: '/validcommande',
             name: 'validcommande',
             component: () => import('./views/Details-hamper.vue'),
+        },
+        {
+            path: '/ordernow',
+            name: 'ordernow',
+            component: () => import('./views/Order-now.vue'),
         }
     ]
 });

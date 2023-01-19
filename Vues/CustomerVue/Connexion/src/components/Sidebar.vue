@@ -21,6 +21,14 @@
         </v-icon>
         <span class="text">Restaurants</span>
       </router-link>
+      <router-link to="/ordernow" class="button">
+        <v-icon
+            large
+            class="material-icons">
+          mdi-access-point
+        </v-icon>
+        <span class="text">Ma commande en cours</span>
+      </router-link>
       <router-link to="/order" class="button">
         <v-icon
             large
@@ -201,7 +209,7 @@ aside {
     }
   }
   @media (max-width: 1024px) {
-    position: absolute;
+    position: fixed;
     z-index: 99;
   }
 }

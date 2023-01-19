@@ -1,8 +1,8 @@
 <template>
   <v-container class="contrainer-restaurants">
-        <v-btn icon  @click="RetourRestaurant()">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
+      <v-btn icon @click="RetourRestaurant()">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
 
         <img class="logo-item" src="../assets/repas/entree1_Mauricette.jpg">
 
@@ -44,6 +44,9 @@
                   <v-list-item-title><strong>{{item.item_name}}</strong></v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-content>
+                  <v-list-item-title>{{item.item_price}} €</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-content>
                   <v-list-item-title>{{item.item_description}}</v-list-item-title>
                 </v-list-item-content>
                 <v-list-item-content style="padding-left: 10px">
@@ -57,7 +60,14 @@
               <v-btn @click="AddMenuToHamper()">Ajouter à mon panier</v-btn>
             </v-col>
            </v-form>
+
+          <v-snackbar v-model="showDialog" timeout="2000">
+            Menu bien ajouté à la commande
+          </v-snackbar>
         </div>
+      <v-snackbar v-model="snackProbleme" timeout="5000">
+        Impossible d'ajouter ce menu. Vous avez un article d'un autre restaurant dans votre panier.
+      </v-snackbar>
   </v-container> 
 </template>
 
@@ -69,10 +79,12 @@
     props: ['restaurantId',
      'menuId'],
     data: () => ({
+      showDialog: false,
       detailsMenu: [],
       itemOptionnel: [],
       DisplayItemsRequired: false,
       DisplayItemsOptional: false,
+      snackProbleme: false,
       menuName: '',
       menuDescription: '',
       menuPrice: '',
@@ -85,36 +97,81 @@
          this.$router.push({ name: 'menu', params: { restaurantId: this.id }});
        },
        AddMenuToHamper() {
-         if ((this.$store.state.orderModule.order) == null) {
-              this.$store.dispatch('orderModule/register', {
-                price: this.menuPrice,
-                restaurantId: this.id
-              }).then (() => {
-                this.$store.dispatch('orderModule/registerMenu', {
-                  id: this.$store.state.orderModule.order._id,
-                  menuId: this.$route.params.menuId,
-                }).then (() => {
-                  for (const value of this.itemOptionnel) {
-                   this.$store.dispatch('orderModule/registerItemOptionnel', {
-                      id: this.$store.state.orderModule.order._id,
-                      itemId: value,
-                    })
-                  }
-                })
-              })
-            } else {
+         if (this.$store.state.orderModule.order !== null)
+         {
+           if (this.id !== (this.$store.state.orderModule.order.restaurantId))
+           {
+             // la variable existe
+             this.snackProbleme = true;
+           } else {
+             if ((this.$store.state.orderModule.order) == null) {
+               this.$store.dispatch('orderModule/register', {
+                 price: this.menuPrice,
+                 restaurantId: this.id,
+               }).then(() => {
                  this.$store.dispatch('orderModule/registerMenu', {
                    id: this.$store.state.orderModule.order._id,
                    menuId: this.$route.params.menuId,
-                 }).then (() => {
+                 }).then(() => {
                    for (const value of this.itemOptionnel) {
-                     this.$store.dispatch('orderModule/registerItemOptionnel', {
+                     this.$store.dispatch('orderModule/registerItemOption', {
                        id: this.$store.state.orderModule.order._id,
                        itemId: value,
                      })
                    }
                  })
-            }
+                 this.showDialog = true;
+               })
+             } else {
+               this.$store.dispatch('orderModule/registerMenu', {
+                 id: this.$store.state.orderModule.order._id,
+                 menuId: this.$route.params.menuId,
+               }).then(() => {
+                 for (const value of this.itemOptionnel) {
+                   this.$store.dispatch('orderModule/registerItemOption', {
+                     id: this.$store.state.orderModule.order._id,
+                     itemId: value,
+                   })
+                 }
+                 this.showDialog = true;
+               })
+             }
+           }
+         } else {
+           // la variable n'existe pas
+            if ((this.$store.state.orderModule.order) == null) {
+               this.$store.dispatch('orderModule/register', {
+                 price: this.menuPrice,
+                 restaurantId: this.id,
+               }).then(() => {
+                 this.$store.dispatch('orderModule/registerMenu', {
+                   id: this.$store.state.orderModule.order._id,
+                   menuId: this.$route.params.menuId,
+                 }).then(() => {
+                   for (const value of this.itemOptionnel) {
+                     this.$store.dispatch('orderModule/registerItemOption', {
+                       id: this.$store.state.orderModule.order._id,
+                       itemId: value,
+                     })
+                   }
+                 })
+                 this.showDialog = true;
+               })
+             } else {
+               this.$store.dispatch('orderModule/registerMenu', {
+                 id: this.$store.state.orderModule.order._id,
+                 menuId: this.$route.params.menuId,
+               }).then(() => {
+                 for (const value of this.itemOptionnel) {
+                   this.$store.dispatch('orderModule/registerItemOption', {
+                     id: this.$store.state.orderModule.order._id,
+                     itemId: value,
+                   })
+                 }
+                 this.showDialog = true;
+               })
+             }
+         }
        },
      },
      computed: {

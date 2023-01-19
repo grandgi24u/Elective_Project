@@ -1,5 +1,5 @@
 <template>
-  <v-container class="contrainer-restaurants" style="max-width: 1510px">
+  <v-container class="contrainer-restaurants">
       <v-row justify="space-around" class="list-meals pa-1">
         <v-col
           cols="12"
@@ -19,6 +19,7 @@
                 v-for="meal in meals"
                 :key="meal.id"
                 class="chip-class-1"
+                @click="ThemeRestaurant(meal.name)"
               >
                 <v-img :src="require(`../assets/repas/${meal.src}`)" contain/>
                 <div class="meal-name">
@@ -42,14 +43,14 @@
               cols="12"
               md="4"
             >
-              <v-item v-slot="{ active, toggle }" class="pa-3">
+              <v-item class="pa-3">
                 <v-img
                   :src="require(`../assets/restaurant/restaurant-1.jpg`)"
                   height="150px"
                   class="pa-2"
                   @click="DetailsRestaurant(item._id, item.restaurant_name)"
                 >
-                  <v-btn
+              <!--    <v-btn
                     icon
                     dark
                     class="btn-like"
@@ -58,7 +59,7 @@
                       @click="toggle">
                         {{ active ? 'mdi-heart' : 'mdi-heart-outline' }}
                     </v-icon>
-                  </v-btn>
+                  </v-btn> -->
                 </v-img>
               </v-item>
               <div class="title-name">
@@ -68,6 +69,9 @@
           </v-row>
         </v-form>
       </v-item-group>
+    <v-snackbar v-model="showSnack" timeout="2000">
+      Votre commande a été transmise à {{restaurantName}}
+    </v-snackbar>
     </v-container>
 </template>
 
@@ -79,6 +83,8 @@ import RestaurantService from '../services/restaurant.service';
     props: ['searchValueRestaurants'],
     data: () => ({
       restaurants : [],
+      theme: '',
+      showSnack: false,
       meals: [
         {
           id : 1,
@@ -113,6 +119,8 @@ import RestaurantService from '../services/restaurant.service';
       ],
     }),
    mounted() {
+     this.showSnack = this.$route.params.showOkCom;
+     this.restaurantName = this.$route.params.restaurantName;
      RestaurantService.getRestaurants().then(
          response => {
             this.restaurants = response.data;
@@ -136,6 +144,20 @@ import RestaurantService from '../services/restaurant.service';
      DetailsRestaurant(id, name)
      {
        this.$router.push({ name: 'menu', params: { restaurantId: id, restaurantName: name }});
+     },
+     ThemeRestaurant(theme)
+     {
+       RestaurantService.getByType(theme).then(
+           response => {
+             this.restaurants = response.data;
+           },
+           error => {
+             this.content =
+                 (error.response && error.response.data) ||
+                 error.message ||
+                 error.toString();
+           }
+       );
      }
    },
   }

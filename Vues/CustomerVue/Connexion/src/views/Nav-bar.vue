@@ -70,10 +70,6 @@
           >
 
           <div v-if="detailsMenu.length || detailsItem.length">
-          <!--<v-list-item-content class="restaurant-name-hamper">
-              <v-list-item-title><strong></strong></v-list-item-title>
-            </v-list-item-content> -->
-
             <v-list-item
                 v-for="(item, i) in detailsMenu"
                 :key="i"
@@ -93,6 +89,28 @@
               <v-list-item-content class="list-elements">
                 <v-list-item-title style="color:#73A8E7"><strong>{{item.menu_name}}</strong></v-list-item-title>
                 <v-list-item-title style="color:#73A8E7">Prix : {{item.menu_price}} €</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
+                v-for="(item, i) in detailsItemOption"
+                :key="i"
+                class="list-item"
+                style="margin-bottom:10px"
+            >
+              <v-btn @click="DeleteItemInOrderOption(item._id, item.item_price)" icon>
+                <v-icon style="color:#73A8E7">mdi-minus</v-icon>
+              </v-btn>
+
+              <v-img
+                  :src="require(`../assets/repas/entree1_Mauricette.jpg`)"
+                  max-width="97px"
+                  class="pa-2"
+              />
+
+              <v-list-item-content class="list-elements">
+                <v-list-item-title style="color:#73A8E7"><strong>{{item.item_name}}</strong></v-list-item-title>
+                <v-list-item-title style="color:#73A8E7">Prix : {{item.item_price}} €</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
@@ -151,6 +169,7 @@ import RestaurantService from "../services/restaurant.service";
       ShowHamper: false,
       detailsMenu: [],
       detailsItem: [],
+      detailsItemOption: [],
       priceOrder: '',
     }),
     mounted()
@@ -213,6 +232,29 @@ import RestaurantService from "../services/restaurant.service";
           this.UpdatePriceOrder(this.priceOrder);
         })
       },
+      DeleteItemInOrderOption(id, price) {
+        this.$store.dispatch('orderModule/deleteItemOption', {
+          itemId: id,
+          orderId: this.$store.state.orderModule.order._id
+        }).then (() => {
+          this.detailsItemOption.splice(0, this.detailsItemOption.length);
+          this.priceOrder = this.priceOrder - price;
+          for(const value of this.$store.state.orderModule.order.id_items_optional) {
+            RestaurantService.getDetailsItem(value, this.$store.state.orderModule.order.restaurantId).then(
+                response => {
+                  this.detailsItemOption.push(response.data);
+                },
+                error => {
+                  this.content =
+                      (error.response && error.response.data) ||
+                      error.message ||
+                      error.toString();
+                }
+            )
+          }
+          this.UpdatePriceOrder(this.priceOrder);
+        })
+      },
       emitSearchValue() {
         this.$emit('search-value-changed', this.searchValueRestaurants);
       },
@@ -225,10 +267,11 @@ import RestaurantService from "../services/restaurant.service";
       },
       ViewHamper()
       {
-        this.priceOrder = '';
+        this.priceOrder = 0;
         this.ShowHamper = !this.ShowHamper;
         this.detailsMenu.splice(0, this.detailsMenu.length);
         this.detailsItem.splice(0, this.detailsItem.length);
+        this.detailsItemOption.splice(0, this.detailsItemOption.length);
 
         if ((this.$store.state.orderModule.order) !== null) {
           // On récupère les menus
@@ -247,7 +290,23 @@ import RestaurantService from "../services/restaurant.service";
             )
           }
 
-          // On récupère les items optionnels
+          // On récupère les items
+          for (const value of this.$store.state.orderModule.order.id_items_optional) {
+            RestaurantService.getDetailsItem(value, this.$store.state.orderModule.order.restaurantId).then(
+                response => {
+                  this.detailsItemOption.push(response.data);
+                  this.priceOrder = this.priceOrder + response.data.item_price ;
+                },
+                error => {
+                  this.content =
+                      (error.response && error.response.data) ||
+                      error.message ||
+                      error.toString();
+                }
+            )
+          }
+
+          // On récupère les items
           for (const value of this.$store.state.orderModule.order.id_items) {
             RestaurantService.getDetailsItem(value, this.$store.state.orderModule.order.restaurantId).then(
                 response => {
@@ -265,11 +324,6 @@ import RestaurantService from "../services/restaurant.service";
         }
       },
     },
-   /* computed: {
-      currentListenu() {
-        return this.$store.state.orderModule.order.id_menus ;
-      }
-    },*/
   }
 </script>
 

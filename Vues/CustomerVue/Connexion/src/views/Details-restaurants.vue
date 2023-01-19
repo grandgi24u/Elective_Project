@@ -8,7 +8,7 @@
           <v-btn icon @click="RetourTousRestaurants()">
             <v-icon>mdi-arrow-left</v-icon>
           </v-btn>
-          Bienvenue chez {{restaurantName}}
+          <strong>Vous êtes chez {{restaurantName}}</strong>
         </v-list>
         <v-list-item
             v-for="(item, i) in menuLists"
@@ -100,15 +100,26 @@
                 Prix : {{item.item_price}} €
               </div>
 
-              <div style="text-align: justify;margin-bottom: 10px">{{item.item_description}}</div>
+              <div style="text-align: justify;margin-bottom: 10px">
+                {{item.item_description}}
+              </div>
 
-              <div>  <v-btn @click="AddItemToHamper(item._id, item.item_price)">Ajouter à mon panier</v-btn></div>
+              <div style="margin-left: 14%;">
+                <v-btn @click="AddItemToHamper(item._id, item.item_price)">Ajouter à mon panier</v-btn>
+              </div>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-    </div>
 
+        <v-snackbar v-model="showDialog" timeout="2000">
+          Article bien ajouté à la commande
+        </v-snackbar>
+
+      <v-snackbar v-model="snackProbleme" timeout="5000">
+        Impossible d'ajouter cet article. Vous avez un article d'un autre restaurant dans votre panier.
+      </v-snackbar>
+    </div>
   </v-container>
 </template>
 
@@ -119,13 +130,16 @@ import RestaurantService from '../services/restaurant.service';
     name : "Details-Restaurant-vue",
     props: ['restaurantId', 'searchValueItem'],
     data: () => ({
+      showDialog: false,
       listMenus : [],
       drawer: true,
       listItems : [],
       displayItems : false,
       displayMenus : true,
+      snackProbleme: false,
       id: "",
       restaurantName: "",
+      restaurantIdd: "",
       menuLists: [
         {
           id : 1,
@@ -145,23 +159,76 @@ import RestaurantService from '../services/restaurant.service';
         this.$router.push({ name: 'details', params: { restaurantId: id, menuId: menuId }});
       },
       AddItemToHamper(itemId, itemPrice) {
-        console.log(itemId);
-        if ((this.$store.state.orderModule.order) == null) {
-          this.$store.dispatch('orderModule/register', {
-            price: itemPrice,
-            restaurantId: this.$route.params.restaurantId
-          }).then (() => {
+        if (this.$store.state.orderModule.order !== null)
+        {
+          if (this.restaurantIdd !== (this.$store.state.orderModule.order.restaurantId))
+          {
+            // la variable existe
+            this.snackProbleme = true;
+          } else {
+            if ((this.$store.state.orderModule.order) == null) {
+              this.$store.dispatch('orderModule/register', {
+                price: itemPrice,
+                restaurantId: this.$route.params.restaurantId
+              }).then(() => {
+                this.$store.dispatch('orderModule/registerItem', {
+                  id: this.$store.state.orderModule.order._id,
+                  itemId: itemId,
+                })
+                this.showDialog = true;
+              })
+            } else {
+              this.$store.dispatch('orderModule/registerItem', {
+                id: this.$store.state.orderModule.order._id,
+                itemId: itemId,
+              })
+              this.showDialog = true;
+            }
+          }
+        } else {
+          // la variable n'existe pas
+          if ((this.$store.state.orderModule.order) == null) {
+            this.$store.dispatch('orderModule/register', {
+              price: itemPrice,
+              restaurantId: this.$route.params.restaurantId
+            }).then(() => {
+              this.$store.dispatch('orderModule/registerItem', {
+                id: this.$store.state.orderModule.order._id,
+                itemId: itemId,
+              })
+              this.showDialog = true;
+            })
+          } else {
             this.$store.dispatch('orderModule/registerItem', {
               id: this.$store.state.orderModule.order._id,
               itemId: itemId,
             })
-          })
-        } else {
-          this.$store.dispatch('orderModule/registerItem', {
-            id: this.$store.state.orderModule.order._id,
-            itemId: itemId,
-          })
+            this.showDialog = true;
+          }
         }
+         /* if ((this.restaurantIdd == (this.$store.state.orderModule.order._id)) || ((this.$store.state.orderModule.order) == null))
+          {
+            if ((this.$store.state.orderModule.order) == null) {
+              this.$store.dispatch('orderModule/register', {
+                price: itemPrice,
+                restaurantId: this.$route.params.restaurantId
+              }).then(() => {
+                this.$store.dispatch('orderModule/registerItem', {
+                  id: this.$store.state.orderModule.order._id,
+                  itemId: itemId,
+                })
+                this.showDialog = true;
+              })
+            } else {
+              this.$store.dispatch('orderModule/registerItem', {
+                id: this.$store.state.orderModule.order._id,
+                itemId: itemId,
+              })
+              this.showDialog = true;
+            }
+          } else {
+            this.snackProbleme = true;
+          }*/
       },
       ViewChoice(name)
       {
@@ -180,7 +247,7 @@ import RestaurantService from '../services/restaurant.service';
       }
     },
    mounted() {
-        this.id = this.$route.params.restaurantId;
+       this.id = this.$route.params.restaurantId;
 
        RestaurantService.getMenus(this.$route.params.restaurantId).then(
            response => {
@@ -208,6 +275,7 @@ import RestaurantService from '../services/restaurant.service';
        RestaurantService.getRestaurantById(this.$route.params.restaurantId).then(
             response => {
               this.restaurantName = response.data.restaurant_name;
+              this.restaurantIdd = response.data._id;
             },
             error => {
                   this.content =

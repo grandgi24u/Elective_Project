@@ -7,7 +7,8 @@ class AuthOrder {
             .post(API_URL + 'order', {
                 price: order.price,
                 status: 0,
-                restaurantId: order.restaurantId
+                restaurantId: order.restaurantId,
+                date: Date.now(),
             }, { headers: authHeader() })
             .then(response => {
                 return response.data;
@@ -48,6 +49,14 @@ class AuthOrder {
             });
     }
 
+    deleteItemOption(order) {
+        return axios
+            .delete(API_URL + 'order/' + order.orderId + '/item/optional/'+ order.itemId, { headers: authHeader() })
+            .then(response => {
+                return response.data;
+            });
+    }
+
     registerItemOptionnel(order) {
         return axios
             .post(API_URL + 'order/' + order.id + '/item/optional', {
@@ -73,7 +82,6 @@ class AuthOrder {
                 return response.data;
             });
     }
-
 }
 
 export default new AuthOrder();

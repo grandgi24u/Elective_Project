@@ -19,13 +19,19 @@ class RestaurantService {
     getDetailsMenu(menuId, restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/menu/' + menuId, { headers: authHeader() }).catch(err => { console.log(err)});
     }
-
     getDetailsItem(itemId, restaurantId) {
         return axios.get(API_URL + 'getrestaurant/' + restaurantId + '/item/' + itemId, { headers: authHeader() }).catch(err => { console.log(err)});
     }
 
     getDetailsOrder(orderId) {
         return axios.get(API_URL + 'order/' + orderId, { headers: authHeader() }).catch(err => { console.log(err)});
+    }
+    getHistoryOrder(userId) {
+        return axios.get(API_URL + 'gethistories/getByIdUser/' + userId , { headers: authHeader() }).catch(err => { console.log(err)});
+    }
+
+    getByType(userId) {
+        return axios.get(API_URL + 'getrestaurant/getByType/' + userId , { headers: authHeader() }).catch(err => { console.log(err)});
     }
 
     setItemsToHamper(restaurantId) {

@@ -66,26 +66,26 @@ export const orderModule = {
                 }
             );
         },
-        registerItemOptionnel({ commit }, order) {
+        registerItemOption({ commit }, order) {
             return AuthOrder.registerItemOptionnel(order).then(
                 response => {
-                    commit('addItemOptionnelSuccess', response);
+                    commit('addItemOptionSuccess', response);
                     return Promise.resolve(response);
                 },
                 error => {
-                    commit('addItemOptionnelFailure', error);
+                    commit('addItemOptionFailure', error);
                     return Promise.reject(error);
                 }
             );
         },
-        deleteItemOptionnel({ commit }, order) {
-            return AuthOrder.deleteItemOptionnel(order).then(
+        deleteItemOption({ commit }, order) {
+            return AuthOrder.deleteItemOption(order).then(
                 response => {
-                    commit('deleteItemOptionnelSuccess', order.menuId);
+                    commit('deleteItemOptionSuccess', order.itemId);
                     return Promise.resolve(response);
                 },
                 error => {
-                    commit('deleteItemOptionnelFailure', error);
+                    commit('deleteItemOptionFailure', error);
                     return Promise.reject(error);
                 }
             );
@@ -135,17 +135,17 @@ export const orderModule = {
         deleteItemFailure(state) {
             console.log(state);
         },
-        addItemOptionnelSuccess(state, order) {
-            state.order.id_items = order.id_items;
+        addItemOptionSuccess(state, order) {
+            state.order.id_items_optional = order.id_items_optional;
             console.log(order);
         },
-        addItemOptionnelFailure(state) {
+        addItemOptionFailure(state) {
             console.log(state);
         },
-        deleteItemOptionnelSuccess(state, order) {
-            state.order.id_items.splice(state.order.id_items.indexOf(order),1);
+        deleteItemOptionSuccess(state, order) {
+            state.order.id_items_optional.splice(state.order.id_items_optional.indexOf(order),1);
         },
-        deleteItemOptionnelFailure(state) {
+        deleteItemOptionFailure(state) {
             console.log(state);
         },
         validationOrderSuccess(state, order) {

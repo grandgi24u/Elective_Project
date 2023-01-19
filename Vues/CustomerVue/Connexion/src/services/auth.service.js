@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from "@/services/auth-header";
 const API_URL = 'http://localhost:4000/';
 class AuthService {
     login(user) {
@@ -32,6 +33,19 @@ class AuthService {
                 if (response.data.accessToken) {
                     localStorage.setItem('user', JSON.stringify(response.data));
                 }
+                return response.data;
+            });
+    }
+
+    updateUser(user) {
+        return axios
+            .patch(API_URL + 'users/updateUser/' + user.id , {
+                name: user.name,
+                surname: user.surname,
+                address: user.address,
+                email: user.email,
+            }, { headers: authHeader() })
+            .then(response => {
                 return response.data;
             });
     }

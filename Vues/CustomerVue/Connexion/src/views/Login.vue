@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
     <div>
-      <v-tabs v-model="tab" show-arrows background-color="deep-purple accent-4" icons-and-text dark grow>
+      <v-tabs v-model="tab" show-arrows background-color="var(--dark)" icons-and-text dark grow>
         <v-tabs-slider color="black"></v-tabs-slider>
         <v-tab class="nav-login" v-for="(val, i) in tabs" :key="i">
           <v-icon large>{{ val.icon }}</v-icon>
@@ -22,7 +22,7 @@
                   </v-col>
                   <v-spacer></v-spacer>
                   <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
-                    <v-btn x-large block :disabled="!valid" color="success" @click="validateLogin"> Valider </v-btn>
+                    <v-btn x-large block :disabled="!valid" color="#73A8E7" @click="validateLogin"> Valider </v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -50,8 +50,8 @@
                     <v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Mot de passe" hint="Il doit contenir au moins 8 caractères" counter @click:append="show1 = !show1"></v-text-field>
                   </v-col>
                   <v-spacer></v-spacer>
-                  <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
-                    <v-btn x-large block :disabled="!valid" color="success" @click="validateRegister">Créer mon compte</v-btn>
+                  <v-col cols="12">
+                    <v-btn x-large block :disabled="!valid" color="#73A8E7" @click="validateRegister">Créer mon compte</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -63,8 +63,10 @@
     <div class="form-group">
       <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
     </div>
+    <v-snackbar v-model="snackProblemeLogin" timeout="5000">
+      Un compte existe déjà avec ce mail.
+    </v-snackbar>
   </v-dialog>
-
 </template>
 
 <script>
@@ -73,6 +75,7 @@ import User from '../models/user';
 export default {
   data: () => ({
     dialog: true,
+    snackProblemeLogin: false,
     tab: 0,
     tabs: [
       {name:"Connexion", icon:"mdi-account"},
@@ -109,7 +112,8 @@ export default {
   name: 'LoginPage',
   methods: {
     validateRegister() {
-      if (this.$refs.registerForm.validate()) {
+      if (this.$refs.registerForm.validate())
+      {
         this.$store.dispatch('auth/register', {
           surname: this.firstName,
           name: this.lastName,
@@ -121,16 +125,19 @@ export default {
               this.$router.push('/home');
             },
             error => {
-              this.message =
+              this.snackProblemeLogin = true
+              console.log(error);
+            /* this.message =
                   (error.response && error.response.data) ||
                   error.message ||
-                  error.toString();
+                  error.toString();*/
             }
         );
       }
     },
     validateLogin () {
-      if(this.$refs.loginForm.validate()) {
+      if(this.$refs.loginForm.validate())
+      {
         this.$store.dispatch('auth/login', {email: this.loginEmail, password: this.loginPassword, roleId: 1}).then(
             () => {
               this.$router.push('/restaurants');
