@@ -2,7 +2,7 @@ import Order from '../services/order.service';
 import MenuService from "@/services/menu.service";
 import ItemService from "@/services/item.service";
 
-const initialState = {order: [], validateOrder:[] };
+const initialState = {order: [], validateOrder:[], waitingOrder:[] };
 
 export const orderStore = {
     namespaced: true,
@@ -23,6 +23,17 @@ export const orderStore = {
             return Order.getOrders(2).then(
                 order => {
                     commit('order_get_active', order);
+                    return Promise.resolve(order);
+                },
+                error => {
+                    return Promise.reject(error);
+                }
+            );
+        },
+        getWaitingOrder({commit}){
+            return Order.getOrders(3).then(
+                order => {
+                    commit('order_waiting_get', order);
                     return Promise.resolve(order);
                 },
                 error => {
@@ -53,12 +64,15 @@ export const orderStore = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
 
     mutations:{
         order_get(state, order) {
             state.order = order;
+        },
+        order_waiting_get(state, order) {
+            state.waitingOrder = order;
         },
         order_get_active(state, active_order) {
             active_order.forEach(element => {
@@ -80,7 +94,6 @@ export const orderStore = {
                     })
                 });
             });
-            console.log(active_order);
             state.validateOrder = active_order;
         },
         order_update(state,order){
@@ -93,6 +106,13 @@ export const orderStore = {
             const index = state.validateOrder.indexOf(state.validateOrder.find(x => x._id === order));
             if (index !== -1) {
                 state.validateOrder.splice(index, 1);
+            }
+        },
+
+        orderDelivery(state,order){
+            const index = state.waitingOrder.indexOf(state.waitingOrder.find(x => x._id === order));
+            if (index !== -1) {
+                state.waitingOrder.splice(index, 1);
             }
         }
     }

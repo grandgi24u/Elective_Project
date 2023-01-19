@@ -148,6 +148,20 @@
             </template>
           </v-data-table>
         </v-card>
+        <v-card>
+          <v-toolbar
+              color="white"
+              flat
+          >
+            <v-toolbar-title>Commandes en attente de livreur</v-toolbar-title>
+          </v-toolbar>
+          <v-data-table
+              :headers="waiting_order"
+              :items="currentWaitingOrder"
+              :items-per-page="5"
+              class="mb-3">
+            </v-data-table>
+        </v-card>
       </template>
     </div>
   </main>
@@ -184,7 +198,15 @@ export default {
         {text: 'Prix', value: 'order_price'},
         {text: 'Actions', value: 'actions', align: 'center',sortable: false},
       ],
-
+      waiting_order: [
+        {
+          text: 'Date',
+          align: 'left',
+          sortable: false,
+          value: 'order_date'
+        },
+        {text: 'Prix',sortable: false, value: 'order_price'},
+      ],
       dialog_accept_order: false,
       dialog_detail_order: false,
       dialog_delivery_order: false,
@@ -214,6 +236,12 @@ export default {
     currentActiveOrder() {
       return this.$store.state.orderStore.validateOrder
     },
+    currentWaitingOrder(){
+      return this.$store.state.orderStore.waitingOrder
+    },
+    currentRestaurant() {
+      return JSON.parse(localStorage.getItem('restaurant'));
+    },
   },
   mounted() {
     if (!this.$store.state.auth.user) {
@@ -223,38 +251,57 @@ export default {
     this.connection = new WebSocket('ws://localhost:5500');
     this.connection.onopen = () => {
     };
+
     this.connection.onmessage = (message) => {
+
       const incomeOrder = JSON.parse(message['data']);
-      if(incomeOrder.order_status==="1"){
-        if(!this.$store.state.orderStore.order.find(x => x._id === incomeOrder._id)){
-          this.$store.state.orderStore.order.push(incomeOrder);
+      if (incomeOrder.restaurantId === this.currentRestaurant._id) {
+        if (incomeOrder.order_status === "1") {
+          if (!this.$store.state.orderStore.order.find(x => x._id === incomeOrder._id)) {
+            this.$store.state.orderStore.order.push(incomeOrder);
+          }
+        } else if (incomeOrder.order_status === "2") {
+          if (!this.$store.state.orderStore.validateOrder.find(x => x._id === incomeOrder._id)) {
+            incomeOrder.order_menu = [];
+            incomeOrder.id_menus.forEach(elem => {
+              MenuService.getMenu(elem).then(res => {
+                incomeOrder.order_menu.push(res);
+              })
+            });
+            incomeOrder.order_item = [];
+            incomeOrder.id_items_optional.forEach(elem => {
+              ItemService.getItem(elem).then(res => {
+                incomeOrder.order_item.push(res);
+              })
+            });
+            incomeOrder.id_items.forEach(elem => {
+              ItemService.getItem(elem).then(res => {
+                incomeOrder.order_item.push(res);
+              })
+            });
+            this.$store.state.orderStore.validateOrder.push(incomeOrder);
+
+          }
+        } else if (incomeOrder.order_status === "3") {
+
+            if (!this.$store.state.orderStore.waitingOrder.find(x => x._id === incomeOrder._id)) {
+              this.$store.state.orderStore.waitingOrder.push(incomeOrder);
+
+            }
+        } else if (incomeOrder.order_status === "4") {
+          const index = this.$store.state.orderStore.waitingOrder.indexOf(this.$store.state.orderStore.waitingOrder.find(x => x._id === incomeOrder._id));
+          if (index !== -1) {
+            this.$store.state.orderStore.waitingOrder.splice(index, 1);
+          }
+            }
+          }
         }
-      } else if (incomeOrder.order_status==="2"){
-        if(!this.$store.state.orderStore.validateOrder.find(x => x._id === incomeOrder._id)){
-          incomeOrder.order_menu = [];
-          incomeOrder.id_menus.forEach(elem => {
-            MenuService.getMenu(elem).then(res => {
-              incomeOrder.order_menu.push(res);
-            })
-          });
-          incomeOrder.order_item = [];
-          incomeOrder.id_items_optional.forEach(elem => {
-            ItemService.getItem(elem).then(res => {
-              incomeOrder.order_item.push(res);
-            })
-          });
-          incomeOrder.id_items.forEach(elem => {
-            ItemService.getItem(elem).then(res => {
-              incomeOrder.order_item.push(res);
-            })
-          });
-          this.$store.state.orderStore.validateOrder.push(incomeOrder);
-          console.log(incomeOrder);
-        }
-      }
-    }
+
+
     this.$store.dispatch('orderStore/getOrder');
     this.$store.dispatch('orderStore/getActiveOrder');
+    this.$store.dispatch('orderStore/getWaitingOrder');
   }
-};
+  }
+
 </script>
