@@ -11,5 +11,10 @@ class UserService {
                 return response.data;
             });
     }
+    getUser(id_user) {
+        return axios.get(API_URL + 'getUser/' + id_user, { headers: authHeader() }).then(response => {
+            return response.data;
+        });
+    }
 }
 export default new UserService();

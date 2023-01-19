@@ -11,7 +11,8 @@
             </v-card-title>
             <div v-if="currentActiveOrder">
               <v-card-subtitle>Date : {{currentActiveOrder.order_date}}<br/>
-                Adresse : {{currentActiveOrder.userid}}<br/>
+                Adresse : {{currentActiveOrder.user.address}}<br/>
+                Prénom : {{currentActiveOrder.user.name}} {{currentActiveOrder.user.surname}}<br/>
                 Prix : {{currentActiveOrder.order_price}}</v-card-subtitle>
 
               <v-card-actions>
@@ -73,6 +74,8 @@
 </template>
 
 <script>
+import UserService from "@/services/user.service";
+
 export default {
   name: 'OrderPage',
   data() {
@@ -133,7 +136,10 @@ export default {
           this.$store.state.orderStore.order.push(incomeOrder);
         }
       }else if(incomeOrder.order_status==="4" && incomeOrder.deliveryId === delivery[0]._id){
-        this.$store.state.orderStore.validateOrder = incomeOrder;
+        UserService.getUser(incomeOrder.userid).then(res => {
+          incomeOrder.user = res;
+          this.$store.state.orderStore.validateOrder = incomeOrder;
+        });
       }
     }
     this.$store.dispatch('orderStore/getOrder');
