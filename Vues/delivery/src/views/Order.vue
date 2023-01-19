@@ -38,31 +38,23 @@
               :items-per-page="5"
               class="mb-3">
             <template v-slot:[`item.actions`]="{ item }">
-              <v-btn
-                  color="white"
-                  text
-                  @click="dialog_accept_order = true"
-                  style="background-color: #73A8E7"
-                  class="text-center"
-              >Accept</v-btn>
-              <v-dialog :retain-focus="false" v-model="dialog_accept_order" max-width="500px">
+              <v-dialog :retain-focus="false" v-model="dialog_accept_order[`${item._id}`]" max-width="500px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                      color="white"
+                      text
+                      style="background-color: #73A8E7"
+                      class="text-center"
+                      v-bind="attrs" v-on="on"
+                  >Accept</v-btn>
+                </template>
                 <v-card>
-                  <v-card-title class="text-h5 justify-center">Voulez-vous accepter cette commande ?</v-card-title>
-                  <v-card-actions class="justify-center">
-                    <v-btn
-                        color="white"
-                        text
-                        @click="accept_order(item)"
-                        style="background-color: #73A8E7"
-                        class="text-center"
-                    >Accept</v-btn>
-                    <v-btn
-                        color="white"
-                        text
-                        @click="dialog_accept_order = false"
-                        style="background-color: #73A8E7"
-                        class="text-center"
-                    >Cancel</v-btn>
+                  <v-card-title class="text-h5">Voulez-vous accepter cette commande ?</v-card-title>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="dialog_accept_order[`${item._id}`] = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="accept_order(item)">OK</v-btn>
+                    <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -93,7 +85,7 @@ export default {
         {text: 'Prix', value: 'order_price'},
         {text: 'Actions', value: 'actions', align: 'center',sortable: false},
       ],
-      dialog_accept_order: false,
+      dialog_accept_order: [],
       dialog_detail_order: false,
       connection:null,
       content: '',
@@ -106,7 +98,7 @@ export default {
           this.orders = this.$store.state.orderStore.order
         });
       }
-      this.dialog_accept_order=false;
+      this.dialog_accept_order[`${order._id}`] = false;
     },
     validateLivraison() {
       if(this.$store.state.orderStore.validateOrder !== null) {
