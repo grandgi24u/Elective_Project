@@ -1,4 +1,5 @@
 import Order from '../services/order.service';
+import MenuService from "@/services/menu.service";
 
 const initialState = {order: [], validateOrder:[] };
 
@@ -59,6 +60,15 @@ export const orderStore = {
             state.order = order;
         },
         order_get_active(state, active_order) {
+            active_order.forEach(element => {
+                element.test = [];
+                element.id_menus.forEach(elem => {
+                    MenuService.getMenu(elem).then(res => {
+                        element.test.push(res);
+                    })
+                });
+            });
+            console.log(active_order);
             state.validateOrder = active_order;
         },
         order_update(state,order){
@@ -67,14 +77,11 @@ export const orderStore = {
                 state.order.splice(index, 1);
             }
         },
-
         order_get_to_delivery(state,order){
             const index = state.validateOrder.indexOf(state.validateOrder.find(x => x._id === order));
             if (index !== -1) {
                 state.validateOrder.splice(index, 1);
             }
         }
-
-
     }
 }

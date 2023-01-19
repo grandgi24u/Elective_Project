@@ -42,8 +42,9 @@
                       </th>
                     </tr></thead>
                     <tbody>
-                    <tr v-for="(i,index) in item.id_menus " :key="index">
-                      <td>{{get_Menu(i)}}</td>
+                    <tr v-for="(i,index) in item.test " :key="index">
+                      <td>{{i.menu_name}}</td>
+                      <td>{{i.menu_price}}</td>
                     </tr>
 
                     </tbody>
@@ -137,8 +138,6 @@
 </template>
 
 <script>
-import MenuService from "../services/menu.service"
-
 export default {
 
   name: 'OrderPage',
@@ -197,16 +196,6 @@ export default {
         this.orders = this.$store.state.orderStore.order
       });
       this.dialog_delivery_order=false;
-    },
-
-    async get_Menu(order){
-      if(order){
-
-        this.test = await MenuService.getMenu(order)
-        console.log(this.test)
-        return this.test;
-      }
-
     }
   },
   computed:{
@@ -233,7 +222,9 @@ export default {
         }
       } else if (incomeOrder.order_status==="2"){
         if(!this.$store.state.orderStore.validateOrder.find(x => x._id === incomeOrder._id)){
+          incomeOrder.test = {};
           this.$store.state.orderStore.validateOrder.push(incomeOrder);
+          console.log(incomeOrder);
         }
       }
     }
