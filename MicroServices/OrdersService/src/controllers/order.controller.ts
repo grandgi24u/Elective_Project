@@ -85,7 +85,7 @@ exports.updateOrderStatus = async (req, res) => {
 }
 
 exports.updateOrderPrice = (req, res) => {
-    Order.findByIdAndUpdate(req.params.id, {order_price: req.body.price},
+    Order.findByIdAndUpdate(req.params.id, {order_price: req.body.order_price},
         (err, order) => {
             if (err) {
                 res.status(500).send({message: err});

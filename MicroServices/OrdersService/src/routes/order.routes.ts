@@ -22,7 +22,7 @@ router.post('/:id/assignDelivery/:idDelivery', controller.assignDelivery);
 router.post('/',    controller.createOrder);
 router.delete('/:id',  checkAllData.checkIfOrderExist, controller.deleteOrder);
 router.patch('/:id', checkAllData.checkIfOrderExist, checkAllData.checkStatusOrder, controller.updateOrderStatus);
-router.patch('/:id/', checkAllData.checkIfOrderExist, controller.updateOrderPrice);
+router.patch('/price/:id/', checkAllData.checkIfOrderExist, controller.updateOrderPrice);
 
 router.use('/:id/item', itemRoute);
 router.use('/:id/menu', menuRoute);
