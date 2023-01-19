@@ -60,7 +60,11 @@
            this.showOrderNow = true;
          } else if (incomeOrder.order_status==="4")
          {
-           this.statusOrder = "Commande livré";
+           this.statusOrder = "Commande en cours de livraison";
+           this.showOrderNow = true;
+         } else if (incomeOrder.order_status==="5")
+         {
+           this.statusOrder = "Commande livrée";
            this.showOrderNow = true;
          } else if (incomeOrder.order_status==="0")
          {
