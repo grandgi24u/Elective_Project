@@ -29,26 +29,43 @@
                   style="background-color: #73A8E7"
                   class="text-center ml-5"
               >Livraison</v-btn>
-              <v-dialog :retain-focus="false" v-model="dialog_detail_order" max-width="500px">
+              <v-dialog :retain-focus="false" v-model="dialog_detail_order" max-width="1500px">
                 <v-card>
-                  <v-card-title class="text-h6 justify-center">Détail</v-card-title>
-                  <table>
+                  <v-card-title class="text-h5 justify-center">Détail</v-card-title>
+                  <h3 class="ml-4">Menu</h3>
+                  <v-simple-table>
                     <thead><tr>
-                      <th>
-                      Nom
+                      <th style="width: 50%">
+                        Nom
                       </th>
-                      <th>
+                      <th style="width: 50%">
                         Prix
                       </th>
                     </tr></thead>
                     <tbody>
-                    <tr v-for="(i,index) in item.test " :key="index">
+                    <tr v-for="(i,index) in item.order_menu " :key="index">
                       <td>{{i.menu_name}}</td>
                       <td>{{i.menu_price}}</td>
                     </tr>
 
                     </tbody>
-                  </table>
+                  </v-simple-table>
+                  <h3 class="ml-4">Items</h3>
+                  <v-simple-table>
+                    <thead><tr>
+                      <th style="width: 50%">
+                        Nom
+                      </th>
+                      <th style="width: 50%">
+                        Prix
+                      </th>
+                    </tr></thead>
+                    <tr v-for="(i,index) in item.order_item " :key="index">
+                      <td>{{i.item_name}}</td>
+                      <td>{{i.item_price}}</td>
+                    </tr>
+                    <h3 class="ml-4 mt-5">Total: {{item.order_price}}€</h3>
+                  </v-simple-table>
 
                   <v-card-actions class="justify-center">
                     <v-btn
@@ -138,6 +155,9 @@
 </template>
 
 <script>
+import MenuService from "@/services/menu.service";
+import ItemService from "@/services/item.service";
+
 export default {
 
   name: 'OrderPage',
@@ -165,22 +185,11 @@ export default {
         {text: 'Actions', value: 'actions', align: 'center',sortable: false},
       ],
 
-      menu_name: [
-        {
-          text: 'Nom ',
-          align: 'left',
-          sortable: false,
-          value: 'menu_name'
-        },
-        {text: 'Prix', value: 'menu_price'},
-      ],
-
       dialog_accept_order: false,
       dialog_detail_order: false,
       dialog_delivery_order: false,
       connection:null,
       content: '',
-      test: []
     };
   },
   methods:{
@@ -222,7 +231,23 @@ export default {
         }
       } else if (incomeOrder.order_status==="2"){
         if(!this.$store.state.orderStore.validateOrder.find(x => x._id === incomeOrder._id)){
-          incomeOrder.test = {};
+          incomeOrder.order_menu = [];
+          incomeOrder.id_menus.forEach(elem => {
+            MenuService.getMenu(elem).then(res => {
+              incomeOrder.order_menu.push(res);
+            })
+          });
+          incomeOrder.order_item = [];
+          incomeOrder.id_items_optional.forEach(elem => {
+            ItemService.getItem(elem).then(res => {
+              incomeOrder.order_item.push(res);
+            })
+          });
+          incomeOrder.id_items.forEach(elem => {
+            ItemService.getItem(elem).then(res => {
+              incomeOrder.order_item.push(res);
+            })
+          });
           this.$store.state.orderStore.validateOrder.push(incomeOrder);
           console.log(incomeOrder);
         }
