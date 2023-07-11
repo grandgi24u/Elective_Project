@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+*.vue linguist-detectable=false
+*.ts linguist-detectable=true
+
+
 # User-specific files
 *.env
 *.rsuser
@@ -10,7 +14,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.vue linguist-detectable=false
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
