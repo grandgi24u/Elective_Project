@@ -10,7 +10,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.css linguist-detectable=false
+*.vue linguist-detectable=false
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
